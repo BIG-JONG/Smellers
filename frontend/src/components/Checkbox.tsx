@@ -1,7 +1,6 @@
 import React from 'react';
 
 // Checkbox 타입정의
-
 interface CheckboxProps {
   label: string;
   checked: boolean;
