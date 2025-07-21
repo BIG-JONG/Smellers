@@ -29,7 +29,7 @@ enum NoteType {
 
 // 모델 정의
 model PERFUME_INFO {
-  PERFUME_ID     Int           @id
+  PERFUME_ID     Int           @id @default(autoincrement())
   USER_ID        Int
   PERFUME_NAME   String?
   BRAND_NAME     String?
@@ -49,7 +49,7 @@ model PERFUME_INFO {
 }
 
 model PERFUME_IMG {
-  PERFUME_ID Int    @id
+  PERFUME_ID Int    @id @default(autoincrement())
   URL        String?
 
   // 관계
