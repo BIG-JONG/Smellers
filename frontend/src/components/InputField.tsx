@@ -1,6 +1,6 @@
 import React from 'react' ;
 
-// inputField 컴포넌트가 받을 props의 타입 정의
+// inputField 타입 정의
 interface InputFieldProps {
   label: string; ///(Ex: 아이디, 비밀번호)
   type: string;
