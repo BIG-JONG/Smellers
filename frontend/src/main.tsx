@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import Button from './components/Button.js';
 import Textarea from './components/Textarea';
+import Dropdown from './components/Dropdown';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -11,5 +12,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Button/>
     <br/>
     <Textarea/>
+    <Dropdown/>
   </React.StrictMode>,
 );
