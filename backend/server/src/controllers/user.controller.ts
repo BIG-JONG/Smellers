@@ -4,6 +4,7 @@ import { updateUserById, deleteUserById } from '../services/user.service';
 
 export const signup = async (req: Request, res: Response) => {
   const { email, password, nickname } = req.body;
+  console.log("어디까지 갔니");
   try {
     await createUser(email, password, nickname);
     res.status(201).json({ message: '회원가입 성공' });

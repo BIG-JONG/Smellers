@@ -4,9 +4,9 @@ import { authenticateToken } from '../middlewares/auth.middleware';
 
 const router = express.Router();
 
+router.post('/signup', signup);
 
-router.post('/users/signup', signup);
-router.put('/users/:id', authenticateToken, updateUser);
-router.delete('/users/:id', authenticateToken, deleteUser); 
+router.put('/:id', authenticateToken, updateUser);
+router.delete('/:id', authenticateToken, deleteUser); 
 
 export default router;

@@ -27,6 +27,8 @@ model UserInfo {
 
   perfumes   PerfumeInfo[]
   followings FollowingList[]
+
+  @@map("UserInfo")
 }
 
 model PerfumeInfo {
@@ -46,6 +48,8 @@ model PerfumeInfo {
   user     UserInfo      @relation(fields: [userId], references: [userId])
   images   PerfumeImg[]
   notes    PerfumeNote[]
+
+  @@map("PerfumeInfo")
 }
 
 model PerfumeImg {
@@ -53,6 +57,8 @@ model PerfumeImg {
   url       String? @map("url")
 
   perfume   PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
+
+  @@map("PerfumeImg")
 }
 
 model PerfumeNote {
@@ -62,6 +68,8 @@ model PerfumeNote {
   noteName  String    @map("noteName")
 
   perfume   PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
+
+  @@map("PerfumeNote")
 }
 
 model FollowingList {
@@ -72,4 +80,7 @@ model FollowingList {
   updatedAt  DateTime  @updatedAt @map("updatedAt")
 
   user       UserInfo @relation(fields: [userId], references: [userId])
+
+  @@map("FollowingList")
 }
+
