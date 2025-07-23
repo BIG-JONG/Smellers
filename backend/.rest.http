@@ -1,0 +1,36 @@
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTc1MDA0NzE1MSwiZXhwIjoxNzUwMDkwMzUxfQ.6kL5UZ3sIpAxDGsSdiSNivTfd06Kh3EKKoktw6i1W3s
+
+@token2= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc1MDA0OTMxNiwiZXhwIjoxNzUwMDkyNTE2fQ.10GnLSUn1WMYRit3LixNl1gEdMToU38CcYiVLifIjfc
+
+### 회원가입 (Signup)
+POST http://localhost:4000/users/signup
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "password123",
+  "nickname": "tester"
+}
+
+### 로그인 (Login)
+POST http://localhost:4000/users/login
+Content-Type: application/json
+
+{
+  "email": "testuser@example.com",
+  "password": "password123"
+}
+
+### 회원정보 수정 (Update User) - 토큰 필요
+PUT http://localhost:4000/users/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "nickname": "updatedTester",
+  "password": "newpassword123"
+}
+
+### 회원정보 삭제 (Delete User) - 토큰 필요
+DELETE http://localhost:4000/users/1
+Authorization: Bearer {{token}}
