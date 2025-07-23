@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Sidebar from './SideBar'
+import Sidebar from './Sidebar'
 
 function Layout(){
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
