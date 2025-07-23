@@ -1,15 +1,33 @@
-import * as bcrypt  from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import * as  jwt from 'jsonwebtoken';
 import prisma from '../prisma/client';
 
+//중복 검사
+const checkDuplicate = async (email: string, password: string, nickname: string) => {
+  const user = await prisma.userInfo.findUnique({ where: { email } });
+  if (!user || !(await bcrypt.compare(password, user.password)) || !nickname) {
+    throw new Error('duplicate user');
+  }
+};
+
 export const createUser = async (email: string, password: string, nickname: string) => {
+  // 서버와 통신 시 유효성 검사 중복체크
+  // 1. 값이 들어오는지 
+  if (!email || !password || !nickname) {
+    return null;
+  }
+
+  // 2. 값이 중복이 없는지
+  await checkDuplicate(email, password, nickname);
+
+  // 3. 비밀번호 해싱 후 DB에 넣기
   const hashed = await bcrypt.hash(password, 10);
-  return await prisma.userInfo.create( {data: { email , password: hashed, nickname } });
+  return await prisma.userInfo.create({ data: { email, password: hashed, nickname } });
 
 };
 
 export const verifyUser = async (email: string, password: string) => {
-  const user = await prisma.userInfo.findUnique({ where: {email } });
+  const user = await prisma.userInfo.findUnique({ where: { email } });
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw new Error('Invalid credentials');
   }
@@ -18,6 +36,7 @@ export const verifyUser = async (email: string, password: string) => {
   return { token, userId: user.userId };
 };
 
+
 export const updateUserById = async (id: number, data: { nickname?: string; password?: string }) => {
   const updateData: any = {};
 
@@ -25,7 +44,7 @@ export const updateUserById = async (id: number, data: { nickname?: string; pass
   if (data.password) updateData.password = await bcrypt.hash(data.password, 10);
 
   return await prisma.userInfo.update({
-    where: { userId : id },
+    where: { userId: id },
     data: updateData,
   });
 };
