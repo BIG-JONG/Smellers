@@ -1,29 +1,29 @@
-import { Request, Response } from 'express';
-import { createUser, verifyUser } from '../services/user.service';
-import { updateUserById, deleteUserById } from '../services/user.service';
+import { Request, Response, NextFunction } from 'express';
+import { createUser, verifyUser, updateUserById, deleteUserById } from '../services/user.service';
+import { validationResult } from 'express-validator';
 
-export const signup = async (req: Request, res: Response) => {
+
+export const signup = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password, nickname } = req.body;
-  console.log("어디까지 갔니");
   try {
     await createUser(email, password, nickname);
     res.status(201).json({ message: '회원가입 성공' });
   } catch (err) {
-    res.status(400).json({ error: '회원가입 실패' });
+      next(err);
   }
 };
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
   try {
     const { token, userId } = await verifyUser(email, password);
     res.json({ token, userId });
   } catch (err) {
-    res.status(401).json({ error: '로그인 실패' });
+    next(err);
   }
 };
 
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const { nickname, password } = req.body;
   const requesterId = req.user?.id;
@@ -36,11 +36,11 @@ export const updateUser = async (req: Request, res: Response) => {
     await updateUserById(requesterId, { nickname, password });
     res.json({ message: '수정 완료' });
   } catch (err) {
-    res.status(400).json({ error: '수정 실패' });
+    next(err);
   }
 };
 
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response , next: NextFunction) => {
   const { id } = req.params;
   const requesterId = req.user?.id;
 
@@ -52,6 +52,6 @@ export const deleteUser = async (req: Request, res: Response) => {
     await deleteUserById(requesterId);
     res.json({ message: '삭제 완료' });
   } catch (err) {
-    res.status(400).json({ error: '삭제 실패' });
+    next(err);
   }
 };
