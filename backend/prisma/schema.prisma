@@ -19,67 +19,68 @@ enum NoteType {
 }
 
 model UserInfo {
-  userId     Int         @id @default(autoincrement()) @map("userId")
-  email      String      @unique @map("email")
-  password   String      @map("password")
-  nickname   String      @map("nickname")
-  userStatus UserStatus  @default(Y) @map("userStatus")
+  userId     Int        @id @default(autoincrement()) @map("userId")
+  email      String     @unique @map("email")
+  password   String     @map("password")
+  nickname   String     @map("nickname")
+  userStatus UserStatus @default(Y) @map("userStatus")
 
   perfumes   PerfumeInfo[]
   followings FollowingList[]
 
-  @@map("UserInfo") 
+  @@map("UserInfo")
 }
 
 model PerfumeInfo {
-  perfumeId     Int         @id @default(autoincrement()) @map("perfumeId")
-  userId        Int         @map("userId")
-  perfumeName   String      @map("perfumeName")
-  brandName     String      @map("brandName")
-  content       String      @map("content")
-  tag           String      @map("tag")
-  emotionTag    String      @map("emotionTag")
-  point         Int         @default(0) @map("point")
-  isPublic      String      @default("N") @map("isPublic")
-  perfumeStatus String      @default("Y") @map("perfumeStatus")
-  createdAt     DateTime    @default(now()) @map("createdAt")
-  updatedAt     DateTime    @updatedAt @map("updatedAt")
+  perfumeId     Int      @id @default(autoincrement()) @map("perfumeId")
+  userId        Int      @map("userId")
+  perfumeName   String   @map("perfumeName")
+  brandName     String   @map("brandName")
+  content       String   @map("content")
+  tag           String   @map("tag")
+  emotionTag    String   @map("emotionTag")
+  point         Int      @default(0) @map("point")
+  price         Int      @map("price")
+  isPublic      String   @default("N") @map("isPublic")
+  perfumeStatus String   @default("Y") @map("perfumeStatus")
+  createdAt     DateTime @default(now()) @map("createdAt")
+  updatedAt     DateTime @updatedAt @map("updatedAt")
 
-  user     UserInfo      @relation(fields: [userId], references: [userId])
-  images   PerfumeImg[]
-  notes    PerfumeNote[]
+  user   UserInfo      @relation(fields: [userId], references: [userId])
+  images PerfumeImg[]
+  notes  PerfumeNote[]
 
-  @@map("PerfumeInfo") 
+  @@map("PerfumeInfo")
 }
 
 model PerfumeImg {
   perfumeId Int     @id @map("perfumeId")
   url       String? @map("url")
 
-  perfume   PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
-  
-  @@map("PerfumeImg") 
+  perfume PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
+
+  @@map("PerfumeImg")
 }
 
 model PerfumeNote {
-  pnId      Int       @id @default(autoincrement()) @map("pnId")
-  perfumeId Int       @map("perfumeId")
-  noteType  NoteType  @map("noteType")
-  noteName  String    @map("noteName")
+  pnId      Int      @id @default(autoincrement()) @map("pnId")
+  perfumeId Int      @map("perfumeId")
+  noteType  NoteType @map("noteType")
+  noteName  String   @map("noteName")
 
-  perfume   PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
+  perfume PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
 
-  @@map("PerfumeNote") 
+  @@map("PerfumeNote")
 }
 
 model FollowingList {
-  userId     Int       @id @default(autoincrement()) @map("userId")
-  flowId     Int?      @map("flowId")
-  flowStatus String    @default("Y") @map("flowStatus")
-  createdAt  DateTime  @default(now()) @map("createdAt")
-  updatedAt  DateTime  @updatedAt @map("updatedAt")
+  userId     Int      @id @default(autoincrement()) @map("userId")
+  flowId     Int?     @map("flowId")
+  flowStatus String   @default("Y") @map("flowStatus")
+  createdAt  DateTime @default(now()) @map("createdAt")
+  updatedAt  DateTime @updatedAt @map("updatedAt")
 
-  user       UserInfo @relation(fields: [userId], references: [userId])
+  user UserInfo @relation(fields: [userId], references: [userId])
 
-  @@map("FollowingList") 
+  @@map("FollowingList")
 }

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.routes';
+import followRoutes from './routes/follow.routers';
 
 const PORT = process.env.PORT || 4000;
 
@@ -16,6 +17,9 @@ app.use(express.json());
 // 라우팅
 app.use('/users', userRoutes);
 // app.use('/perfumes', perfumeRoutes); // 향수 API 추가할 경우
+
+// 엔드포인트 /followings/posts만
+app.use('/', followRoutes);
 
 // 기본 라우터 (헬스체크)
 app.get('/', (req, res) => {
