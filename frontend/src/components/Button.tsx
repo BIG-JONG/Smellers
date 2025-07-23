@@ -33,7 +33,7 @@ function Button({
   }
   return (
     <button onClick={onClick} type={type} className={classes}>
-      {children}클릭
+      {children}확인
     </button>
   )
 }
