@@ -8,6 +8,9 @@ export const authorizeSelf = (req: Request, res: Response, next: NextFunction) =
     const userIdFromToken = req.user?.id; // auth.middleware.ts에서 넣어줌
     const userId = parseInt(req.params.id, 10);
 
+    //console.log('요청된 사용자 ID:', userId);
+    //console.log('토큰에서 추출한 사용자 ID:', userIdFromToken); 
+
     if (!userIdFromToken || userIdFromToken !== userId) {
       return next(new Error("Forbidden"));
     }
