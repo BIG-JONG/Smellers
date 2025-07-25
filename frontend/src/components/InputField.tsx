@@ -10,6 +10,7 @@ interface InputFieldProps {
   error?: string;
   id?: string;
   className?:string //추가
+  readOnly?:boolean //추가
 }
 
 const InputField: React.FC<InputFieldProps> = ({
