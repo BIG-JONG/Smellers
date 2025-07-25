@@ -2,10 +2,6 @@
   "name": "aromabase",
   "private": true,
   "version": "0.0.0",
-<<<<<<< HEAD
-=======
-  "type": "module",
->>>>>>> parent of b9d91ed (Merge branch 'origin/khg/backend' into kgb/backend)
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
