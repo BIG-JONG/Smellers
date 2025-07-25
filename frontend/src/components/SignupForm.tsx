@@ -1,7 +1,7 @@
 import { useState } from "react";
 import InputField from "./InputField";
 import Button from "./Button";
-
+import Alert from "./Alert";
 
 function SignupForm(){
   const [email, setEmail] = useState("")
@@ -9,8 +9,17 @@ function SignupForm(){
   const [passwordConfirm, setPasswordConfirm] = useState("")
   const [nickname, setNickname] = useState("")
 
+  const [showAlert, setShowAlert] = useState(false)
+
+  const onClickButton=()=>{
+    setShowAlert(true)
+  }
+
   return (
     <form className="m-10 flex flex-col items-center justify-center w-full">
+      <h1 className="text-4xl font-extrabold">회원가입</h1>
+      <br/>
+      <br/>
       <InputField 
         className="w-1/2"
         label="이메일"
@@ -47,7 +56,12 @@ function SignupForm(){
         placeholder="사용할 닉네임을 입력하세요."/>
         <br/>
         <br/>
-        <Button/>
+        <Button onClick={onClickButton}/>
+        {showAlert && (
+          <div className="mt-4 w-1/2">
+            <Alert message="회원가입 완료"/>
+          </div>
+        )}
     </form>
   )
 }
