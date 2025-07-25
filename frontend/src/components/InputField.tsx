@@ -21,7 +21,8 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   error,
   id,
-  className
+  className,
+  readOnly=false
 }) => {
   //아이디가 제공되지 않으면 간단한 id 생성/
   const inputId = id || `input-${label.replace(/\s+/g, '-').toLowerCase()}`;
@@ -38,6 +39,7 @@ const InputField: React.FC<InputFieldProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
+        readOnly={readOnly}
         // tailwindcss 적용
         className={`mt-0.5 w-full rounded border-gray-300 shadow-sm sm:text-sm ${
           error ? 'border-red-500' : '' // 에러가 있으면 테두리를 빨간색으로
