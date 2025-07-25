@@ -9,6 +9,8 @@ interface InputFieldProps {
   placeholder?: string;
   error?: string;
   id?: string;
+  className?:string //추가
+  readOnly?:boolean //추가
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -19,12 +21,13 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   error,
   id,
+  className
 }) => {
   //아이디가 제공되지 않으면 간단한 id 생성/
   const inputId = id || `input-${label.replace(/\s+/g, '-').toLowerCase()}`;
 
   return (
-    <div className="mb-4">
+    <div className={`mb-4 ${className || ''}`}>
       <label htmlFor={inputId} className="block text-gray-700 text-sm font-bold mb-2">
         {label}
       </label>
