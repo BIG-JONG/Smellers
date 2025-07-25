@@ -1,10 +1,7 @@
-// frontend/src/components/PerfumeListSection.tsx
-
 import React from 'react';
-import ProductCard from '@/components/ProductCard'; // ProductCard 컴포넌트 임포트
-import Pagination from '@/components/Pagination';   // Pagination 컴포넌트 임포트
+import ProductCard from '@/components/ProductCard'; 
+import Pagination from '@/components/Pagination'; 
 
-// ProductCard의 ProductCardProps와 정확히 일치하도록 Perfume 인터페이스를 정의합니다.
 interface Perfume {
   id: string;
   image: string;
@@ -12,14 +9,14 @@ interface Perfume {
   price?: string;
   ingredient?: string[];
   rating: number;
-  reviews: number; // <-- ProductCard의 reviews prop과 일치하도록 추가
+  reviews: number;
 }
 
 interface PerfumeListSectionProps {
   title: string;
   perfumes: Perfume[];
   currentPage: number;
-  totalPages: number; // 'totalPage' 대신 'totalPages'로 통일 (Pagination 컴포넌트와 일치)
+  totalPage: number;
   onPageChange: (page: number) => void;
   onPerfumeClick?: (perfumeId: string) => void;
 }
@@ -28,7 +25,7 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
   title,
   perfumes,
   currentPage,
-  totalPages, // 'totalPage' 대신 'totalPages'로 변경
+  totalPage, 
   onPageChange,
   onPerfumeClick,
 }) => {
@@ -55,7 +52,7 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
               price={perfume.price}
               ingredient={perfume.ingredient}
               rating={perfume.rating}
-              reviews={perfume.reviews} // <-- reviews prop 전달
+              reviews={perfume.reviews}
               onClick={() => handleProductClick(perfume.id)}
             />
           ))}
@@ -63,11 +60,11 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
       )}
 
       {/* 페이지네이션 (전체 페이지가 1보다 많을 때만 표시) */}
-      {totalPages > 1 && ( // 'totalPage' 대신 'totalPages'로 변경
+      {totalPage > 1 && (
         <div className="mt-8 flex justify-center">
           <Pagination
             currentPage={currentPage}
-            totalPages={totalPages} // 'totalPage' 대신 'totalPages'로 변경
+            totalPage={totalPage} 
             onPageChange={onPageChange}
           />
         </div>

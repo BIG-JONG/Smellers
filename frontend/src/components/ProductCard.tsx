@@ -1,5 +1,5 @@
 import React from 'react';
-import StarRating from '@/components/StarRating'; // StarRating 컴포넌트 임포트 (별점 표시용)
+import StarRating from '@/components/StarRating'; // StarRating (별점 표시용)
 
 interface ProductCardProps {
   id: string;
