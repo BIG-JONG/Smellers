@@ -55,4 +55,3 @@ export const deleteUser = async (req: Request, res: Response , next: NextFunctio
     next(err);
   }
 };
->>>>>>> origin/khg/backend
