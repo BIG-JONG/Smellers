@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Request, Response, NextFunction } from 'express';
 import { createUser, verifyUser, updateUserById, deleteUserById } from '../services/user.service';
 import { validationResult } from 'express-validator';
@@ -54,17 +53,5 @@ export const deleteUser = async (req: Request, res: Response , next: NextFunctio
     res.json({ message: '삭제 완료' });
   } catch (err) {
     next(err);
-=======
-import { Request, Response } from "express";
-import { loginService } from "../services/user.service";
-
-export const loginController = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const { email, password } = req.body;
-    const token = await loginService(email, password);
-    res.status(200).json({ accessToken: token });
-  } catch (error: any) {
-    res.status(401).json({ errorMessage: error.message });
->>>>>>> parent of b9d91ed (Merge branch 'origin/khg/backend' into kgb/backend)
   }
 };
