@@ -10,7 +10,7 @@ function LoginForm(){
     <form className="m-10 flex flex-col items-center justify-center w-full">
       <InputField
         className="w-1/2"
-        label="email"
+        label="이메일"
         type="email"
         value={email}
         onChange={(e)=>setEmail(e.target.value)}
@@ -20,7 +20,7 @@ function LoginForm(){
       <br/>
       <InputField
         className="w-1/2"
-        label="password"
+        label="비밀번호"
         type="password"
         value={password}
         onChange={(e)=>setPassword(e.target.value)}
