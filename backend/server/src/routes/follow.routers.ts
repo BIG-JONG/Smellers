@@ -1,9 +1,9 @@
 import express  from "express";
-import { loginController } from "../controllers/user.controller";
+import { getFollowAllPost } from "../controllers/follow.controller";
 
 const router = express.Router();
 
 
-router.get('/following/post',loginController);
+router.get('/following/post',getFollowAllPost);
 
 export default router;
