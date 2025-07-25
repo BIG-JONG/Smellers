@@ -1,11 +1,16 @@
 import { Request, Response } from "express";
-//import { loginService } from "../services/user.service";
+import { followListingService } from "../services/follow.service";
 
-export const followlistingController = async (req: Request, res: Response): Promise<void> => {
+export const followListingController = async (req: Request, res: Response): Promise<void> => {
+  console.log("여기")
   try {
-    const { id } = req.body;
+    const id = req.params.id;
+    const idInt = parseInt(id, 10);
+
+    const list = await followListingService(idInt);
+    res.status(200).json({ data: list });
   } catch (error: any) {
-    
+    res.status(401).json({ errorMessage: error.message });
   }
 };
 

@@ -25,8 +25,9 @@ model UserInfo {
   nickname   String     @map("nickname")
   userStatus UserStatus @default(Y) @map("user_status")
 
-  perfumes   PerfumeInfo[]
-  followings FollowingList[]
+  perfumes PerfumeInfo[]
+  follow FollowingList[] @relation("follow")
+  followed FollowingList[] @relation("followed")
 
   @@map("user_info")
 }
@@ -74,13 +75,17 @@ model PerfumeNote {
 }
 
 model FollowingList {
-  userId       Int      @id @default(autoincrement()) @map("user_id")
-  followId     Int?     @map("follow_id")
+  followId     Int      @id @default(autoincrement()) @map("follow_id")
+  userId       Int      @map("user_id")
+  followerId   Int      @map("follower_id")
   followStatus String   @default("Y") @map("follow_status")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
 
-  user UserInfo @relation(fields: [userId], references: [userId])
+  
+
+  follow     UserInfo @relation("follow",fields: [userId], references: [userId])
+  followed UserInfo @relation("followed",fields: [followerId], references: [userId])
 
   @@map("following_list")
 }
