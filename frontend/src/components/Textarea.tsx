@@ -8,6 +8,7 @@ type TextareaProps = {
   required?:boolean
   name?:string
   id?:string
+  label?:string
 }
 
 function Textarea({
@@ -19,25 +20,29 @@ function Textarea({
   disabled,
   required,
   name,
-  id
+  id,
+  label
 }:TextareaProps){
   return(
-    <label>
-      <span className="text-sm font-medium text-gray-700"> review </span>
-      <br/>
-      <textarea
-          value={value}
-          defaultValue={defaultValue}
-          onChange={onChange}
-          placeholder={placeholder}
-          disabled={disabled}
-          required={required}
-          name={name}
-          id={id}
-          className="mt-0.5 w-3/5 resize-none rounded border border-gray-300 shadow-sm sm:text-sm"
-          >
-      </textarea>
+   <div className={`mb-4 ${className || ''}`}>
+    <label htmlFor={id} className="block text-gray-700 text-sm font-bold mb-2">
+      {label}
     </label>
+
+    <textarea
+      id={id}
+      name={name}
+      value={value}
+      defaultValue={defaultValue}
+      onChange={onChange}
+      placeholder={placeholder}
+      disabled={disabled}
+      required={required}
+      rows={4}
+      className="mt-0.5 w-full resize-none rounded shadow-sm sm:text-sm"
+    />
+  </div>
+
   )
 }
 
