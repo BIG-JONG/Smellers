@@ -11,3 +11,23 @@ export const getpublicPerfumesService = async () => {
     },
   });
 }
+
+export const getSearchPerfumeService = async(data: JSON) => {
+  return await prisma.perfumeInfo.findMany({
+    where: {
+    }
+  })
+}
+
+export const getMyPerfumesService = async (userId: number) => {
+   return await prisma.perfumeInfo.findMany({
+    where: {
+      userId: userId,
+      perfumeStatus: 'Y',  // 예: 삭제된 건 빼고
+    },
+    include: {
+      images: true,
+      notes: true,
+    },
+  });
+}

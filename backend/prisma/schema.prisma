@@ -35,7 +35,7 @@ model UserInfo {
 model PerfumeInfo {
   perfumeId     Int      @id @default(autoincrement()) @map("perfume_id")
   userId        Int      @map("user_id")
-  perfumeName   String   @map("perfume_name")
+  perfumeName   String   @db.VarChar(255) @map("perfume_name")
   brandName     String   @map("brand_name")
   content       String   @map("content")
   tag           String   @map("tag")
