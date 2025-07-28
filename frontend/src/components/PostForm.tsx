@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import InputField from "./InputField";
 import Textarea from "./Textarea";
-import Tag from "./Tag"; // Tag 컴포넌트 임포트
+import Tag from "./Tag";
+import MultiSelectDropdown from "./MultiSelectDropdown"
 
 function PostForm() {
   const [img, setImg] = useState<string | undefined>(undefined);
@@ -13,6 +14,10 @@ function PostForm() {
   const [emotion, setEmotion] = useState("");
 
   const [tag, setTag] = useState(""); 
+
+  const [selectedTop, setSelectedTop] = useState<string[]>([]);
+  const [selectedMiddle, setSelectedMiddle] = useState<string[]>([]);
+  const [selectedBase, setSelectedBase] = useState<string[]>([]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -100,7 +105,34 @@ function PostForm() {
 
       {/* 나머지 입력 필드: 중앙 정렬 유지 */}
       <div className="flex w-full gap-4 flex-wrap justify-start">
-        <InputField
+          <div className="flex-1 w-full">
+            <MultiSelectDropdown
+              label="탑 노트"
+              options={["라벤더", "머스크", "샌달우드"]}
+              value={selectedTop}
+              onChange={setSelectedTop}
+              maxSelect={3}
+              placeholder="선택"
+            />
+            <MultiSelectDropdown
+              label="미들 노트"
+              options={["라벤더", "머스크", "샌달우드"]}
+              value={selectedMiddle}
+              onChange={setSelectedMiddle}
+              maxSelect={3}
+              placeholder="선택"
+            />
+            <MultiSelectDropdown
+              label="베이스 노트"
+              options={["라벤더", "머스크", "샌달우드"]}
+              value={selectedBase}
+              onChange={setSelectedBase}
+              maxSelect={3}
+              placeholder="선택"
+            />
+          </div>
+        
+        {/* <InputField
           className="w-full text-gray-600"
           label="탑 노트"
           type="text" 
@@ -123,7 +155,7 @@ function PostForm() {
           value={baseNote}
           onChange={(e) => setBaseNote(e.target.value)}
           placeholder="베이스 노트를 기록해 주세요."
-        />
+        /> */}
         <Textarea
           label="내용"
           className="w-full text-gray-600"
@@ -160,6 +192,7 @@ function PostForm() {
           onChange={(e) => setEmotion(e.target.value)}
           placeholder="감정을 기록해 주세요."
         />
+ 
       </div>
     </div>
   );
