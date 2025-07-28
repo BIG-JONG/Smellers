@@ -130,7 +130,7 @@ function PostForm() {
           placeholder="향수에 대해 기록해 주세요."
         />
 
-        {/* ✨ 태그 입력 필드 (기존 `tag` 상태와 연결) */}
+        {/* 태그 입력 필드 (기존 `tag` 상태와 연결) */}
         <InputField
           className="w-full text-gray-600"
           label="태그"
@@ -140,7 +140,7 @@ function PostForm() {
           placeholder="쉼표(,)로 구분하여 태그를 입력해 주세요."
         />
 
-        {/*렌더링된 태그 목록 */}
+        {/* 렌더링된 태그 목록 */}
         <div className="w-full flex flex-wrap gap-2 mt-2">
           {parseTags(tag).map((singleTag, index) => ( // `tag` 문자열을 파싱해서 렌더링
             <Tag
