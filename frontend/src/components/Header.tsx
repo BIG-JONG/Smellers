@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = () => {
 
       {/* 3. 내비게이션 링크 및 사용자 액션 영역 */}
       <nav className="flex items-center space-x-6">
-        <ul className="flex space-x-6">
+        {/* <ul className="flex space-x-6">
           <li>
             <a href="/find-perfume" className="text-gray-600 hover:text-indigo-600 transition-colors duration-200 whitespace-nowrap">향수 찾기</a>
           </li>
@@ -60,12 +60,12 @@ const Header: React.FC<HeaderProps> = () => {
           <li>
             <a href="/community" className="text-gray-600 hover:text-indigo-600 transition-colors duration-200">커뮤니티</a>
           </li>
-        </ul>
+        </ul> */}
 
         <div className="flex items-center space-x-4 ml-6"> {/* 내비게이션과 구분 */}
           {/* 로그인/회원가입 버튼 */}
-          <button className="text-gray-600 hover:text-indigo-600 transition-colors duration-200 whitespace-nowrap">로그인</button>
-          <button className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors duration-200 whitespace-nowrap">회원가입</button>
+          <button className="text-sm text-gray-600 hover:text-indigo-600 transition-colors duration-200 whitespace-nowrap">로그인</button>
+          <button className="text-sm px-2 py-2 bg-black text-white rounded-md hover:bg-black transition-colors duration-200 whitespace-nowrap">회원가입</button>
 
           {/* 프로필 아이콘 (SVG) */}
           <a href="/profile" className="text-gray-600 hover:text-indigo-600 transition-colors duration-200">

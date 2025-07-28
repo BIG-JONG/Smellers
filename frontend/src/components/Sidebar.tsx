@@ -1,5 +1,3 @@
-  import React from 'react';
-
     interface SidebarProps {
       isOpen: boolean;
       onMouseLeave?: () => void;
@@ -8,6 +6,7 @@
       createPerfume?: string;
       perfumeList?: string;
       followList?: string;
+      className?:string
     }
 
     function Sidebar({ 
@@ -17,13 +16,14 @@
       userInfo,
       createPerfume,
       perfumeList,
-      followList
+      followList,
+      className
     }: SidebarProps) {
 
       return (
         <div
           className={`
-            fixed top-[64px] left-0 z-40 h-[calc(100%-64px)] w-64 bg-white border-r border-gray-200
+            fixed top-[74px] left-0 z-40 h-[calc(100%-64px)] w-64 bg-white border-r border-gray-200
             transform transition-transform duration-300
             ${isOpen ? "translate-x-0" : "-translate-x-full"}
           `}
@@ -58,7 +58,7 @@
           </div>
 
           {/* user profile */}
-          <div className="fixed left-0 bottom-10 w-full border-t border-gray-100">
+          <div className="fixed left-0 bottom-0 w-full border-t border-gray-100">
             <a href="#" className="flex w-full items-center gap-2 bg-white p-4 hover:bg-gray-50">
               <img
                 alt="User Profile"

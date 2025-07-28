@@ -1,22 +1,19 @@
+
+
 interface FooterProps{
   logo?:string
-  content?:string
   copyright?: string
-  socialLinks?: {
-    platform: 'notion' | 'github' | string;
-    url: string;
-  }[];           
+  className?:string
 }
 
 function Footer({
   logo, 
-  content,
   copyright,
-  socialLinks
+  className
 }:FooterProps){
   return (
-    <footer className="bg-gray-100">
-      <div className="relative mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 lg:pt-24">
+    <footer className={`bg-gray-100 ${className}`}>
+      <div className="relative mx-auto max-w-screen-full px-10 sm:px-16 lg:px-24 py-8 lg:pt-24">
         {/* top button */}
         <div className="absolute end-4 top-4 sm:end-6 sm:top-6 lg:end-8 lg:top-8">
           <a
@@ -27,7 +24,7 @@ function Footer({
 
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="size-5"
+              className="w-5 h-5"
               viewBox="0 0 20 20"
               fill="currentColor"
             >
@@ -45,12 +42,13 @@ function Footer({
             {/* logo */}
             <div className="flex justify-center text-teal-600 lg:justify-start">
               {/* logo img넣는 부분 */}
-              <img src="/vite.svg" alt="Vite Logo" /> 
+              <img src={logo ?? "/vite.svg"} alt="Vite Logo" /> 
             </div>
 
-            <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500 lg:text-left">
-              향수 웹사이트의 간단한 소개글 적는 곳<br/>
-              향수 웹사이트의 간단한 소개글 적는 곳
+            <p className="mx-auto mt-6 max-w-md text leading-relaxed text-gray-500 lg:text-left">
+              향기로운 기억들이 모여 새로운 이야기가 시작되는 곳,<br/>
+              나만의 향수를 기록하고 특별한 순간들을 함께 나누는 공간<br/>
+              당신의 취향과 감성을 펼쳐 보세요.<br/>
             </p>
           </div>
 
@@ -58,10 +56,12 @@ function Footer({
           <ul
             className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12"
           >
-
             <li>
               <a className="flex items-center text-gray-700 transition hover:text-gray-700/75" href="#"> 
-                  <img src="/notion.png" alt="notion Logo" className="w-5 h-5 relative top-0.5" />
+                  <img 
+                    src="/notion.png" 
+                    alt="notion Logo" 
+                    className="w-5 h-5 relative top-0.5" />
                 {/* <svg className="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                 </svg> */}
               </a>
@@ -69,9 +69,13 @@ function Footer({
 
             <li>
               <a className="text-gray-700 transition hover:text-gray-700/75" href="#">
-                <img src="/github.png" alt="notion Logo" className="w-5 h-5 relative top-0.5" />
+                <img 
+                  src="/github.png" 
+                  alt="github Logo" 
+                  className="w-5 h-5 relative top-0.5" />
               </a>
             </li>
+          </ul>
 
             
             {/* <li>
@@ -85,13 +89,12 @@ function Footer({
                 </svg>
               </a>
             </li> */}
-          </ul>
         </div>
 
 
-        {/* copyright */}
+       {/* copyright */}
         <p className="mt-12 text-center text-sm text-gray-500 lg:text-right">
-          Copyright &copy; 2025. All rights reserved.
+          {copyright ?? "Copyright © 2025. All rights reserved."}
         </p>
       </div>
     </footer>
