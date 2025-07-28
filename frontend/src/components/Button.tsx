@@ -43,7 +43,7 @@ function Button({
       className={classes}
       disabled={disabled}
     >
-      {children}확인 {/* '확인'은 children에 포함되어 있지 않으므로 여기에 그대로 두었습니다. */}
+      {children}확인
     </button>
   );
 }
