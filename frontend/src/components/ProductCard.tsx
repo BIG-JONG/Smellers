@@ -2,7 +2,7 @@ import React from 'react';
 import StarRating from '@/components/StarRating';
 
 
-interface Product {
+export interface Product {
   id: string;
   imageUrl: string;
   name: string;

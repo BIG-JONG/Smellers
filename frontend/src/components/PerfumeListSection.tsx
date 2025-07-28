@@ -1,20 +1,10 @@
 import React from 'react';
-import ProductCard from '@/components/ProductCard'; 
-import Pagination from '@/components/Pagination'; 
-
-interface Perfume {
-  id: string;
-  image: string;
-  productName?: string;
-  price?: string;
-  ingredient?: string[];
-  rating: number;
-  reviews: number;
-}
+import ProductCard, { Product } from '@/components/ProductCard';
+import Pagination from '@/components/Pagination';
 
 interface PerfumeListSectionProps {
   title: string;
-  perfumes: Perfume[];
+  perfumes: Product[]; 
   currentPage: number;
   totalPage: number;
   onPageChange: (page: number) => void;
@@ -25,7 +15,7 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
   title,
   perfumes,
   currentPage,
-  totalPage, 
+  totalPage,
   onPageChange,
   onPerfumeClick,
 }) => {
@@ -46,25 +36,18 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
           {perfumes.map(perfume => (
             <ProductCard
               key={perfume.id}
-              id={perfume.id}
-              image={perfume.image}
-              productName={perfume.productName}
-              price={perfume.price}
-              ingredient={perfume.ingredient}
-              rating={perfume.rating}
-              reviews={perfume.reviews}
+              product={perfume} // 
               onClick={() => handleProductClick(perfume.id)}
             />
           ))}
         </div>
       )}
 
-      {/* 페이지네이션 (전체 페이지가 1보다 많을 때만 표시) */}
       {totalPage > 1 && (
         <div className="mt-8 flex justify-center">
           <Pagination
             currentPage={currentPage}
-            totalPage={totalPage} 
+            totalPage={totalPage}
             onPageChange={onPageChange}
           />
         </div>
