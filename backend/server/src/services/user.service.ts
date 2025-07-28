@@ -39,7 +39,7 @@ export const verifyUser = async (email: string, password: string) => {
   return { token, userId: user.userId };
 };
 
-
+// 사용자 정보 수정
 export const updateUserById = async (id: number, data: { nickname?: string; password?: string }) => {
   const updateData: any = {};
 
@@ -52,8 +52,19 @@ export const updateUserById = async (id: number, data: { nickname?: string; pass
   });
 };
 
+// 사용자 삭제
 export const deleteUserById = async (id: number) => {
-  return await prisma.userInfo.delete({
+  return await prisma.userInfo.update({
     where: { userId: id },
+    data: { userStatus: 'N' }, // 유저 상태를 'N'으로 변경
   });
 };
+
+export const getUserById = async (id: number) => {
+  const user = await prisma.userInfo.findUnique({ where: { userId: id } });
+  if (!user) throw new Error('UserNotFound');
+  
+  // 비밀번호 제외한 사용자 정보 반환
+  const { password, ...userData } = user;
+  return userData;
+}

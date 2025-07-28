@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { createUser, verifyUser, updateUserById, deleteUserById } from '../services/user.service';
+import { createUser, verifyUser, updateUserById, deleteUserById,getUserById } from '../services/user.service';
 import { validationResult } from 'express-validator';
+import { getuid } from 'process';
 
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
@@ -51,6 +52,25 @@ export const deleteUser = async (req: Request, res: Response , next: NextFunctio
   try {
     await deleteUserById(requesterId);
     res.json({ message: '삭제 완료' });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const UserById = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const requesterId = req.user?.id;
+
+  if (parseInt(id) !== requesterId) {
+    return res.status(403).json({ error: '본인만 조회할 수 있습니다' });
+  }
+
+  try {
+    const user = await getUserById(requesterId);
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다' });
+    }
+    res.json(user);
   } catch (err) {
     next(err);
   }

@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.routes';
+import perfumeRoutes from './routes/perfume.routes'; // 향수 API 라우트 추가
 import errorHandler from './middlewares/error-handing.middleware';
 
 const PORT = process.env.PORT || 4000;
@@ -16,7 +17,7 @@ app.use(express.json());
 
 // 라우팅
 app.use('/users', userRoutes);
-// app.use('/perfumes', perfumeRoutes); // 향수 API 추가할 경우
+app.use('/perfumes', perfumeRoutes); // 향수 API 추가할 경우
 
 //에러 핸들러 미들웨어는 라우팅 이후에 설정
 app.use(errorHandler);
