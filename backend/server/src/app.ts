@@ -14,7 +14,10 @@ const app = express();
 
 // 미들웨어 설정
 app.use(cors());
+//JSON 파싱
 app.use(express.json());
+// URL-encoded 폼 데이터 파싱
+app.use(express.urlencoded({ extended: true }));
 
 // 라우팅
 app.use('/users', userRoutes);
