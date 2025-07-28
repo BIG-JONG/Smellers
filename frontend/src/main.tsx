@@ -2,12 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 // import App from './App';
 import './index.css';
-import LoginPage from './pages/PageLayout';
+import PostForm from './components/PostForm';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     {/* <App /> */}
-    <LoginPage/>
-    {/* <PostForm/> */}
+    <PostForm/>
   </React.StrictMode>,
 );

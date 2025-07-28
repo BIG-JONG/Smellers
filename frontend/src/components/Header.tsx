@@ -17,7 +17,6 @@ const Header: React.FC<HeaderProps> = () => {
           {/* src 속성에 임포트한 logoImage 변수를 사용합니다. */}
           {/* h-8은 이미지의 높이를 조절하는 Tailwind CSS 클래스입니다. 필요에 따라 조절하세요. */}
           <img src={logoImage} alt="AromaBase Logo" className="h-8 mr-2" />
-          {/* 기존의 <h1>AromaBase</h1> 텍스트는 이제 필요 없으므로 삭제하거나 주석 처리합니다. */}
         </a>
       </div>
 
@@ -26,7 +25,7 @@ const Header: React.FC<HeaderProps> = () => {
         <div className="relative">
           <input
             type="text"
-            placeholder="향수, 브랜드, 노트 검색..."
+            placeholder="향수, 브랜드, 노트, 유저 검색..."
             className="w-full py-2 pl-10 pr-4 rounded-full bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700"
             aria-label="Search"
           />
