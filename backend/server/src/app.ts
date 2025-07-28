@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/user.routes';
 import errorHandler from './middlewares/error-handing.middleware';
 import followRoutes from './routes/follow.routers';
+import perfumeRoutes from './routes/perfume.routers'
 
 const PORT = process.env.PORT || 4000;
 
@@ -17,7 +18,8 @@ app.use(express.json());
 
 // 라우팅
 app.use('/users', userRoutes);
-// app.use('/perfumes', perfumeRoutes); // 향수 API 추가할 경우
+
+app.use('/perfumes', perfumeRoutes); // 향수 API 추가할 경우
 
 // 엔드포인트 /followings/posts만
 app.use('/', followRoutes);
