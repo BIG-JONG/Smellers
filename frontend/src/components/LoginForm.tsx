@@ -28,7 +28,7 @@ function LoginForm(){
   }
 
   return(
-    <form className="m-10 flex flex-col items-center w-full">
+    <form className="m-10 flex flex-col items-center justify-center w-full">
       <h1 className="text-4xl font-extrabold">로그인</h1>
       <br/>
       <br/>

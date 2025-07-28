@@ -2,7 +2,13 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+<<<<<<< HEAD
 import './index.css'; // 전역 CSS 임포트는 유지
+=======
+// import App from './App';
+import './index.css';
+import PostForm from './components/PostForm';
+>>>>>>> ac7335835e3b0d473cd901dea106ea7b69758df2
 
 // ⭐️ 단독 테스트하고 싶은 컴포넌트와 필요한 인터페이스를 임포트합니다.
 // 경로가 정확한지 다시 한번 확인해주세요: components 폴더 안에 PerfumeDetailSection이 있습니다.
@@ -31,6 +37,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
+<<<<<<< HEAD
     {/* ⭐️ LoginPage 대신 PerfumeDetailSection을 직접 렌더링합니다. */}
     <div style={{ padding: '20px', backgroundColor: '#f0f0f0', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
       {/* 단독 테스트임을 알리는 간단한 제목 */}
@@ -39,5 +46,9 @@ root.render(
       </h1>
       <PerfumeDetailSection perfume={mockPerfumeDetail} />
     </div>
+=======
+    {/* <App /> */}
+    <PostForm/>
+>>>>>>> ac7335835e3b0d473cd901dea106ea7b69758df2
   </React.StrictMode>,
 );
