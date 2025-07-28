@@ -21,7 +21,7 @@ function SignupForm(){
       <br/>
       <br/>
       <InputField 
-        className="w-1/2"
+        className="w-1/3"
         label="이메일"
         type="email"
         value={email}
@@ -30,7 +30,7 @@ function SignupForm(){
         <br/>
         <br/>
       <InputField 
-        className="w-1/2"
+        className="w-1/3"
         label="비밀번호"
         type="password"
         value={password}
@@ -39,7 +39,7 @@ function SignupForm(){
         <br/>
         <br/>
       <InputField 
-        className="w-1/2"
+        className="w-1/3"
         label="비밀번호 확인"
         type="password"
         value={passwordConfirm}
@@ -48,7 +48,7 @@ function SignupForm(){
         <br/>
         <br/>
       <InputField 
-        className="w-1/2"
+        className="w-1/3"
         label="닉네임"
         type="nickname"
         value={nickname}
@@ -58,7 +58,7 @@ function SignupForm(){
         <br/>
         <Button onClick={onClickButton}/>
         {showAlert && (
-          <div className="mt-4 w-1/2">
+          <div className="mt-4 w-1/3">
             <Alert message="회원가입 완료"/>
           </div>
         )}
