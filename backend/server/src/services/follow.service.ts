@@ -16,3 +16,68 @@ export const followListingService = async (id: number) => {
 
   return followings;
 }
+
+export const followUserRegistService =  async (myUserId: number, targetUserId: number) => {
+  if (myUserId === targetUserId) throw new Error('자기 자신을 팔로우할 수 없습니다.');
+
+  // 이미 팔로우했는지 확인
+  const existing = await prisma.followingList.findFirst({
+    where: {
+      userId: myUserId,
+      followId: targetUserId,
+    },
+  });
+
+  if (existing) {
+    if (existing.followStatus === 'Y') {
+      throw new Error('이미 팔로우 중입니다.');
+    } else {
+      // soft delete된 상태면 다시 활성화
+      await prisma.followingList.update({
+        where: { followListId: existing.followListId },
+        data: { followStatus: 'Y' },
+      });
+    }
+  } else {
+    // 새로 팔로우
+    await prisma.followingList.create({
+      data: {
+        userId: myUserId,
+        followId: targetUserId,
+        followStatus: 'Y',
+      },
+    });
+  }
+};
+
+export const getAllPublicPostsService = async (myUserId: number) => {
+  // 내가 팔로우한 유저들의 ID 추출
+  const followings = await prisma.followingList.findMany({
+    where: {
+      userId: myUserId,
+      followStatus: 'Y',
+    },
+    select: {
+      followId: true,
+    },
+  });
+
+  const followingIds = followings.map(f => f.followId);
+
+  // 그 유저들이 등록한 전체공개 향수글 찾기
+  const perfumes = await prisma.perfumeInfo.findMany({
+    where: {
+      userId: { in: followingIds },
+      perfumeStatus: 'Y', // 공개된 향수글
+    },
+    include: {
+      images: true,
+      notes: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return perfumes;
+};

@@ -19,13 +19,14 @@ app.use(express.json());
 // URL-encoded 폼 데이터 파싱
 app.use(express.urlencoded({ extended: true }));
 
-// 라우팅
+// 유저 라우팅
 app.use('/users', userRoutes);
 
+// 향수 라우팅
 app.use('/perfumes', perfumeRoutes); // 향수 API 추가할 경우
 
-// 엔드포인트 /followings/posts만
-app.use('/', followRoutes);
+// 팔로우 라우팅
+app.use('/following', followRoutes);
 
 //에러 핸들러 미들웨어는 라우팅 이후에 설정
 app.use(errorHandler);
