@@ -1,17 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; // Link 컴포넌트를 임포트합니다.
 
 // Sidebar 컴포넌트가 받을 props를 정의합니다.
 interface SidebarProps {
   isOpen: boolean; // 사이드바 열림/닫힘 상태
   onMouseLeave?: () => void; // 사이드바에서 마우스가 벗어났을 때 호출될 함수
-  className?: string;
-
+  className?: string; // 외부에서 추가적인 Tailwind CSS 클래스를 받을 수 있도록 유지
 }
 
 function Sidebar({
   isOpen,
   onMouseLeave,
-  // 사용되지 않는 props는 여기서도 제거합니다.
+  className, // props 디스트럭처링에 className을 추가 (사용은 안 하지만 타입 체크를 위해 유지)
 }: SidebarProps) {
 
   return (
@@ -28,42 +28,42 @@ function Sidebar({
       <div className="px-4 py-6 flex-grow overflow-auto">
         <ul className="mt-6 space-y-1">
           <li>
-            {/* 실제 라우팅 경로로 변경해야 합니다. 예: /mypage/info */}
-            <a href="#" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
+            {/* '개인정보 수정' 링크를 UserInfoUpdatePage 경로로 변경 */}
+            <Link to="/mypage/info-update" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
               개인정보 수정
-            </a>
+            </Link>
           </li>
           <li>
-            {/* 실제 라우팅 경로로 변경해야 합니다 */}
-            <a href="#" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
+            {/* '마이페이지' 링크를 MyPerfumeListPage 경로로 변경 */}
+            <Link to="/mypage/perfumes" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
               마이페이지
-            </a>
+            </Link>
           </li>
           <li>
-            {/* 실제 라우팅 경로로 변경해야 합니다. 예: /perfume/create */}
-            <a href="#" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
+            {/* '향수 등록' 링크를 PostPerfumePage 경로로 변경 */}
+            <Link to="/perfume/create" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
               향수 등록
-            </a>
+            </Link>
           </li>
           <li>
-            {/* 실제 라우팅 경로로 변경해야 합니다. 예: /perfumes */}
-            <a href="#" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+            {/* '게시판' (전체 사람들이 올린 글) 링크를 UserPerfumeListPage 경로로 변경 */}
+            <Link to="/perfumes" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
               게시판
-            </a>
+            </Link>
           </li>
           <li>
-            {/* 실제 라우팅 경로로 변경해야 합니다. 예: /follow */}
-            <a href="#" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+            {/* '팔로잉 리스트' 링크를 FollowListPage 경로로 변경 */}
+            <Link to="/follow" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
               팔로잉 리스트
-            </a>
+            </Link>
           </li>
         </ul>
       </div>
 
       {/* user profile */}
       <div className="fixed left-0 bottom-0 w-full border-t border-gray-100">
-        {/* 실제 라우팅 경로로 변경해야 합니다. 예: /mypage */}
-        <a href="#" className="flex w-full items-center gap-2 bg-white p-4 hover:bg-gray-50">
+        {/* 사용자 프로필 링크를 마이페이지 경로로 변경 */}
+        <Link to="/mypage/perfumes" className="flex w-full items-center gap-2 bg-white p-4 hover:bg-gray-50">
           <img
             alt="User Profile"
             // 이미지 경로를 public 폴더의 이미지로 수정하거나, 실제 사용자 프로필 이미지 URL로 변경해야 합니다.
@@ -78,7 +78,7 @@ function Sidebar({
               <span> pp@gmail.com </span> {/* 실제 사용자 이메일로 동적 변경 필요 */}
             </p>
           </div>
-        </a>
+        </Link>
       </div>
     </div>
   );

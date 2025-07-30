@@ -132,31 +132,6 @@ function PostForm() {
               placeholder="선택"
             />
           </div>
-        
-        {/* <InputField
-          className="w-full text-gray-600"
-          label="탑 노트"
-          type="text" 
-          value={topNote}
-          onChange={(e) => setTopNote(e.target.value)}
-          placeholder="탑 노트를 기록해 주세요."
-        />
-        <InputField
-          className="w-full text-gray-600"
-          label="미들 노트"
-          type="text" 
-          value={middleNote}
-          onChange={(e) => setMiddleNote(e.target.value)}
-          placeholder="미들 노트를 기록해 주세요."
-        />
-        <InputField
-          className="w-full text-gray-600"
-          label="베이스 노트"
-          type="text" 
-          value={baseNote}
-          onChange={(e) => setBaseNote(e.target.value)}
-          placeholder="베이스 노트를 기록해 주세요."
-        /> */}
         <Textarea
           label="내용"
           className="w-full text-gray-600"

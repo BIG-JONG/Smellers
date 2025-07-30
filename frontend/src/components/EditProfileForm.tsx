@@ -36,7 +36,9 @@ function EditProfileForm(){
   }
 
   return(
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full flex justify-center"> {/* 중앙 정렬이 필요하다면 justify-center만 남길 수 있습니다. */}
+      {/* 이 div의 'h-screen'과 'items-center justify-center'를 제거합니다. */}
+      {/* 이렇게 하면 Layout의 pt-[74px]에 의해 올바른 위치에 배치됩니다. */}
       <form className="m-10 flex flex-col items-center justify-center w-full max-w-xl gap-6" onSubmit={handleSubmit}>
         <Avatar src={imgUrl} size="xl"/>
         <p className="text-center text-lg">
@@ -44,7 +46,7 @@ function EditProfileForm(){
         </p>
       <label className="block w-full max-w-md text-center cursor-pointer bg-gray-100 rounded py-2 hover:bg-gray-200">
         이미지 업로드
-        <input 
+        <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
@@ -60,7 +62,7 @@ function EditProfileForm(){
           placeholder=""
           readOnly={true}
         />
-        <InputField 
+        <InputField
           className="w-full max-w-md text-gray-600"
           label="닉네임"
           type="nickname"
@@ -68,7 +70,7 @@ function EditProfileForm(){
           onChange={(e)=>setNickname(e.target.value)}
           placeholder="변경할 닉네임을 입력해주세요."
         />
-        <InputField 
+        <InputField
           className="w-full max-w-md "
           label="비밀번호"
           type="password"
@@ -76,7 +78,7 @@ function EditProfileForm(){
           onChange={(e)=>setPassword(e.target.value)}
           placeholder="변경할 비밀번호를 입력해주세요."
         />
-        <InputField 
+        <InputField
           className="w-full max-w-md"
           label="비밀번호 확인"
           type="passwordConfirm"
@@ -87,7 +89,7 @@ function EditProfileForm(){
         <Button type="submit"/>
         {showAlert && (
           <div className="mt-4 w-1/2">
-          <Alert 
+          <Alert
             type={alertType}
             message={
               alertType ==="error"?"회원 정보 변경에 실패했습니다.":"회원 정보가 성공적으로 변경되었습니다."
