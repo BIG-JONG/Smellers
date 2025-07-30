@@ -16,9 +16,9 @@ export const followListingController = async (req: Request, res: Response): Prom
 export const followUserRegist = async (req: Request, res: Response): Promise<void> => {
    try {
     const followerUserId = Number(req.params.id); // 팔로우  대상자
-    const myUserId = Number(req.user?.id) // 미들웨어에서 넣은 로그인한 사용자 ID (예: JWT 기반)
+    const userId = Number(req.user?.id) // 미들웨어에서 넣은 로그인한 사용자 ID (예: JWT 기반)
 
-    await followUserRegistService(myUserId, followerUserId);
+    await followUserRegistService(userId, followerUserId);
 
     res.status(200).json({ message: '팔로우 완료' });
   } catch (err) {
@@ -28,9 +28,9 @@ export const followUserRegist = async (req: Request, res: Response): Promise<voi
 
 export const getAllPublicPosts = async (req: Request, res: Response): Promise<void> => {
   try {
-    const myUserId = Number(req.user?.id); // 토큰에서 추출
+    const userId = Number(req.user?.id); // 토큰에서 추출
 
-    const perfumes = await getAllPublicPostsService(myUserId);
+    const perfumes = await getAllPublicPostsService(userId);
 
     res.status(200).json(perfumes);
   } catch (err) {

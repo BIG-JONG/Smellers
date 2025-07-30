@@ -17,14 +17,14 @@ export const followListingService = async (id: number) => {
   return followings;
 }
 
-export const followUserRegistService =  async (myUserId: number, targetUserId: number) => {
-  if (myUserId === targetUserId) throw new Error('자기 자신을 팔로우할 수 없습니다.');
+export const followUserRegistService =  async (userId: number, followerUserId: number) => {
+  if (userId === followerUserId) throw new Error('자기 자신을 팔로우할 수 없습니다.');
 
   // 이미 팔로우했는지 확인
   const existing = await prisma.followingList.findFirst({
     where: {
-      userId: myUserId,
-      followId: targetUserId,
+      userId: userId,
+      followerId: followerUserId,
     },
   });
 
@@ -32,9 +32,9 @@ export const followUserRegistService =  async (myUserId: number, targetUserId: n
     if (existing.followStatus === 'Y') {
       throw new Error('이미 팔로우 중입니다.');
     } else {
-      // soft delete된 상태면 다시 활성화
+      // soft delete된 상태 => followStatus === N 면 다시 활성화
       await prisma.followingList.update({
-        where: { followListId: existing.followListId },
+        where: { followerId: existing.followId },
         data: { followStatus: 'Y' },
       });
     }
@@ -42,19 +42,19 @@ export const followUserRegistService =  async (myUserId: number, targetUserId: n
     // 새로 팔로우
     await prisma.followingList.create({
       data: {
-        userId: myUserId,
-        followId: targetUserId,
+        userId: userId,
+        followId: followerUserId,
         followStatus: 'Y',
       },
     });
   }
 };
 
-export const getAllPublicPostsService = async (myUserId: number) => {
+export const getAllPublicPostsService = async (userId: number) => {
   // 내가 팔로우한 유저들의 ID 추출
   const followings = await prisma.followingList.findMany({
     where: {
-      userId: myUserId,
+      userId: userId,
       followStatus: 'Y',
     },
     select: {

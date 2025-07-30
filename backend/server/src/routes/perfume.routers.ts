@@ -5,14 +5,14 @@ import { getPublicPerfumes, getMyPerfumeController, getSearchPerfume } from "../
 
 const router = express.Router();
 
-//전체공개 향수 검색
-router.get('/public', getPublicPerfumes);
+//향수 리스트 조회(개인)
+router.get('/',  getMyPerfumeController, authenticateToken, authorizeSelf);
 
 //향수 조건별 검색
 router.post('/search', getSearchPerfume);
 
-//향수 리스트 조회(개인)
-router.get('/',  getMyPerfumeController, authenticateToken, authorizeSelf);
+//전체공개 향수 검색
+router.get('/public', getPublicPerfumes);
 
 
 
