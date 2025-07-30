@@ -1,24 +1,26 @@
-// Layout.tsx
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 
 type LayoutProps = {
   children: React.ReactNode;
-  isSidebarOpen: boolean;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function Layout({ children, isSidebarOpen, setIsSidebarOpen }: LayoutProps) {
+function Layout({ children }: LayoutProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const headerHeight = '64px'; 
+
   return (
-    <div className="relative min-h-screen flex">
+    <div className="relative min-h-screen flex flex-col">
       {/* 사이드바 */}
       <Sidebar
         isOpen={isSidebarOpen}
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transition-transform duration-300 ease-in-out ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 lg:static lg:shadow-none`}
+        className={`fixed top-[${headerHeight}] left-0 z-40 w-64 bg-white shadow-lg transition-transform duration-300 ease-in-out
+                    h-[calc(100vh-${headerHeight})]
+                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+                    lg:translate-x-0 lg:static lg:shadow-none lg:h-full lg:top-0`}
       />
 
-      {/* 햄버거 메뉴 */}
+      {/* 햄버거 메뉴 버튼 */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
         className="fixed top-4 left-4 z-50 inline-flex items-center justify-center rounded-md p-2 text-gray-700 bg-white hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-inset focus:ring-black"
@@ -40,8 +42,9 @@ function Layout({ children, isSidebarOpen, setIsSidebarOpen }: LayoutProps) {
         </svg>
       </button>
 
-      {/* 메인 콘텐츠 */}
-      <main className="flex justify-center px-4 w-full max-w-5xl mx-auto mt-28 pt-1 mb-6">
+      {/* 메인 콘텐츠 컨테이너 */}
+      <main className={`flex flex-col justify-start items-center px-4 w-full transition-all duration-300
+                        flex-grow h-full pt-16`}> 
         {children}
       </main>
     </div>

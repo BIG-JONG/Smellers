@@ -1,14 +1,11 @@
-// frontend/src/components/Sidebar.tsx
-
 import React from 'react';
 
 // Sidebar 컴포넌트가 받을 props를 정의합니다.
 interface SidebarProps {
   isOpen: boolean; // 사이드바 열림/닫힘 상태
   onMouseLeave?: () => void; // 사이드바에서 마우스가 벗어났을 때 호출될 함수
-  // userName, userInfo, createPerfume, perfumeList, followList, className은
-  // 현재 Sidebar 컴포넌트 내부에서 사용되지 않으므로 제거합니다.
-  // 만약 나중에 이 값들을 Sidebar 내에서 동적으로 표시하거나 활용할 계획이라면 다시 추가할 수 있습니다.
+  className?: string;
+
 }
 
 function Sidebar({
@@ -33,7 +30,13 @@ function Sidebar({
           <li>
             {/* 실제 라우팅 경로로 변경해야 합니다. 예: /mypage/info */}
             <a href="#" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
-              회원 정보 관리
+              개인정보 수정
+            </a>
+          </li>
+          <li>
+            {/* 실제 라우팅 경로로 변경해야 합니다 */}
+            <a href="#" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
+              마이페이지
             </a>
           </li>
           <li>
@@ -45,13 +48,13 @@ function Sidebar({
           <li>
             {/* 실제 라우팅 경로로 변경해야 합니다. 예: /perfumes */}
             <a href="#" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-              향수 리스트
+              게시판
             </a>
           </li>
           <li>
             {/* 실제 라우팅 경로로 변경해야 합니다. 예: /follow */}
             <a href="#" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-              팔로우 리스트
+              팔로잉 리스트
             </a>
           </li>
         </ul>
