@@ -3,6 +3,7 @@ import InputField from "./InputField";
 import Textarea from "./Textarea";
 import Tag from "./Tag";
 import MultiSelectDropdown from "./MultiSelectDropdown"
+import Button from "./Button";
 
 function PostForm() {
   const [img, setImg] = useState<string | undefined>(undefined);
@@ -191,8 +192,8 @@ function PostForm() {
           value={emotion}
           onChange={(e) => setEmotion(e.target.value)}
           placeholder="감정을 기록해 주세요."
-        />
- 
+          />
+        <Button className="mx-auto block"/>
       </div>
     </div>
   );
