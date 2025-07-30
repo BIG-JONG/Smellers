@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { getpublicPerfumesService, getMyPerfumesService, getSearchPerfumeService } from "../services/perfume.service";
-import { NoteType } from "@prisma/client";
-import { PerfumeSearchParams } from "../types/PerfumeSearchParams";
 import { parseNoteType } from "../utils/changeNoteType";
+import { PerfumeSearchParams } from "../types/PerfumeSearchParams";
 
 
 
@@ -31,11 +30,11 @@ export const getSearchPerfume = async (req: Request, res: Response) => {
     const brandName = data.brand ?? null;
     const perfumeName = data.perfumeName ?? null;
     //enum 노트타입의 예외
-    const noteType = parseNoteType(NoteType);
+    const noteType = parseNoteType(data.NoteType);
     const noteName = data.noteName ?? null;
     const nickname = data.nickname ?? null;
 
-    const searchParams = {
+    const searchParams: PerfumeSearchParams = {
       brandName,
       perfumeName,
       noteType,

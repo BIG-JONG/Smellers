@@ -31,11 +31,12 @@ export const getSearchPerfumeService = async (data: PerfumeSearchParams) => {
     const { brandName, perfumeName, noteType, noteName, nickname } = data;
   return await prisma.perfumeInfo.findMany({
     where: {
+      //data가 타입이 PerfumeSearchParams이기때문에 undefined
       brandName: brandName ?? undefined,
       perfumeName: perfumeName ?? undefined,
       notes:{
         some:{
-          noteType,
+          noteType: noteType ?? undefined,
           noteName: noteName ?? undefined,
         },
       },
