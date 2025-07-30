@@ -19,7 +19,7 @@ interface UserProfileSectionProps {
 
 const UserProfileSection: React.FC<UserProfileSectionProps> = ({
   profileImageUrl,
-  nickname,
+  nickname="test",
   email,
   isCurrentUser,
   onEditProfile,
@@ -30,15 +30,18 @@ const UserProfileSection: React.FC<UserProfileSectionProps> = ({
   isFollowActionLoading,
 }) => {
   return (
-    <section className="w-full max-w-4xl bg-white p-8 rounded-lg shadow-lg flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+    <section className="inline-flex flex-col items-center p-8 bg-white rounded-lg">
+    {/* <section className="w-full max-w-4xl bg-white p-8 rounded-lg flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8"> */}
       {/* 프로필 이미지 */}
-      <div className="flex-shrink-0">
+      <div className="mb-4">
+      {/* <div className="flex-shrink-0"> */}
         <Avatar src={profileImageUrl} alt={`${nickname} 프로필`} size="xl" />
       </div>
 
       {/* 사용자 정보 */}
-      <div className="flex-grow text-center md:text-left">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">{nickname}</h2>
+      <div className="text-center">
+      {/* <div className="flex-grow text-center md:text-left"> */}
+        <h2 className="text-md font-bold text-gray-600 mb-2">{nickname}</h2>
         <p className="text-gray-600 text-lg mb-4">{email}</p>
 
         {/* 프로필 수정 또는 팔로우/언팔로우 버튼 */}
