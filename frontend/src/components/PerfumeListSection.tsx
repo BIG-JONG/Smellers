@@ -26,8 +26,8 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
   };
 
   return (
-    <section className="w-full bg-white p-6 rounded-lg shadow-lg">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">{title}</h2>
+    <section className="w-full bg-white p-6">
+      {/* <h2 className="text-xl font-semibold mb-6 text-gray-800">{title}</h2> */}
 
       {perfumes.length === 0 ? (
         <p className="text-gray-600 text-center py-8">표시할 향수 기록이 없습니다.</p>

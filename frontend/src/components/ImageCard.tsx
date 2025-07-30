@@ -18,7 +18,7 @@ function ImageCard({
       <img
         src={src}
         alt={alt}
-        className={`w-72 rounded-lg shadow-md shadow-gray-200 ${className}`}
+        className={`w-72 rounded-lg  ${className}`}
         onError={onError}
       />
     </div>
