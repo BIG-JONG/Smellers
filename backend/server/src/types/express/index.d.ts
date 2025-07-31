@@ -1,10 +1,13 @@
-// src/types/express/index.d.ts
-import { Request } from 'express';
+// server/src/types/express/index.d.ts
 
-declare module 'express' {
-  export interface Request {
-    user?: {
-      id: number;
-    };
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: number;
+      };
+    }
   }
 }
+
+export {}; // 이 줄은 global 확장을 인식시키기 위해 필요함

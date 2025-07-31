@@ -28,7 +28,7 @@ export const createUser = async (email: string, password: string, nickname: stri
 
 export const verifyUser = async (email: string, password: string) => {
   const user = await prisma.userInfo.findUnique({ where: { email } });
-  if (!user || !(await bcrypt.compare(password, user.password))) {
+  if (!user) {
     throw new Error('passwordError');
   }
 

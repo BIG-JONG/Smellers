@@ -18,36 +18,36 @@ export const followListingService = async (id: number) => {
 }
 
 export const followUserRegistService =  async (userId: number, followerUserId: number) => {
-  if (userId === followerUserId) throw new Error('자기 자신을 팔로우할 수 없습니다.');
+  // if (userId === followerUserId) throw new Error('자기 자신을 팔로우할 수 없습니다.');
 
-  // 이미 팔로우했는지 확인
-  const existing = await prisma.followingList.findFirst({
-    where: {
-      userId: userId,
-      followerId: followerUserId,
-    },
-  });
+  // // 이미 팔로우했는지 확인
+  // const existing = await prisma.followingList.findFirst({
+  //   where: {
+  //     userId: userId,
+  //     followerId: followerUserId,
+  //   },
+  // });
 
-  if (existing) {
-    if (existing.followStatus === 'Y') {
-      throw new Error('이미 팔로우 중입니다.');
-    } else {
-      // soft delete된 상태 => followStatus === N 면 다시 활성화
-      await prisma.followingList.update({
-        where: { followerId: existing.followId },
-        data: { followStatus: 'Y' },
-      });
-    }
-  } else {
-    // 새로 팔로우
-    await prisma.followingList.create({
-      data: {
-        userId: userId,
-        followId: followerUserId,
-        followStatus: 'Y',
-      },
-    });
-  }
+  // if (existing) {
+  //   if (existing.followStatus === 'Y') {
+  //     throw new Error('이미 팔로우 중입니다.');
+  //   } else {
+  //     // soft delete된 상태 => followStatus === N 면 다시 활성화
+  //     await prisma.followingList.update({
+  //       where: { followerId: existing.followId },
+  //       data: { followStatus: 'Y' },
+  //     });
+  //   }
+  // } else {
+  //   // 새로 팔로우
+  //   await prisma.followingList.create({
+  //     data: {
+  //       userId: userId,
+  //       followId: followerUserId,
+  //       followStatus: 'Y',
+  //     },
+  //   });
+  // }
 };
 
 export const getAllPublicPostsService = async (userId: number) => {
