@@ -1,14 +1,14 @@
 import React from 'react';
-import ProductCard, { Product } from '@/components/ProductCard';
-import Pagination from '@/components/Pagination';
+import ProductCard, { Product } from './ProductCard'; // Product 타입을 임포트합니다.
+import Pagination from './Pagination'; // Pagination 컴포넌트 임포트 (있다고 가정)
 
 interface PerfumeListSectionProps {
   title: string;
-  perfumes: Product[]; 
+  perfumes: Product[]; // Product 배열을 받습니다.
   currentPage: number;
   totalPage: number;
   onPageChange: (page: number) => void;
-  onPerfumeClick?: (perfumeId: string) => void;
+  onPerfumeClick: (id: string) => void; // 향수 클릭 핸들러 prop 추가
 }
 
 const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
@@ -17,42 +17,24 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
   currentPage,
   totalPage,
   onPageChange,
-  onPerfumeClick,
+  onPerfumeClick, // prop 받기
 }) => {
-  const handleProductClick = (perfumeId: string) => {
-    if (onPerfumeClick) {
-      onPerfumeClick(perfumeId);
-    }
-  };
-
   return (
-    <section className="w-full bg-white p-6">
-      {/* <h2 className="text-xl font-semibold mb-6 text-gray-800">{title}</h2> */}
-
-      {perfumes.length === 0 ? (
-        <p className="text-gray-600 text-center py-8">표시할 향수 기록이 없습니다.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {perfumes.map(perfume => (
-            <ProductCard
-              key={perfume.id}
-              product={perfume} // 
-              onClick={() => handleProductClick(perfume.id)}
-            />
-          ))}
-        </div>
-      )}
-
-      {totalPage > 1 && (
-        <div className="mt-8 flex justify-center">
-          <Pagination
-            currentPage={currentPage}
-            totalPage={totalPage}
-            onPageChange={onPageChange}
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">{title}</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {perfumes.map((perfume) => (
+          <ProductCard
+            key={perfume.id}
+            product={perfume} // perfume 객체 전체를 product prop으로 전달
+            onClick={onPerfumeClick} // ProductCard에 클릭 핸들러 전달
           />
-        </div>
-      )}
-    </section>
+        ))}
+      </div>
+      <div className="mt-8 flex justify-center">
+        <Pagination currentPage={currentPage} totalPage={totalPage} onPageChange={onPageChange} />
+      </div>
+    </div>
   );
 };
 

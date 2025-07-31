@@ -24,9 +24,16 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => { // onSidebarToggle, is
       {/* 1. 로고 영역 */}
       <div className="flex items-center">
         {/* 클릭하면 홈 페이지로 이동하는 링크입니다. */}
-        <a href="/" className="flex items-center" onClick={(e) => { e.preventDefault(); navigate('/'); }}> {/* navigate 함수 사용 */}
-          <img src={logoImage} alt="AromaBase Logo" className="h-8 mr-2" />
-        </a>
+        <a
+          href="/"
+          className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10" // 글자 스타일 여기서 지정
+          onClick={(e) => {
+            e.preventDefault();
+            navigate('/');
+          }}
+        >
+    AromaBase {/* 여기에 원하는 텍스트 넣기 */}
+  </a>
       </div>
 
       {/* 2. 검색창 영역 */}
