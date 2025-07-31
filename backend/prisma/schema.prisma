@@ -55,8 +55,10 @@ model PerfumeInfo {
 }
 
 model PerfumeImg {
-  perfumeId Int     @id @map("perfume_id")
-  url       String? @map("url")
+  imgId     Int     @id @default(autoincrement()) @map("img_id")
+  perfumeId Int     @map("perfume_id")
+  url_path       String? @map("url_path")
+  //url_file_name String? @map("url_file_name") 
 
   perfume PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
 

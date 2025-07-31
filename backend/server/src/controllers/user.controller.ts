@@ -17,19 +17,19 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
   try {
-    const { token, userId } = await verifyUser(email, password);
-    res.json({ token, userId });
+    const { token, user_id } = await verifyUser(email, password);
+    res.json({ token, user_id });
   } catch (err) {
     next(err);
   }
 };
 
 export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+  const { user_id } = req.params;
   const { nickname, password } = req.body;
-  const requesterId = req.user?.id;
+  const requesterId = req.user?.user_id;
 
-  if (parseInt(id) !== requesterId) {
+  if (parseInt(user_id) !== requesterId) {
     return res.status(403).json({ error: '본인만 수정할 수 있습니다' });
   }
 
@@ -42,10 +42,10 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
 };
 
 export const deleteUser = async (req: Request, res: Response , next: NextFunction) => {
-  const { id } = req.params;
-  const requesterId = req.user?.id;
+  const { user_id } = req.params;
+  const requesterId = req.user?.user_id;
 
-  if (parseInt(id) !== requesterId) {
+  if (parseInt(user_id) !== requesterId) {
     return res.status(403).json({ error: '본인만 삭제할 수 있습니다' });
   }
 
@@ -58,10 +58,10 @@ export const deleteUser = async (req: Request, res: Response , next: NextFunctio
 };
 
 export const UserById = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  const requesterId = req.user?.id;
+  const { user_id } = req.params;
+  const requesterId = req.user?.user_id;
 
-  if (parseInt(id) !== requesterId) {
+  if (parseInt(user_id) !== requesterId) {
     return res.status(403).json({ error: '본인만 조회할 수 있습니다' });
   }
 

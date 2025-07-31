@@ -4,10 +4,26 @@ import * as perfumeService from '../services/perfume.service';
 
 // 향수 생성
 export const createPerfume = async (req: Request, res: Response, next: NextFunction) => {
+
+  //console.log('User from req:', req.user);
   try {
-    const perfume = await perfumeService.createPerfume(req.body, req.user!.id);
+    // // multer로부터 받은 파일들
+    // const files = req.files as Express.Multer.File[];
+
+    // // 이미지 URL 경로 추출 (또는 S3라면 location)
+    // const images = files.map(file => ({
+    //   url_path: `/uploads/${file.filename}`, // 정적 라우팅 필요
+    // }));
+
+    // console.log('이미지 경로:', images);
+
+    console.log('req.body.notes:', req.body.notes);
+    console.log('req.body.images:', req.body.images);
+
+    const perfume = await perfumeService.createPerfume(req.body, req.user!.user_id);
     res.status(201).json(perfume);
   } catch (err) {
+    console.log('createPerfume err 시작');
     next(err);
   }
 };
@@ -29,7 +45,7 @@ export const getPerfumeById = async (req: Request, res: Response, next: NextFunc
 export const updatePerfume = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const perfumeId = Number(req.params.id);
-    const perfume = await perfumeService.updatePerfume(perfumeId, req.body, req.user!.id);
+    const perfume = await perfumeService.updatePerfume(perfumeId, req.body, req.user!.user_id);
     res.json(perfume);
   } catch (err) {
     next(err);
@@ -40,7 +56,7 @@ export const updatePerfume = async (req: Request, res: Response, next: NextFunct
 export const deletePerfume = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const perfumeId = Number(req.params.id);
-    await perfumeService.deletePerfume(perfumeId, req.user!.id);
+    await perfumeService.deletePerfume(perfumeId, req.user!.user_id);
     res.json({ message: '향수가 삭제되었습니다.' });
   } catch (err) {
     next(err);

@@ -3,8 +3,11 @@ import prisma from '../prisma/client';
 
 // 향수 생성
 export const createPerfume = async (data: any, userId: number) => {
-  const { notes, ...perfumeData } = data;
+  const { notes = [], images = [], user_id, ...perfumeData } = data;
 
+  console.log('images:', images);
+  console.log('notes:', notes);
+  
   return await prisma.perfumeInfo.create({
     data: {
       ...perfumeData,
@@ -15,9 +18,15 @@ export const createPerfume = async (data: any, userId: number) => {
           noteName: note.noteName,
         })),
       },
+      images: {
+        create: images.map((img: { url_path: string }) => ({
+          url_path: img.url_path,
+        })),
+      },
     },
     include: {
       notes: true,
+      images: true,
     },
   });
 };
@@ -40,6 +49,7 @@ export const updatePerfume = async (id: number, data: any, userId: number) => {
   // 요청한 사용자와 향수 소유자가 다르면 에러 발생
   if(perfume.userId !== userId) {
     throw new Error('Forbidden'); 
+    console.log('updatePerfume 사용자 ID가 일치하지 않습니다.');
   }
   
   const { notes, ...perfumeData } = data;
@@ -75,6 +85,7 @@ export const deletePerfume = async (id: number, userId: number) => {
   // 요청한 사용자와 향수 소유자가 다르면 에러 발생
   if(perfume.userId !== userId) {
     throw new Error('Forbidden'); 
+    console.log('deletePerfume 사용자 ID가 일치하지 않습니다.');
   }
 
   // 연관된 향노트/이미지 먼저 삭제 후 향수 삭제 (트랜잭션)
