@@ -58,11 +58,12 @@ export const getAllPublicPostsService = async (userId: number) => {
       followStatus: 'Y',
     },
     select: {
-      followId: true,
+      followerId: true,
     },
   });
-
-  const followingIds = followings.map(f => f.followId);
+  
+  
+  const followingIds = followings.map(f => f.followerId);
 
   // 그 유저들이 등록한 전체공개 향수글 찾기
   const perfumes = await prisma.perfumeInfo.findMany({

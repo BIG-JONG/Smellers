@@ -28,7 +28,10 @@ export const followUserRegist = async (req: Request, res: Response): Promise<voi
 
 export const getAllPublicPosts = async (req: Request, res: Response): Promise<void> => {
   try {
-    const userId = Number(req.user?.id); // 토큰에서 추출
+    //const userId = Number(req.user?.id); // 토큰에서 추출
+
+    // 테스트용
+    const userId:number = 1;
 
     const perfumes = await getAllPublicPostsService(userId);
 
