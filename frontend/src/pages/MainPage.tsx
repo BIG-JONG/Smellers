@@ -31,8 +31,8 @@ const posts = [
 
 const MainPage:React.FC = ()=>{
   return(
-    <div>
-      <MainInfo/>
+    <div className="mt-35">
+      <MainInfo />
       <RecommendPerfume/>
       <div className="flex flex-wrap gap-6 justify-center mt-40">
         {posts.map((post, index) => (
@@ -45,6 +45,7 @@ const MainPage:React.FC = ()=>{
           />
         ))}
       </div>
+      <div className="mt-80"/>
     </div>
   )
 }
