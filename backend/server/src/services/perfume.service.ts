@@ -149,7 +149,7 @@ export const getMyPerfumesService = async (userId: number) => {
     select: {
       images: {
         select: {
-          url: true,
+           url_path: true,
         }
       },
       notes: {
