@@ -42,7 +42,16 @@ function Footer({
             {/* logo */}
             <div className="flex justify-center text-teal-600 lg:justify-start">
               {/* logo img넣는 부분 */}
-              <img src={logo ?? "/vite.svg"} alt="Vite Logo" /> 
+              <a
+                href="/"
+                className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10" // 글자 스타일 여기서 지정
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate('/');
+                }}
+              >
+                AromaBase
+              </a>
             </div>
 
             {/* "향기로운 기억들" 문구는 이제 이 div 밖으로 이동합니다. */}
@@ -73,7 +82,7 @@ function Footer({
         </div>
 
         {/* "향기로운 기억들" 문구를 이곳으로 이동하고 가운데 정렬합니다. */}
-        <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500"> {/* lg:text-left 제거 및 text-center 추가 */}
+        <p className="mt-6 ml-9 max-w-md text-left leading-relaxed text-gray-500"> {/* lg:text-left 제거 및 text-center 추가 */}
           향기로운 기억들이 모여 새로운 이야기가 시작되는 곳,<br/>
           나만의 향수를 기록하고 특별한 순간들을 함께 나누는 공간<br/>
           당신의 취향과 감성을 펼쳐 보세요.<br/>
