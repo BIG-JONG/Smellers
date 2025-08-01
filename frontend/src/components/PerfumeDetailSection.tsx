@@ -249,8 +249,8 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                 <div className='flex gap-2 mt-20'>
                     {isLoggedIn && (
                         <>
-                            <Button actionType="edit" onClick={handleEditClick}>수정</Button>
-                            <Button actionType='delete' onClick={handleDeleteClick}>삭제</Button>
+                          <Button actionType="edit" onClick={handleEditClick}>수정</Button>
+                          <Button actionType='delete' onClick={handleDeleteClick}>삭제</Button>
                         </>
                     )}
                 </div>
