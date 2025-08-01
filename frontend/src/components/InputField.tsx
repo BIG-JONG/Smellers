@@ -1,14 +1,15 @@
-import React from 'react' ;
+import React from 'react';
 
-// inputField 컴포넌트가 받을 props의 타입 정의
 interface InputFieldProps {
-  label: string; ///(Ex: 아이디, 비밀번호)
+  label: string;
   type: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   error?: string;
   id?: string;
+  className?: string;
+  readOnly?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -19,12 +20,13 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholder,
   error,
   id,
+  className,
+  readOnly = false
 }) => {
-  //아이디가 제공되지 않으면 간단한 id 생성/
   const inputId = id || `input-${label.replace(/\s+/g, '-').toLowerCase()}`;
 
   return (
-    <div className="mb-4">
+    <div className={`mb-4 w-full ${className || ''}`}>
       <label htmlFor={inputId} className="block text-gray-700 text-sm font-bold mb-2">
         {label}
       </label>
@@ -35,12 +37,19 @@ const InputField: React.FC<InputFieldProps> = ({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        // tailwindcss 적용
-        className={`mt-0.5 w-full rounded border-gray-300 shadow-sm sm:text-sm ${
-          error ? 'border-red-500' : '' // 에러가 있으면 테두리를 빨간색으로
-        } focus:border-blue-500 focus:ring-blue-500`}
+        readOnly={readOnly}
+        className={`
+          mt-0.5
+          rounded-lg text-gray-700 leading-tight
+          py-5 px-4
+          h-auto min-h-0
+          appearance-none border-none !ring-0 !shadow-none outline-none
+          ${error ? 'ring-2 ring-red-500' : ''}
+          focus:ring-2 focus:ring-blue-500
+          placeholder-gray-400
+          w-[550px]
+        `}
       />
-      {/* 에러 메시지 표시 부분 추가 */}
       {error && <p className="text-red-500 text-xs italic mt-1">{error}</p>}
     </div>
   );
