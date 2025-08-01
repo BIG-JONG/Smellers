@@ -5,7 +5,7 @@ import userRoutes from './routes/user.routes';
 import perfumeRoutes from './routes/perfume.routes'; // 향수 API 라우트 추가
 import errorHandler from './middlewares/error-handing.middleware';
 import path from 'path';
-import followRoutes from './routes/follow.routers'
+//import followRoutes from './routes/follow.routers';
 
 const PORT = process.env.PORT || 4000;
 
@@ -15,19 +15,16 @@ const app = express();
 
 // 미들웨어 설정
 app.use(cors());
-//JSON 파싱
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // URL 인코딩된 데이터 파싱
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));// 정적 파일 서빙
 
-// 유저 라우팅
+// 라우팅
 app.use('/users', userRoutes);
-
-// 향수 라우팅
 app.use('/perfumes', perfumeRoutes); // 향수 API 추가할 경우
 
-// 팔로우 라우팅
-app.use('/following', followRoutes);
+// 엔드포인트 /followings/posts만
+//app.use('/', followRoutes);
 
 //에러 핸들러 미들웨어는 라우팅 이후에 설정
 app.use(errorHandler);

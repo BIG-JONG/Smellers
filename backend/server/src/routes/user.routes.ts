@@ -4,7 +4,6 @@ import { authenticateToken } from '../middlewares/auth.middleware';
 import { signUpValidator, loginValidator, handleValidationResult } from '../middlewares/validation-result-handle';
 import { authorizeSelf } from '../middlewares/authorization.middleware';
 
-
 const router = express.Router();
 
 router.post('/signup', signUpValidator, handleValidationResult, signup);// 회원가입
