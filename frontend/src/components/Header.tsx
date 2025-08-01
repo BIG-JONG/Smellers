@@ -1,12 +1,12 @@
 import React from 'react';
-import logoImage from '../assets/aromabaselogo.png'; // 로고 이미지 경로 (프로젝트 assets 폴더에 있는지 확인)
 
 // Header 컴포넌트의 props 타입 정의
 interface HeaderProps {
   navigate: (path: string) => void;
+  toggleSidebar: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ navigate }) => { // onSidebarToggle, isSidebarOpen 제거
+const Header: React.FC<HeaderProps> = ({ navigate }) => {
   const handleLoginClick = () => {
     navigate('/login');
   };
