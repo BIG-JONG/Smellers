@@ -1,4 +1,4 @@
-@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTM4NjU2MzMsImV4cCI6MTc1Mzk1MjAzM30.QSIhFOWwB0VQk5IKJ3RRatb0x55vrHYFBBcvIxJW2dI
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTQwMjc4NTEsImV4cCI6MTc1NDExNDI1MX0.ojEaInYmo9cKBYRHR05fk8LwLVRLvDE3r3rij42VcQM
 
 ###향수등록
 POST http://localhost:4000/perfumes
@@ -6,22 +6,22 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "user_id": 1,
-  "perfumeName": "Dior 수정",
-  "brandName": "Dior2",
-  "content": "상쾌하고 시원한 향 수정",
-  "tag": "남성, 시원함, 수정",
-  "emotionTag": "수정",
+  //"user_id": 2,
+  "perfumeName": "channel no 5",
+  "brandName": "channel",
+  "content": "상큼 시원한 ",
+  "tag": "여성, 시원함",
+  "emotionTag": "사랑",
   "isPublic": "Y",
-  "price": 140000,
-  "point": 3,
+  "price": 100000,
+  "point": 5,
   "notes": [
-    { "noteType": "TOP", "noteName": "Bergamot수정" },
-    { "noteType": "MIDDLE", "noteName": "Lavender수정" },
-    { "noteType": "BASE", "noteName": "Amber수정" }
+    { "noteType": "TOP", "noteName": "1번향" },
+    { "noteType": "MIDDLE", "noteName": "2번향" },
+    { "noteType": "BASE", "noteName": "3번향" }
   ],
   "images": [
-    { "url_path": "https://www.dior.com/2" }
+    { "url_path": "https://www.channel.com/2" }
   ]
   
 }
@@ -30,7 +30,7 @@ Authorization: Bearer {{token}}
 ###{ "url": "https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dwa006a0c8/Y0685240/Y0685240_F068522009_E01_ZHC.jpg?sw=1920" }
 
 ### 향수정보 삭제 (Delete Use) - 토큰 필요
-DELETE http://localhost:4000/perfumes/1
+DELETE http://localhost:4000/perfumes/3
 Authorization: Bearer {{token}}
 
 ### 향수 상세 조회 (Get Perfume By ID)
@@ -43,23 +43,22 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "user_id": 1,
-  "perfumeId": 1,
-  "perfumeName": "Dior Sauvage 2",
-  "brandName": "Dior",
-  "content": "상쾌하고 시원한 향",
-  "tag": "남성, 시원함",
-  "emotionTag": "자유로움",
+  //"perfumeId": 1,
+  "perfumeName": "Dior Sauvage 3",
+  "brandName": "Dior3",
+  "content": "상쾌하고 시원한 향3",
+  "tag": "남성, 시원함3",
+  "emotionTag": "자유로움3",
   "isPublic": "Y",
   "price": 150000,
   "point": 4,
   "notes": [
-    { "noteType": "TOP", "noteName": "Bergamot 수정" },
-    { "noteType": "MIDDLE", "noteName": "Lavender 수정" },
-    { "noteType": "BASE", "noteName": "Amber 수정" },
+    { "noteType": "TOP", "noteName": "Bergamot 수정3" },
+    { "noteType": "MIDDLE", "noteName": "Lavender 수정3" },
+    { "noteType": "BASE", "noteName": "Amber 수정3" }
   ],
   "images": [
-    { "url_path": "https://www.dior.com" }
+    { "url_path": "https://www.dior.com3" }
   ]
 }
 
@@ -69,7 +68,7 @@ POST http://localhost:4000/users/signup
 Content-Type: application/json
 
 {
-  "email": "testuser1@example.com",
+  "email": "222@example.com",
   "password": "password123",
   "nickname": "tester"
 }
@@ -79,22 +78,27 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-  "email": "testuser1@example.com",
+  "email": "222@example.com",
   "password": "password123"
 }
 
 ### 회원정보 수정 (Update User) - 토큰 정상
-PUT http://localhost:4000/users/1
+PUT http://localhost:4000/users/2
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "nickname": "updatedTester",
+  "nickname": "으하하",
   "password": "password123"
 }
 
 
 ### 회원정보 조회 (Get User By ID) - 토큰
 GET http://localhost:4000/users/1
+Authorization: Bearer {{token}}
+
+
+### 회원 탈퇴 (Delete User) - 토큰
+DELETE http://localhost:4000/users/1
 Authorization: Bearer {{token}}
 

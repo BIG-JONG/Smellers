@@ -32,6 +32,9 @@ export const verifyUser = async (email: string, password: string) => {
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw new Error('passwordError');
   }
+  if(user.userStatus === 'N') {
+    throw new Error('UserNotFound');
+  }
 
   // 토큰 생성
   const token = jwt.sign({ user_id : user.userId }, process.env.SECRET_KEY!, { expiresIn: '1d' });

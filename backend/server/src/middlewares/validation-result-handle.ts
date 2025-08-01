@@ -32,14 +32,14 @@ export const postsValidator = [
 
 // 향수 조회/삭제 유효성 검사
 export const getPostsValidator = [
-  param('perfumeId')
+  param('perfume_id')
     .isInt().withMessage('perfume ID는 숫자여야 합니다.')
     .notEmpty().withMessage('perfume ID가 없습니다.')
 ];
 
 // 향수수정 유효성 검사
 export const putPostsValidator = [
-  param('perfumeId')
+  param('perfume_id')
     .isInt().withMessage('perfume ID는 숫자여야 합니다.')
     .notEmpty().withMessage('perfume ID가 없습니다.'),
   body('perfumeName')

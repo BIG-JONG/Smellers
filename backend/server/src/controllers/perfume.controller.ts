@@ -33,7 +33,7 @@ export const createPerfume = async (req: Request, res: Response, next: NextFunct
 // 향수 상세 조회
 export const getPerfumeById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const perfumeId = Number(req.params.id);
+    const perfumeId = Number(req.params.perfume_id);
     const perfume = await perfumeService.getPerfumeById(perfumeId);
     res.json(perfume);
   } catch (err) {
@@ -44,7 +44,7 @@ export const getPerfumeById = async (req: Request, res: Response, next: NextFunc
 // 향수 수정
 export const updatePerfume = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const perfumeId = Number(req.params.id);
+    const perfumeId = Number(req.params.perfume_id);
     const perfume = await perfumeService.updatePerfume(perfumeId, req.body, req.user!.user_id);
     res.json(perfume);
   } catch (err) {
@@ -55,7 +55,7 @@ export const updatePerfume = async (req: Request, res: Response, next: NextFunct
 // 향수 삭제
 export const deletePerfume = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const perfumeId = Number(req.params.id);
+    const perfumeId = Number(req.params.perfume_id);
     await perfumeService.deletePerfume(perfumeId, req.user!.user_id);
     res.json({ message: '향수가 삭제되었습니다.' });
   } catch (err) {
