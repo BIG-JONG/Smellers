@@ -51,12 +51,6 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume }) 
   return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  // const categoryFixedKans = {
-  //   top: getRandomInRange(1, 3),
-  //   middle: getRandomInRange(4, 6),
-  //   base: getRandomInRange(7, 9),
-  // };
-
   const categoryColors = {
     // top: { bg: 'rgba(255, 174, 191, 0.8)', border: 'rgba(255, 99, 132, 1)' }, // Red-ish
     // middle: { bg: 'rgba(194, 230, 255, 0.8)', border: 'rgba(54, 162, 235, 1)' }, // Blue-ish

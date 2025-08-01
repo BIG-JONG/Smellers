@@ -44,8 +44,6 @@ function Footer({
               {/* logo img넣는 부분 */}
               <img src={logo ?? "/vite.svg"} alt="Vite Logo" /> 
             </div>
-
-            {/* "향기로운 기억들" 문구는 이제 이 div 밖으로 이동합니다. */}
           </div>
 
           {/* social - 사이트 연결*/}
@@ -72,9 +70,8 @@ function Footer({
           </ul>
         </div>
 
-        {/* "향기로운 기억들" 문구를 이곳으로 이동하고 가운데 정렬합니다. */}
-        <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500"> {/* lg:text-left 제거 및 text-center 추가 */}
-          향기로운 기억들이 모여 새로운 이야기가 시작되는 곳,<br/>
+        {/* "향기로운 기억들" 문구를 이곳으로 이동하고 가운데 정렬. */}
+        <p className="mx-auto mt-6 max-w-md text-center leading-relaxed text-gray-500">
           나만의 향수를 기록하고 특별한 순간들을 함께 나누는 공간<br/>
           당신의 취향과 감성을 펼쳐 보세요.<br/>
         </p>

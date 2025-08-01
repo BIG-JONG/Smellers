@@ -1,5 +1,3 @@
-// src/components/SignupForm.tsx
-
 import { useState } from "react";
 import InputField from "./InputField";
 import Button from "./Button";
@@ -30,7 +28,7 @@ function SignupForm() {
       return; // 비밀번호 불일치 시 함수 종료
     }
 
-    // 실제 회원가입 로직 (여기서는 예시)
+    // 실제 회원가입 로직 (예시)
     // 실제로는 여기에 서버 통신 로직이 들어갑니다.
     if (email === "test@example.com" && password === "password123") { // 임시 성공 조건
       setAlertType("success");
@@ -52,7 +50,6 @@ function SignupForm() {
 
   return (
     // 폼 전체의 너비를 'max-w-full'로 설정하여 부모 div에 꽉 차게 합니다.
-    // 'mt-0'으로 상단 마진을 제거하여 헤더에 바싹 붙게 합니다.
     <form className="mt-0 flex flex-col items-center justify-center w-full max-w-full bg-white p-8 rounded"> {/* max-w-screen-xl -> max-w-full로 변경 */}
       <h1 className="text-4xl font-extrabold mb-8 text-center">회원가입</h1>
       
@@ -62,8 +59,6 @@ function SignupForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="이메일을 입력하세요."
-        // !!! 중요: 만약 여기에 className="w-1/2"와 같이 너비를 제한하는 클래스가 있었다면 이 줄을 제거하세요.
-        // 현재 코드에는 없으므로 그대로 두시면 됩니다.
       />
       <div className="h-6" />
 
@@ -73,7 +68,6 @@ function SignupForm() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="비밀번호를 입력하세요."
-        // !!! 중요: 만약 여기에 className="w-1/2"와 같이 너비를 제한하는 클래스가 있었다면 이 줄을 제거하세요.
       />
       <div className="h-6" />
 
@@ -83,7 +77,6 @@ function SignupForm() {
         value={passwordConfirm}
         onChange={(e) => setPasswordConfirm(e.target.value)}
         placeholder="비밀번호를 다시 입력하세요."
-        // !!! 중요: 만약 여기에 className="w-1/2"와 같이 너비를 제한하는 클래스가 있었다면 이 줄을 제거하세요.
       />
       <div className="h-6" />
 
@@ -93,7 +86,6 @@ function SignupForm() {
         value={nickname}
         onChange={(e) => setNickname(e.target.value)}
         placeholder="사용할 닉네임을 입력하세요."
-        // !!! 중요: 만약 여기에 className="w-1/2"와 같이 너비를 제한하는 클래스가 있었다면 이 줄을 제거하세요.
       />
       <div className="h-8" />
 
