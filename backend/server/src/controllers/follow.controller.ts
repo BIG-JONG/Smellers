@@ -5,7 +5,6 @@ export const followListingController = async (req: Request, res: Response): Prom
   try {
     const id = req.params.id;
     const idInt = parseInt(id, 10);
-
     const list = await followListingService(idInt);
     res.status(200).json({ data: list });
   } catch (error: any) {

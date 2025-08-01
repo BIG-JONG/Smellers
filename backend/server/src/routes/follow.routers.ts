@@ -1,10 +1,11 @@
 import express  from "express";
 import { followListingController, followUserRegist, getAllPublicPosts} from "../controllers/follow.controller";
+import { limiter, addRateLimitHeaders } from "../middlewares/rateLimit.middleware";
 
 const router = express.Router();
 
 //팔로우 리스트 조회
-router.get('/userList/:id',followListingController);
+router.get('/userList/:id', limiter, addRateLimitHeaders, followListingController);
 
 //팔로우 등록
 router.post('/userRegister/:id',followUserRegist);
