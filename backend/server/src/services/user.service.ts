@@ -28,32 +28,47 @@ export const createUser = async (email: string, password: string, nickname: stri
 
 export const verifyUser = async (email: string, password: string) => {
   const user = await prisma.userInfo.findUnique({ where: { email } });
+  //console.log('User found:', user); // 디버깅용 로그
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw new Error('passwordError');
   }
+  if(user.userStatus === 'N') {
+    throw new Error('UserNotFound');
+  }
 
   // 토큰 생성
-  const token = jwt.sign({ id: user.userId }, process.env.SECRET_KEY!, { expiresIn: '1d' });
-
+  const token = jwt.sign({ user_id : user.userId }, process.env.SECRET_KEY!, { expiresIn: '1d' });
+  //console.log('verifyUser user_id:', user.userId );
   console.log('토큰 생성:', token);
-  return { token, userId: user.userId };
+  return { token, user_id: user.userId };
 };
 
-
-export const updateUserById = async (id: number, data: { nickname?: string; password?: string }) => {
+// 사용자 정보 수정
+export const updateUserById = async (user_id: number, data: { nickname?: string; password?: string }) => {
   const updateData: any = {};
 
   if (data.nickname) updateData.nickname = data.nickname;
   if (data.password) updateData.password = await bcrypt.hash(data.password, 10);
 
   return await prisma.userInfo.update({
-    where: { userId: id },
+    where: { userId: user_id },
     data: updateData,
   });
 };
 
-export const deleteUserById = async (id: number) => {
-  return await prisma.userInfo.delete({
-    where: { userId: id },
+// 사용자 삭제
+export const deleteUserById = async (user_id: number) => {
+  return await prisma.userInfo.update({
+    where: { userId: user_id },
+    data: { userStatus: 'N' }, // 유저 상태를 'N'으로 변경
   });
 };
+
+export const getUserById = async (user_id: number) => {
+  const user = await prisma.userInfo.findUnique({ where: { userId: user_id } });
+  if (!user) throw new Error('UserNotFound');
+  
+  // 비밀번호 제외한 사용자 정보 반환
+  const { password, ...userData } = user;
+  return userData;
+}
