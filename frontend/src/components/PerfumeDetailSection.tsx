@@ -13,6 +13,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import Button from './Button';
 
 ChartJS.register(
   CategoryScale,
@@ -40,9 +41,10 @@ export interface PerfumeDetailData {
 
 interface PerfumeDetailSectionProps {
   perfume: PerfumeDetailData;
+  isLoggedIn:boolean;
 }
 
-const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume }) => {
+const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn }) => {
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image';
   };
@@ -118,7 +120,7 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume }) 
           label: function(context: any) {
             const index = context.dataIndex;
             const noteInfo = allIndividualNotes[index];
-            return `${noteInfo.category}: ${noteInfo.name} (${noteInfo.kan}칸)`;
+            return `${noteInfo.category}: ${noteInfo.name} (${noteInfo.kan})`;
           }
         }
       }
@@ -245,6 +247,15 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume }) 
           </div>
         </div>
       </div>
+      <div className='flex gap-2 mt-20'>
+        {isLoggedIn &&(
+          <>
+            <Button perfumeId={perfume.id} actionType="edit">수정</Button>
+            <Button perfumeId={perfume.id} actionType='delete'>삭제</Button>
+          </>
+        )}
+      </div>
+      <div className='mt-17 mb-20'/>
     </div>
   );
 };
