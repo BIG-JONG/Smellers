@@ -1,5 +1,4 @@
 import e from 'express';
-//enum타입 사용
 import prisma from '../prisma/client';
 import { NoteType } from '@prisma/client';
 import { PerfumeSearchParams } from '../types/PerfumeSearchParams';
