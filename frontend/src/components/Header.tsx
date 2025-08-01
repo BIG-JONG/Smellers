@@ -32,8 +32,8 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => { // onSidebarToggle, is
             navigate('/');
           }}
         >
-    AromaBase {/* 여기에 원하는 텍스트 넣기 */}
-  </a>
+          AromaBase
+        </a>
       </div>
 
       {/* 2. 검색창 영역 */}

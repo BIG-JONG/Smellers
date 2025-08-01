@@ -22,7 +22,7 @@ function MainInfo({
           <p className="mt-4 text-base text-pretty text-gray-700 sm:text-lg/relaxed transition-transform duration-800 ease-in-out hover:scale-105">
             당신의 향기를 담은 컬렉션을 만들고,
             공유하며 새로운 사람들과 소통하세요.
-            모든 향수가 추억이 되는 곳, aromabase입니다.
+            모든 향수가 추억이 되는 곳, <strong>AromaBase</strong>입니다.
           </p>
 
           <div className="mt-4 flex gap-4 sm:mt-6">
