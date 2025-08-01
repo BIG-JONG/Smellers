@@ -5,8 +5,7 @@ import userRoutes from './routes/user.routes';
 import perfumeRoutes from './routes/perfume.routes'; // 향수 API 라우트 추가
 import errorHandler from './middlewares/error-handing.middleware';
 import path from 'path';
-
-import perfumeRoutes from './routes/perfume.routers'
+import followRoutes from './routes/follow.routers'
 
 const PORT = process.env.PORT || 4000;
 

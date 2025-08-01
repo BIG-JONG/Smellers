@@ -61,9 +61,6 @@ export const deletePerfume = async (req: Request, res: Response, next: NextFunct
   } catch (err) {
     next(err);
   }
-import { getpublicPerfumesService, getMyPerfumesService, getSearchPerfumeService } from "../services/perfume.service";
-import { parseNoteType } from "../utils/changeNoteType";
-import { PerfumeSearchParams } from "../types/PerfumeSearchParams";
 
 
 
