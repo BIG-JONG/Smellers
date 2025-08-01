@@ -3,6 +3,8 @@ import Sidebar from './Sidebar';
 
 type LayoutProps = {
   children: React.ReactNode;
+  isSidebarOpen: boolean;
+  onSidebarMouseLeave: () => void;
 };
 
 function Layout({ children }: LayoutProps) {

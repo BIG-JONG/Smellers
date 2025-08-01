@@ -8,7 +8,7 @@ interface DropdownProps{
 }
 
 function Dropdown({
-  className,
+  //className,
   placeholder="선택",
   options=['최신 순','오래된 순','별점 순'],
   getLabel=(option)=>(option)

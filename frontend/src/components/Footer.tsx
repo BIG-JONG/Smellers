@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface FooterProps {
@@ -8,7 +7,7 @@ interface FooterProps {
 }
 
 function Footer({
-  logo,
+  //logo,
   copyright,
   className
 }: FooterProps) {

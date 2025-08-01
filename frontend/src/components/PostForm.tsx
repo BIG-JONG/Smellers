@@ -28,19 +28,15 @@ function PostForm() {
     }
   };
 
-  // 태그 입력 필드의 onChange 핸들러
-  // 사용자가 입력하는 대로 `tag` 상태에 업데이트합니다.
   const handleTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTag(e.target.value);
   };
 
-  //  `tag` 문자열을 배열로 분리하는 유틸리티 함수
-  // 쉼표(,)를 기준으로 분리하고, 각 태그의 앞뒤 공백을 제거하며, 비어있는 태그는 제외합니다.
   const parseTags = (tagString: string): string[] => {
     return tagString
       .split(',') // 쉼표로 분리
-      .map(t => t.trim()) // 각 태그의 앞뒤 공백 제거
-      .filter(t => t.length > 0); // 비어있는 태그 제외
+      .map(t => t.trim()) 
+      .filter(t => t.length > 0);
   };
 
   // 태그 삭제 핸들러 (선택 사항)
@@ -51,12 +47,10 @@ function PostForm() {
     setTag(updatedTags.join(', ')); // 업데이트된 배열을 다시 쉼표로 연결하여 `tag` 상태에 저장
   };
 
-
   return (
     <div className="flex flex-col items-center gap-6 w-full max-w-4xl mx-auto">
       {/* 상단: 이미지 + 향수명/브랜드 - 가로 정렬 */}
       <div className="flex w-full gap-6 items-start">
-
         {/* 왼쪽 이미지 영역 */}
         <div className="flex flex-col items-center gap-4 w-1/3">
           <input
@@ -66,7 +60,6 @@ function PostForm() {
             onChange={handleImageChange}
             className="hidden"
           />
-
           {img && (
             <img
               src={img}
@@ -74,7 +67,6 @@ function PostForm() {
               className="w-64 h-auto rounded shadow-md"
             />
           )}
-
           <label
             htmlFor="image-upload"
             className="block w-full text-center cursor-pointer bg-gray-100 rounded py-2 hover:bg-gray-200"
@@ -106,32 +98,32 @@ function PostForm() {
 
       {/* 나머지 입력 필드: 중앙 정렬 유지 */}
       <div className="flex w-full gap-4 flex-wrap justify-start">
-          <div className="flex-1 w-full">
-            <MultiSelectDropdown
-              label="탑 노트"
-              options={["라벤더", "머스크", "샌달우드"]}
-              value={selectedTop}
-              onChange={setSelectedTop}
-              maxSelect={3}
-              placeholder="선택"
-            />
-            <MultiSelectDropdown
-              label="미들 노트"
-              options={["라벤더", "머스크", "샌달우드"]}
-              value={selectedMiddle}
-              onChange={setSelectedMiddle}
-              maxSelect={3}
-              placeholder="선택"
-            />
-            <MultiSelectDropdown
-              label="베이스 노트"
-              options={["라벤더", "머스크", "샌달우드"]}
-              value={selectedBase}
-              onChange={setSelectedBase}
-              maxSelect={3}
-              placeholder="선택"
-            />
-          </div>
+        <div className="flex-1 w-full">
+          <MultiSelectDropdown
+            label="탑 노트"
+            options={["라벤더", "머스크", "샌달우드"]}
+            value={selectedTop}
+            onChange={setSelectedTop}
+            maxSelect={3}
+            placeholder="선택"
+          />
+          <MultiSelectDropdown
+            label="미들 노트"
+            options={["라벤더", "머스크", "샌달우드"]}
+            value={selectedMiddle}
+            onChange={setSelectedMiddle}
+            maxSelect={3}
+            placeholder="선택"
+          />
+          <MultiSelectDropdown
+            label="베이스 노트"
+            options={["라벤더", "머스크", "샌달우드"]}
+            value={selectedBase}
+            onChange={setSelectedBase}
+            maxSelect={3}
+            placeholder="선택"
+          />
+        </div>
         <Textarea
           label="내용"
           className="w-full text-gray-600"
@@ -167,8 +159,11 @@ function PostForm() {
           value={emotion}
           onChange={(e) => setEmotion(e.target.value)}
           placeholder="감정을 기록해 주세요."
-          />
-        <Button className="mx-auto block"/>
+        />
+        {/* 등록 버튼 추가 */}
+        <Button className="mx-auto block" type="submit" onClick={() => console.log("등록 버튼 클릭!")}>
+          등록
+        </Button>
       </div>
     </div>
   );
