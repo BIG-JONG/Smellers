@@ -52,7 +52,7 @@ const PerfumeListPage:React.FC=()=>{
   ];
 
   return(
-    <div className="p-4 pt-[74px]">
+    <div className="pt-[20px]">
       <PerfumeListSection
         title="전체 게시물"
         perfumes={dummyPerfumes}
@@ -61,7 +61,9 @@ const PerfumeListPage:React.FC=()=>{
         onPageChange={() => {}}
         onPerfumeClick={handlePerfumeClick} 
       />
-      <Pagination/>
+      {/* <div className="mt-8 flex justify-center">
+        <Pagination currentPage={currentPage} totalPage={totalPage} onPageChange={onPageChange} />
+      </div> */}
     </div>
   )
 }

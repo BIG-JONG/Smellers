@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
           <input
             type="text"
             placeholder="향수, 브랜드, 노트, 유저 검색..."
-            className="w-full py-2 pl-10 pr-4 rounded-full bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700"
+            className="w-full py-2 pl-10 pr-4 rounded-full bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-700"
             aria-label="Search"
           />
           {/* 검색 아이콘 (SVG) */}
@@ -68,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
         {/* 로그인 버튼 */}
         <button
           onClick={handleLoginClick} // 클릭 시 로그인 페이지로 이동
-          className="text-sm text-gray-600 hover:text-indigo-600 transition-colors duration-200 whitespace-nowrap"
+          className="text-sm text-gray-600 hover:text-black transition-colors duration-200 whitespace-nowrap"
         >
           로그인
         </button>
@@ -81,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
         </button>
 
         {/* 프로필 아이콘 (SVG) */}
-        <a href="#" onClick={handleProfileClick} className="text-gray-600 hover:text-indigo-600 transition-colors duration-200">
+        <a href="#" onClick={handleProfileClick} className="text-gray-600 hover:text-black transition-colors duration-200">
           <svg
             className="size-7"
             xmlns="http://www.w3.org/2000/svg"

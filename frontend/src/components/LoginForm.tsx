@@ -33,7 +33,7 @@ function LoginForm() {
   };
 
   return (
-    <form className="mt-4 flex flex-col items-center justify-center w-full max-w-screen-md bg-white p-8 rounded"> {/* max-w-3xl -> max-w-screen-md, mt-10 -> mt-4 */}
+    <form className="mt-0 flex flex-col items-center justify-center w-full max-w-screen-md bg-white p-8 rounded"> {/* max-w-3xl -> max-w-screen-md, mt-10 -> mt-4 */}
       <h1 className="text-4xl font-extrabold mb-8 text-center">로그인</h1>
       <InputField
         label="이메일"

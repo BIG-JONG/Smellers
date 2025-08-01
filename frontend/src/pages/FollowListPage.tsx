@@ -46,7 +46,7 @@ const FollowListPage: React.FC = () => {
   );
 
   return (
-    <div className="mt-2">
+    <div className="mt-10">
       <SearchInput
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
