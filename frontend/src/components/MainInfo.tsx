@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'; // Link 컴포넌트 import
 
 interface MainInfoProps{
   src?:string
@@ -26,12 +27,13 @@ function MainInfo({
           </p>
 
           <div className="mt-4 flex gap-4 sm:mt-6">
-            <a
+            {/* <a> 태그를 <Link> 컴포넌트로 변경 */}
+            <Link
               className="inline-block rounded  bg-black px-5 py-3 font-medium text-white shadow-sm transition-colors duration-200 border border-transparent hover:bg-white  hover:text-black  hover:border-black"
-              href="#"
+              to="/signup" // 이동할 경로를 'to' 속성에 지정
             >
               시작하기
-            </a>
+            </Link>
 
             {/* <a
               className="inline-block rounded border border-gray-200 px-5 py-3 font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 hover:text-gray-900"
@@ -49,30 +51,22 @@ function MainInfo({
           aria-hidden="true"
         >
           <defs>
-            {/* 3색 원형 그라데이션 */}
             <linearGradient  id="grad" cx="60%" cy="50%" r="70%" x1="100%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#fcd9e9ff" />      {/* 핑크 */}
-              <stop offset="70%" stopColor="#dcf7ffff" />     {/* 노랑 */}
-               <stop offset="100%" stopColor="#deffeaff" />
+              <stop offset="0%" stopColor="#fcd9e9ff" />
+              <stop offset="70%" stopColor="#dcf7ffff" />
+              <stop offset="100%" stopColor="#deffeaff" />
             </linearGradient>
 
-            {/* 블러 필터 */}
             <filter id="blurGlow" x="-50%" y="-50%" width="200%" height="200%" >
               <feDropShadow dx="0" dy="0" stdDeviation="8" floodColor="#fcd9e9ff" floodOpacity="0.7"/>
               <feDropShadow dx="0" dy="0" stdDeviation="12" floodColor="#dcf7ffff" floodOpacity="0.6"/>
-              {/* <feDropShadow dx="0" dy="0" stdDeviation="24" floodColor="#deffeaff" floodOpacity="0.8"/> */}
               <feGaussianBlur stdDeviation="20" />
             </filter>
           </defs>
 
-          {/* 메인 원 (그라데이션) */}
           <circle cx="200" cy="200" r="160" fill="url(#grad)" filter="url(#blurGlow)" />
           
-          {/* 원 테두리 */}
           <circle
-            // cx="200"
-            // cy="200"
-            // r="120"
             fill="none"
             stroke="url(#grad)"
             strokeWidth="8"
