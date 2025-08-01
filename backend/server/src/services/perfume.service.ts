@@ -2,6 +2,7 @@ import e from 'express';
 //enum타입 사용
 import prisma from '../prisma/client';
 import { NoteType } from '@prisma/client';
+import { PerfumeSearchParams } from '../types/PerfumeSearchParams';
 
 type PerfumeNoteInput = {
   noteType: NoteType; // NoteType은 Prisma에서 정의된 enum 타입입니다.
@@ -126,7 +127,6 @@ export const deletePerfume = async (perfume_id: number, userId: number) => {
     }),
   ]);
 };
-import { PerfumeSearchParams } from '../types/PerfumeSearchParams';
 
 
 

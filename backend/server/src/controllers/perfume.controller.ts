@@ -1,6 +1,8 @@
 // perfume.controller.ts
 import { Request, Response, NextFunction } from 'express';
 import * as perfumeService from '../services/perfume.service';
+import { parseNoteType } from '../utils/changeNoteType';
+import { PerfumeSearchParams } from '../types/PerfumeSearchParams';
 
 // 향수 생성
 export const createPerfume = async (req: Request, res: Response, next: NextFunction) => {
@@ -61,20 +63,19 @@ export const deletePerfume = async (req: Request, res: Response, next: NextFunct
   } catch (err) {
     next(err);
   }
-
-
+}
 
 export const getMyPerfumeController = async (req: Request, res: Response): Promise<void> => {
   try {
     //헤더에서 id값 가져오기(auth-토큰)
-    const userId = req.user?.id;
+    const userId = req.user?.user_id;
 
     if (!userId) {
       res.status(401).json({ errorMessage: "no user ID" });
       return;
     }
 
-    const myPerfumes = await getMyPerfumesService(userId);
+    const myPerfumes = await perfumeService.getMyPerfumesService(userId);
     res.status(200).json({ data: myPerfumes });
   } catch (error: any) {
     res.status(500).json({ errorMessage: error.message });
@@ -102,7 +103,7 @@ export const getSearchPerfume = async (req: Request, res: Response) => {
     };
 
 
-    const searchedPerfumes = await getSearchPerfumeService(searchParams);
+    const searchedPerfumes = await perfumeService.getSearchPerfumeService(searchParams);
     res.json({ data: searchedPerfumes });
   } catch (error: any) {
     res.status(401).json({ errorMessage: error.message });
@@ -112,7 +113,7 @@ export const getSearchPerfume = async (req: Request, res: Response) => {
 
 export const getPublicPerfumes = async (req: Request, res: Response) => {
   try {
-    const publicPerfumes = await getpublicPerfumesService();
+    const publicPerfumes = await perfumeService.getpublicPerfumesService();
     res.json({ data: publicPerfumes });
   } catch (error: any) {
     res.status(401).json({ errorMessage: error.message });

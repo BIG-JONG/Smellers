@@ -16,7 +16,7 @@ export const followListingController = async (req: Request, res: Response): Prom
 export const followUserRegist = async (req: Request, res: Response): Promise<void> => {
    try {
     const followerUserId = Number(req.params.id); // 팔로우  대상자
-    const userId = Number(req.user?.id) // 미들웨어에서 넣은 로그인한 사용자 ID (예: JWT 기반)
+    const userId = Number(req.user?.user_id) // 미들웨어에서 넣은 로그인한 사용자 ID (예: JWT 기반)
 
     await followUserRegistService(userId, followerUserId);
 
