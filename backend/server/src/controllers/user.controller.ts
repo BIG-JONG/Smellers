@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { createUser, verifyUser, updateUserById, deleteUserById,getUserById } from '../services/user.service';
+import { createUser, verifyUser, updateUserById, deleteUserById,getUserById, getUserByNickname } from '../services/user.service';
 import { validationResult } from 'express-validator';
 import { getuid } from 'process';
 
@@ -67,6 +67,20 @@ export const UserById = async (req: Request, res: Response, next: NextFunction) 
 
   try {
     const user = await getUserById(requesterId);
+    if (!user) {
+      return res.status(404).json({ error: '사용자를 찾을 수 없습니다' });
+    }
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const findUserByNickname = async (req: Request, res: Response, next: NextFunction) => {
+  const { nickname } = req.params;
+
+  try {
+    const user = await getUserByNickname(nickname);
     if (!user) {
       return res.status(404).json({ error: '사용자를 찾을 수 없습니다' });
     }

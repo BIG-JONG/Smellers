@@ -10,7 +10,7 @@ import { PerfumeImg } from '@prisma/client';
 export const deletePerfumeImageFiles = (images: PerfumeImg[]) => {
   images.forEach((img) => {
     if (img.url_path) {
-      const filePath = path.join(__dirname, '../../uploads', img.url_path);
+      const filePath = path.join(__dirname, '../../', img.url_path);
       fs.unlink(filePath, (err) => {
         if (err) {
           console.error(`파일 삭제 실패: ${filePath}`, err.message);

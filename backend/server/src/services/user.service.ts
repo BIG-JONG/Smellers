@@ -72,3 +72,18 @@ export const getUserById = async (user_id: number) => {
   const { password, ...userData } = user;
   return userData;
 }
+
+export const getUserByNickname = async (nickname: string) => {
+  const user = await prisma.userInfo.findMany({
+  where: {
+    nickname: {
+      contains: nickname,  // 키워드 포함 검색 (닉네임 )
+    //  mode: "insensitive", // 대소문자 구분 없이 시용시 프리스마 스키마 수정필요
+    },
+  },
+});
+  if (!user) throw new Error('UserNotFound');
+  
+  // 비밀번호 제외한 사용자 정보 반환
+  return user.map(({ password, ...rest }) => rest);
+};
