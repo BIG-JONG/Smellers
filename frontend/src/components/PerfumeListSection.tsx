@@ -1,6 +1,6 @@
 import React from 'react';
-import ProductCard, { Product } from './ProductCard'; // Product 타입을 임포트합니다.
-import Pagination from './Pagination'; // Pagination 컴포넌트 임포트 (있다고 가정)
+import ProductCard, { Product } from './ProductCard'; // Product 타입 임포트
+import Pagination from './Pagination'; // Pagination 컴포넌트 임포트
 
 interface PerfumeListSectionProps {
   title: string;

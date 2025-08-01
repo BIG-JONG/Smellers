@@ -36,9 +36,7 @@ function EditProfileForm(){
   }
 
   return(
-    <div className="w-full flex justify-center"> {/* 중앙 정렬이 필요하다면 justify-center만 남길 수 있습니다. */}
-      {/* 이 div의 'h-screen'과 'items-center justify-center'를 제거합니다. */}
-      {/* 이렇게 하면 Layout의 pt-[74px]에 의해 올바른 위치에 배치됩니다. */}
+    <div className="w-full flex justify-center">
       <form className="m-10 flex flex-col items-center justify-center w-full max-w-xl gap-6" onSubmit={handleSubmit}>
         <Avatar src={imgUrl} size="xl"/>
         <p className="text-center text-lg">
