@@ -3,6 +3,7 @@ import InputField from "./InputField";
 import Button from "./Button";
 import Alert from "./Alert";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -11,21 +12,26 @@ function LoginForm() {
   const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
   const navigate = useNavigate();
 
-  const onClickButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const onClickButton = async(e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (email === "email" && password === "pass") {
-      setAlertType("success");
+    try{
+      const res = await axios.post('http://localhost:4000/users/login',{
+        email, 
+        password
+      })
+      if(res.status ===200){
+        setAlertType("success")
+        setShowAlert(true)
+        setTimeout(()=>{
+          navigate('/')
+        },1000)
+      }
+    }catch(err){
+      setAlertType("error")
       setShowAlert(true);
-
-      setTimeout(() => {
-        navigate('/');
-      }, 1000);
-    } else {
-      setAlertType("error");
-      setShowAlert(true);
-      setTimeout(() => setShowAlert(false), 2000);
-    }
+      setTimeout(()=> setShowAlert(false), 2000)
+    }    
   };
 
   const handleNavigateToSignup = () => {
