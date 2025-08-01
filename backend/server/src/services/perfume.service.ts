@@ -1,6 +1,6 @@
-import e from 'express';
 import prisma from '../prisma/client';
 import { NoteType } from '@prisma/client';
+import { deletePerfumeImageFiles } from '../utils/deleteFiles';
 
 type PerfumeNoteInput = {
   noteType: NoteType; // NoteType은 Prisma에서 정의된 enum 타입입니다.
@@ -67,14 +67,21 @@ export const updatePerfume = async (perfume_id: number, data: any, userId: numbe
     notes: { noteType: NoteType; noteName: string }[];
     images: { url_path: string }[];
   } = data;
-  return await prisma.$transaction([
 
+  // 기존 이미지 파일 삭제
+  const existingImages = await prisma.perfumeImg.findMany({ where: { perfumeId: perfume_id } });
+  deletePerfumeImageFiles(existingImages);
+
+  // note와 이미지 DB삭제
+  return await prisma.$transaction([
     prisma.perfumeNote.deleteMany({
       where: { perfumeId: perfume_id },
     }),
     prisma.perfumeImg.deleteMany({
       where: { perfumeId :perfume_id},
     }),
+
+    // 향수 정보 업데이트
     prisma.perfumeInfo.update({
       where: { perfumeId: perfume_id },
       data: {
@@ -110,6 +117,10 @@ export const deletePerfume = async (perfume_id: number, userId: number) => {
     throw new Error('Forbidden'); 
     console.log('deletePerfume 사용자 ID가 일치하지 않습니다.');
   }
+
+  // 기존 이미지 파일 삭제
+  const perfumeImgData = await prisma.perfumeImg.findMany({ where: { perfumeId: perfume_id } });
+  deletePerfumeImageFiles(perfumeImgData);
 
   // 연관된 향노트/이미지 먼저 삭제 후 향수 삭제 (트랜잭션)
   await prisma.$transaction([
