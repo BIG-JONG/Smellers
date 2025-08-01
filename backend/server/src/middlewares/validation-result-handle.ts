@@ -22,28 +22,28 @@ export const loginValidator = [
     .notEmpty().withMessage('비밀번호가 없습니다.')
 ];
 
-// 향수등록 작성 유효성 검사
+// 향수등록 유효성 검사
 export const postsValidator = [
   body('perfumeName')
-    .notEmpty().withMessage('제목이 없습니다.'),
+    .notEmpty().withMessage('향수이름이 없습니다.'),
   body('content')
     .notEmpty().withMessage('내용이 없습니다.')
 ];
 
-// 향수등록 글 조회/삭제 유효성 검사
+// 향수 조회/삭제 유효성 검사
 export const getPostsValidator = [
-  param('perfumeId')
+  param('perfume_id')
     .isInt().withMessage('perfume ID는 숫자여야 합니다.')
     .notEmpty().withMessage('perfume ID가 없습니다.')
 ];
 
-// 향수등록 수정 유효성 검사
+// 향수수정 유효성 검사
 export const putPostsValidator = [
-  param('perfumeId')
+  param('perfume_id')
     .isInt().withMessage('perfume ID는 숫자여야 합니다.')
     .notEmpty().withMessage('perfume ID가 없습니다.'),
   body('perfumeName')
-    .notEmpty().withMessage('제목이 없습니다.'),
+    .notEmpty().withMessage('향수이름이 없습니다.'),
   body('content')
     .notEmpty().withMessage('내용이 없습니다.')
 ];
@@ -57,8 +57,9 @@ export const handleValidationResult = (
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const extractedErrors = errors.array().map(err => err.msg);
-    console.warn('Validation Error:', extractedErrors);
+    //console.log('Validation Error:', extractedErrors);
     return next(new Error('Inputvalidation'));
   }
+ // console.log('Validation passed');
   next();
 };

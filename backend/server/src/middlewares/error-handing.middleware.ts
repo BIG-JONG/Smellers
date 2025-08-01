@@ -55,6 +55,10 @@ export default function errorHandler(
       return res.status(401).send({ 
         errorMessage: "토큰이 존재하지 않습니다." 
       });
+    case 'PerfumeNotFound':
+      return res.status(403).json({
+        errorMessage: '해당 향수를 찾을 수 없습니다.'
+      }); 
     default:
       return res.status(500).json({
         errorMessage: '서버 오류입니다.',

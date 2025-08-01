@@ -35,7 +35,7 @@ model UserInfo {
 model PerfumeInfo {
   perfumeId     Int      @id @default(autoincrement()) @map("perfume_id")
   userId        Int      @map("user_id")
-  perfumeName   String   @db.VarChar(255) @map("perfume_name")
+  perfumeName   String   @map("perfume_name")
   brandName     String   @map("brand_name")
   content       String   @map("content")
   tag           String   @map("tag")
@@ -55,8 +55,10 @@ model PerfumeInfo {
 }
 
 model PerfumeImg {
-  perfumeId Int     @id @map("perfume_id")
-  url       String? @map("url")
+  imgId     Int     @id @default(autoincrement()) @map("img_id")
+  perfumeId Int     @map("perfume_id")
+  url_path       String? @map("url_path")
+  //url_file_name String? @map("url_file_name") 
 
   perfume PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
 

@@ -2,8 +2,10 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.routes';
+import perfumeRoutes from './routes/perfume.routes'; // 향수 API 라우트 추가
 import errorHandler from './middlewares/error-handing.middleware';
-import followRoutes from './routes/follow.routers';
+import path from 'path';
+
 import perfumeRoutes from './routes/perfume.routers'
 
 const PORT = process.env.PORT || 4000;
@@ -16,8 +18,8 @@ const app = express();
 app.use(cors());
 //JSON 파싱
 app.use(express.json());
-// URL-encoded 폼 데이터 파싱
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true })); // URL 인코딩된 데이터 파싱
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));// 정적 파일 서빙
 
 // 유저 라우팅
 app.use('/users', userRoutes);
