@@ -47,6 +47,7 @@ const InputField: React.FC<InputFieldProps> = ({
           ${error ? 'ring-2 ring-red-500' : ''}
           focus:ring-2 focus:ring-blue-500
           placeholder-gray-400
+          w-[550px]
         `}
       />
       {error && <p className="text-red-500 text-xs italic mt-1">{error}</p>}
