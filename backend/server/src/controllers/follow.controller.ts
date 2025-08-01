@@ -14,7 +14,7 @@ export const followListingController = async (req: Request, res: Response): Prom
 };
 
 export const followUserRegist = async (req: Request, res: Response): Promise<void> => {
-   try {
+  try {
     const followerUserId = Number(req.params.id); // 팔로우  대상자
     const userId = Number(req.user?.user_id) // 미들웨어에서 넣은 로그인한 사용자 ID (예: JWT 기반)
 
@@ -31,7 +31,7 @@ export const getAllPublicPosts = async (req: Request, res: Response): Promise<vo
     //const userId = Number(req.user?.id); // 토큰에서 추출
 
     // 테스트용
-    const userId:number = 1;
+    const userId: number = 1;
 
     const perfumes = await getAllPublicPostsService(userId);
 
