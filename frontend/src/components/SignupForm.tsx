@@ -53,7 +53,7 @@ function SignupForm() {
     <form className="mt-0 flex flex-col items-center justify-center w-full max-w-full bg-white p-8 rounded"> {/* max-w-screen-xl -> max-w-full로 변경 */}
       <h1 className="text-4xl font-extrabold mb-8 text-center">회원가입</h1>
       
-      <InputField 
+      <InputField
         label="이메일"
         type="email"
         value={email}
@@ -62,7 +62,7 @@ function SignupForm() {
       />
       <div className="h-6" />
 
-      <InputField 
+      <InputField
         label="비밀번호"
         type="password"
         value={password}
@@ -71,7 +71,7 @@ function SignupForm() {
       />
       <div className="h-6" />
 
-      <InputField 
+      <InputField
         label="비밀번호 확인"
         type="password"
         value={passwordConfirm}
@@ -80,7 +80,7 @@ function SignupForm() {
       />
       <div className="h-6" />
 
-      <InputField 
+      <InputField
         label="닉네임"
         type="text"
         value={nickname}
@@ -91,14 +91,14 @@ function SignupForm() {
 
       <Button onClick={onClickButton}>회원가입</Button>
 
-        {showAlert && (
+      {showAlert && (
         <div className="mt-4 w-full">
           <Alert
             type={alertType}
             message={alertType === "error" ? "회원가입 실패 (비밀번호 불일치 등)" : "회원가입 완료"}
           />
-          </div>
-        )}
+        </div>
+      )}
     </form>
   );
 }
