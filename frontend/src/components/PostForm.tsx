@@ -86,7 +86,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
     };
 
     return (
-        <div className="flex flex-col items-center gap-6 w-full max-w-4xl mx-auto">
+        <div className="flex flex-col items-center gap-6 w-full max-w-4xl mx-auto mt-10">
             <div className="flex w-full gap-6 items-start">
                 <div className="flex flex-col items-center gap-4 w-1/3">
                     <input
@@ -202,7 +202,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                         취소
                     </Button>
                     <Button className="block" type="submit" onClick={handleSubmit}>
-                        {perfumeToEdit ? "수정 완료" : "등록"}
+                        {perfumeToEdit ? "수정" : "등록"}
                     </Button>
                 </div>
             </div>
