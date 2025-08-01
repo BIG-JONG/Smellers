@@ -16,6 +16,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
     const [img, setImg] = useState<string | undefined>(undefined);
     const [perfumeName, setPerfumeName] = useState("");
     const [perfumeBrand, setPerfumeBrand] = useState("");
+    const [perfumePrice, setPerfumePrice] = useState("");
     const [topNote, setTopNote] = useState("");
     const [middleNote, setMiddleNote] = useState("");
     const [baseNote, setBaseNote] = useState("");
@@ -124,6 +125,14 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                         value={perfumeBrand}
                         onChange={(e) => setPerfumeBrand(e.target.value)}
                         placeholder="향수 브랜드 입력"
+                    />
+                    <InputField
+                        className="w-full text-gray-600"
+                        label="가격"
+                        type="text" 
+                        value={perfumePrice}
+                        onChange={(e) => setPerfumeBrand(e.target.value)}
+                        placeholder="향수 가격 입력"
                     />
                 </div>
             </div>
