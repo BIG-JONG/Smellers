@@ -1,13 +1,74 @@
-@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsImlhdCI6MTc1MDA0NzE1MSwiZXhwIjoxNzUwMDkwMzUxfQ.6kL5UZ3sIpAxDGsSdiSNivTfd06Kh3EKKoktw6i1W3s
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTQwMjc4NTEsImV4cCI6MTc1NDExNDI1MX0.ojEaInYmo9cKBYRHR05fk8LwLVRLvDE3r3rij42VcQM
 
-@token2= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjUsImlhdCI6MTc1MDA0OTMxNiwiZXhwIjoxNzUwMDkyNTE2fQ.10GnLSUn1WMYRit3LixNl1gEdMToU38CcYiVLifIjfc
+###향수등록
+POST http://localhost:4000/perfumes
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  //"user_id": 2,
+  "perfumeName": "channel no 5",
+  "brandName": "channel",
+  "content": "상큼 시원한 ",
+  "tag": "여성, 시원함",
+  "emotionTag": "사랑",
+  "isPublic": "Y",
+  "price": 100000,
+  "point": 5,
+  "notes": [
+    { "noteType": "TOP", "noteName": "1번향" },
+    { "noteType": "MIDDLE", "noteName": "2번향" },
+    { "noteType": "BASE", "noteName": "3번향" }
+  ],
+  "images": [
+    { "url_path": "https://www.channel.com/2" }
+  ]
+  
+}
+
+
+###{ "url": "https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dwa006a0c8/Y0685240/Y0685240_F068522009_E01_ZHC.jpg?sw=1920" }
+
+### 향수정보 삭제 (Delete Use) - 토큰 필요
+DELETE http://localhost:4000/perfumes/3
+Authorization: Bearer {{token}}
+
+### 향수 상세 조회 (Get Perfume By ID)
+GET http://localhost:4000/perfumes/1
+Authorization: Bearer {{token}}
+
+### 향수 정보 수정 (Update Perfume) - 토큰 필요
+PUT http://localhost:4000/perfumes/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  //"perfumeId": 1,
+  "perfumeName": "Dior Sauvage 3",
+  "brandName": "Dior3",
+  "content": "상쾌하고 시원한 향3",
+  "tag": "남성, 시원함3",
+  "emotionTag": "자유로움3",
+  "isPublic": "Y",
+  "price": 150000,
+  "point": 4,
+  "notes": [
+    { "noteType": "TOP", "noteName": "Bergamot 수정3" },
+    { "noteType": "MIDDLE", "noteName": "Lavender 수정3" },
+    { "noteType": "BASE", "noteName": "Amber 수정3" }
+  ],
+  "images": [
+    { "url_path": "https://www.dior.com3" }
+  ]
+}
+
 
 ### 회원가입 (Signup)
 POST http://localhost:4000/users/signup
 Content-Type: application/json
 
 {
-  "email": "testuser@example.com",
+  "email": "222@example.com",
   "password": "password123",
   "nickname": "tester"
 }
@@ -17,20 +78,27 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-  "email": "testuser@example.com",
+  "email": "222@example.com",
   "password": "password123"
 }
 
-### 회원정보 수정 (Update User) - 토큰 필요
-PUT http://localhost:4000/users/1
+### 회원정보 수정 (Update User) - 토큰 정상
+PUT http://localhost:4000/users/2
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "nickname": "updatedTester",
-  "password": "newpassword123"
+  "nickname": "으하하",
+  "password": "password123"
 }
 
-### 회원정보 삭제 (Delete User) - 토큰 필요
+
+### 회원정보 조회 (Get User By ID) - 토큰
+GET http://localhost:4000/users/1
+Authorization: Bearer {{token}}
+
+
+### 회원 탈퇴 (Delete User) - 토큰
 DELETE http://localhost:4000/users/1
 Authorization: Bearer {{token}}
+
