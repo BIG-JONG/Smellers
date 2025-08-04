@@ -1,41 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// Header 컴포넌트의 props 타입 정의
 interface HeaderProps {
   navigate: (path: string) => void;
   toggleSidebar: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ navigate }) => {
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const token = sessionStorage.getItem('token')
-  const isLoggedIn = !!token
+  const token = sessionStorage.getItem('token');
+  const isLoggedIn = !!token;
 
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     sessionStorage.clear();
     navigate('/');
-  }
-
-  const handleLoginClick = () => {
-    navigate('/login');
   };
 
-  const handleRegisterClick = () => {
-    navigate('/signup');
+  // 검색 로직을 처리하는 함수
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${searchQuery}`);
+    }
   };
 
-  const handleProfileClick = () => {
-    navigate('/mypage/perfumes'); // 실제 마이페이지 경로로 변경 필요
+  // 엔터 키 입력 시 검색 실행
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
     <header className="bg-white shadow-md py-4 px-6 flex items-center justify-between sticky top-0 z-50">
-      {/* 1. 로고 영역 */}
       <div className="flex items-center">
-        {/* 클릭하면 홈 페이지로 이동 */}
         <a
           href="/"
-          className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10" // 글자 스타일 여기서 지정
+          className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10"
           onClick={(e) => {
             e.preventDefault();
             navigate('/');
@@ -45,45 +45,47 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
         </a>
       </div>
 
-      {/* 2. 검색창 영역 */}
       <div className="flex-grow mx-8 max-w-md">
         <div className="relative">
           <input
             type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyPress={handleKeyPress}
             placeholder="향수, 브랜드, 노트, 유저 검색..."
             className="w-full py-2 pl-10 pr-4 rounded-full bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-700"
             aria-label="Search"
           />
-          {/* 검색 아이콘 (SVG) */}
-          <svg
+          <button
+            onClick={handleSearch}
             className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-5"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-            />
-          </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
         </div>
       </div>
 
-      {/* 3. 내비게이션 링크 및 사용자 액션 영역 */}
       <nav className="flex items-center space-x-6 ml-auto">
-      {isLoggedIn ? (
+        {isLoggedIn ? (
           <>
-            {/* 로그인 시 보여줄 프로필, 로그아웃 버튼 */}
             <button
-              onClick={handleProfileClick}
+              onClick={() => navigate('/mypage/perfumes')}
               className="text-sm text-gray-600 hover:text-black transition-colors duration-200 whitespace-nowrap"
             >
               마이페이지
             </button>
-
             <button
               onClick={handleLogout}
               className="text-sm px-2 py-2 bg-black text-white rounded-md hover:bg-black transition-colors duration-200 whitespace-nowrap"
@@ -93,7 +95,6 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
           </>
         ) : (
           <>
-            {/* 로그아웃 상태일 때 로그인, 회원가입 버튼 */}
             <button
               onClick={() => navigate('/login')}
               className="text-sm text-gray-600 hover:text-black transition-colors duration-200 whitespace-nowrap"
@@ -108,9 +109,7 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
             </button>
           </>
         )}
-
-        {/* 프로필 아이콘 (SVG) */}
-        <a href="#" onClick={handleProfileClick} className="text-gray-600 hover:text-black transition-colors duration-200">
+        <a href="#" onClick={() => navigate('/mypage/perfumes')} className="text-gray-600 hover:text-black transition-colors duration-200">
           <svg
             className="size-7"
             xmlns="http://www.w3.org/2000/svg"
