@@ -1,4 +1,4 @@
-@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTQwMjc4NTEsImV4cCI6MTc1NDExNDI1MX0.ojEaInYmo9cKBYRHR05fk8LwLVRLvDE3r3rij42VcQM
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTQyODMxNjAsImV4cCI6MTc1NDM2OTU2MH0.DR0zqsJAW4fMsY7-N4b8vJugfuh8gDVMU_P8k0zqhYc
 
 ###향수등록
 POST http://localhost:4000/perfumes
@@ -21,7 +21,7 @@ Authorization: Bearer {{token}}
     { "noteType": "BASE", "noteName": "3번향" }
   ],
   "images": [
-    { "url_path": "https://www.channel.com/2" }
+    { "url_path": "" }
   ]
   
 }
@@ -36,6 +36,10 @@ Authorization: Bearer {{token}}
 ### 향수 상세 조회 (Get Perfume By ID)
 GET http://localhost:4000/perfumes/9
 Authorization: Bearer {{token}}
+
+### 향수 목록 조회 (Get All Perfumes)
+GET http://localhost:4000/perfumes/public
+###Authorization: Bearer {{token}}
 
 ### 향수 정보 수정 (Update Perfume) - 토큰 필요
 PUT http://localhost:4000/perfumes/1
@@ -68,7 +72,7 @@ POST http://localhost:4000/users/signup
 Content-Type: application/json
 
 {
-  "email": "444@example.com",
+  "email": "user5@example.com",
   "password": "password123",
   "nickname": "으하하333"
 }
@@ -78,7 +82,7 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-  "email": "222@example.com",
+  "email": "user2@example.com",
   "password": "password123"
 }
 
