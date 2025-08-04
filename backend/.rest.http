@@ -30,11 +30,11 @@ Authorization: Bearer {{token}}
 ###{ "url": "https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dwa006a0c8/Y0685240/Y0685240_F068522009_E01_ZHC.jpg?sw=1920" }
 
 ### 향수정보 삭제 (Delete Use) - 토큰 필요
-DELETE http://localhost:4000/perfumes/3
+DELETE http://localhost:4000/perfumes/9
 Authorization: Bearer {{token}}
 
 ### 향수 상세 조회 (Get Perfume By ID)
-GET http://localhost:4000/perfumes/1
+GET http://localhost:4000/perfumes/9
 Authorization: Bearer {{token}}
 
 ### 향수 정보 수정 (Update Perfume) - 토큰 필요
@@ -68,9 +68,9 @@ POST http://localhost:4000/users/signup
 Content-Type: application/json
 
 {
-  "email": "222@example.com",
+  "email": "444@example.com",
   "password": "password123",
-  "nickname": "tester"
+  "nickname": "으하하333"
 }
 
 ### 로그인 (Login)
@@ -88,15 +88,18 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "nickname": "으하하",
+  "nickname": "으하하수정함",
   "password": "password123"
 }
 
 
 ### 회원정보 조회 (Get User By ID) - 토큰
-GET http://localhost:4000/users/1
+GET http://localhost:4000/users/2
 Authorization: Bearer {{token}}
 
+### 닉네임으로 사용자 조회 (Find User By Nickname) - 토큰
+GET http://localhost:4000/users/findUser/으하하
+Authorization: Bearer {{token}}
 
 ### 회원 탈퇴 (Delete User) - 토큰
 DELETE http://localhost:4000/users/1

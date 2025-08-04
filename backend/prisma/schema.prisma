@@ -24,6 +24,7 @@ model UserInfo {
   password   String     @map("password")
   nickname   String     @map("nickname")
   userStatus UserStatus @default(Y) @map("user_status")
+  profileImg String?   @map("profile_img")
 
   perfumes PerfumeInfo[]
   follow FollowingList[] @relation("follow")
