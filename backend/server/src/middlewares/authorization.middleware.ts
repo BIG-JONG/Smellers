@@ -15,11 +15,12 @@ export const authorizeSelf = (req: Request, res: Response, next: NextFunction) =
 
     console.log('authorizeSelf userIdFromToken:', userIdFromToken);
     console.log('authorizeSelf params userId:', userId);
-    
-    if (!userIdFromToken || userIdFromToken !== userId) {
-      return next(new Error("Forbidden"));
-      
+
+
+    if (userIdFromToken && userIdFromToken === userId) {
+      return next(); // 통과
     }
+    return next(new Error('Forbidden')); // 그 외는 막기
 
     next();
   } catch (error) {

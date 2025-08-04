@@ -8,6 +8,9 @@ import axios from 'axios';
 const PerfumeListPage:React.FC=()=>{
   const navigate = useNavigate(); // useNavigate 훅
   const [perfumes, setPerfumes] = useState<Product[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const perfumesPerPage = 12;
 
   //상세 페이지로 이동
   const handlePerfumeClick = (id: string) => {
@@ -37,17 +40,22 @@ const PerfumeListPage:React.FC=()=>{
     fetchPerfumes();
   },[])
 
+  const totalPage = Math.ceil(perfumes.length/perfumesPerPage)
 
+  const currentPerfumes = perfumes.slice(
+    (currentPage -1)*perfumesPerPage,
+    currentPage*perfumesPerPage
+  )
   
 
   return(
     <div className="pt-[20px]">
       <PerfumeListSection
         title="전체 게시물"
-        perfumes={perfumes}
-        currentPage={1}
-        totalPage={1}
-        onPageChange={() => {}}
+        perfumes={currentPerfumes}
+        currentPage={currentPage}
+        totalPage={totalPage}
+        onPageChange={setCurrentPage}
         onPerfumeClick={handlePerfumeClick} 
       />
       {/* <div className="mt-8 flex justify-center">

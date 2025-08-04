@@ -18,7 +18,9 @@ export const followListingService = async (id: number) => {
 }
 
 export const followUserRegistService = async (userId: number, followerUserId: number) => {
-  if (userId === followerUserId) throw new Error('자기 자신을 팔로우할 수 없습니다.');
+  if (userId === followerUserId) {
+    throw new Error("자기 자신을 팔로우할 수 없습니다.");
+  };
 
   // 이미 팔로우했는지 확인
   const existing = await prisma.followingList.findFirst({
