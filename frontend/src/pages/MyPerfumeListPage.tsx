@@ -5,9 +5,16 @@ import UserProfileSection from "@/components/UserProfileSection";
 import { Product } from "@/components/ProductCard";
 import axios from 'axios';
 
+interface UserProfile {
+  nickname: string;
+  email: string;
+  profileImageUrl: string;
+}
+
 const MyPerfumeListPage: React.FC = () => {
   const navigate = useNavigate();
   const [perfumes, setPerfumes] = useState<Product[]>([]);
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -15,46 +22,74 @@ const MyPerfumeListPage: React.FC = () => {
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
-    fetchMyPerfumes();
-  }, []);
-
-  const fetchMyPerfumes = async () => {
-    setLoading(true);
-    setError(null);
     const token = sessionStorage.getItem("token");
+    const user_id = sessionStorage.getItem("user_id");
 
-    if (!token) {
+    if (!token || !user_id) {
       setError("로그인이 필요합니다.");
       setLoading(false);
       return;
     }
 
-    try {
-      const response = await axios.get('http://localhost:4000/perfumes', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get('http://localhost:4000/users/profile', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      const fetchedPerfumes: Product[] = response.data.map((perfume: any) => ({
-        id: perfume.perfumeId,
-        name: perfume.perfumeName,
-        imageUrl: perfume.images[0]?.url_path || 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image',
-        price: perfume.price,
-        rating: perfume.point,
-        reviews: 0,
-        ingredients: perfume.notes.map((note: any) => note.noteName).join(' | ').split(' | ')
-      }));
+        const userData = response.data;
+        setUser({
+          nickname: userData.nickname,
+          email: userData.email,
+          profileImageUrl: userData.profileImageUrl || 'https://placehold.co/300x300?text=No+Image',
+        });
+      } catch (err) {
+        console.error("사용자 정보를 불러오는 데 실패했습니다:", err);
+        setError("사용자 정보를 불러오는 데 실패했습니다.");
+      }
+    };
 
-      setPerfumes(fetchedPerfumes);
-      setTotalPage(1);
-    } catch (err: any) {
-      console.error("향수 리스트를 가져오는 데 실패했습니다:", err);
-      setError("향수 목록을 가져오는 데 실패했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchMyPerfumes = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await axios.get('http://localhost:4000/perfumes/public');
+        const allPerfumes = response.data.data;
+
+        // user_id는 문자열이므로 숫자 변환 필요
+        const filtered = allPerfumes.filter(
+          (perfume: any) => perfume.userId?.toString() === user_id
+        );
+
+        // **수정:** 네가 제공한 JSON 데이터 구조에 맞게 매핑 로직 변경
+        const fetchedPerfumes: Product[] = filtered.map((perfume: any) => ({
+          id: perfume.perfumeId,
+          name: perfume.perfumeName,
+          imageUrl: perfume.images?.[0]?.url_path || 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image',
+          price: perfume.price || 0,
+          rating: perfume.point || 0,
+          reviews: perfume.reviews?.length || 0,
+          ingredients: perfume.notes?.map((note: any) => note.noteName) || []
+        }));
+
+        setPerfumes(fetchedPerfumes);
+        setTotalPage(1);
+      } catch (err: any) {
+        console.error("향수 리스트를 가져오는 데 실패했습니다:", err);
+        setError("향수 목록을 가져오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    // 두 API를 모두 호출합니다.
+    fetchUserInfo();
+    fetchMyPerfumes();
+
+  }, []);
 
   const handlePerfumeClick = (id: string) => {
     navigate(`/perfumes/${id}`);
@@ -70,13 +105,18 @@ const MyPerfumeListPage: React.FC = () => {
 
   return (
     <div>
-      <UserProfileSection
-        profileImageUrl="https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg"
-        nickname="testUser"
-        email="test@gmail.com"
-        isCurrentUser={true}
-        onEditProfile={handleEditProfileClick}
-      />
+      {user ? (
+        <UserProfileSection
+          profileImageUrl={user.profileImageUrl}
+          nickname={user.nickname}
+          email={user.email}
+          isCurrentUser={true}
+          onEditProfile={handleEditProfileClick}
+        />
+      ) : (
+        <div className="text-center mt-10">사용자 정보를 불러오는 중...</div>
+      )}
+
       {loading ? (
         <div className="text-center mt-10">로딩 중...</div>
       ) : error ? (

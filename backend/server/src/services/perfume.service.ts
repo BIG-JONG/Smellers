@@ -157,19 +157,11 @@ export const getMyPerfumesService = async (userId: number) => {
       userId: userId,
       perfumeStatus: 'Y',  // 예: 삭제된 건 빼고
     },
-    select: {
-      images: {
-        select: {
-           url_path: true,
-        }
-      },
-      notes: {
-        select: {
-          noteType: true,
-          noteName: true,
-        },
-      },
-    }
+    include: {
+      images: true,
+      notes: true,
+    },
+    
   });
 }
 
