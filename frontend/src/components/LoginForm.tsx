@@ -25,7 +25,7 @@ function LoginForm() {
         const { token, user_id } = res.data;
         
         sessionStorage.setItem('token', token);
-        sessionStorage.setItem('user_id', user_id);
+        sessionStorage.setItem('user_id', JSON.stringify(user_id));
 
         setAlertType("success")
         setShowAlert(true)

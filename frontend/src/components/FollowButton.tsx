@@ -12,7 +12,7 @@ const FollowButton: React.FC<FollowButtonProps> = ({ isFollowing, onClick, disab
     <Button
       onClick={onClick}
       disabled={disabled}
-      className={isFollowing ? "bg-gray-300 text-gray-800 hover:bg-gray-400" : "bg-blue-500 text-white hover:bg-blue-600"}
+      className={isFollowing ? "filled" : "outline"}
     >
       {isFollowing ? '팔로잉' : '팔로우'}
     </Button>
