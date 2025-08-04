@@ -103,7 +103,8 @@ export const updatePerfume = async (perfume_id: number, data: any, userId: numbe
   //const updatedPerfume = await prisma.$transaction(transactionSteps);
   const [, , updatedPerfume] = await prisma.$transaction(transactionSteps);
   console.log('향수 수정 완료:', updatedPerfume);
-  return updatedPerfume;
+  const perfumeup = await prisma.perfumeInfo.findUnique({ where: { perfumeId: perfume_id } });
+  return perfumeup;
 };
 
 // 향수 상세 조회
