@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function LoginForm() {
+  
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showAlert, setShowAlert] = useState(false);
@@ -21,13 +22,20 @@ function LoginForm() {
         password
       })
       if(res.status ===200){
+        const { token, user_id } = res.data;
+        
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('user_id', user_id);
+
         setAlertType("success")
         setShowAlert(true)
+
         setTimeout(()=>{
           navigate('/')
         },1000)
       }
-    }catch(err){
+    }catch(err:any){
+      console.error("서버 응답 오류:", err.response?.data || err.message); 
       setAlertType("error")
       setShowAlert(true);
       setTimeout(()=> setShowAlert(false), 2000)
