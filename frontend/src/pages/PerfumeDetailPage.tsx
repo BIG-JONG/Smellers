@@ -1,33 +1,67 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PerfumeDetailSection from "@/components/PerfumeDetailSection";
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+
+function mapPerfumeData(raw:any){
+  return{
+    id:String(raw.perfume_id),
+    imageUrl:raw.images?.[0]?.url_path ??'',
+    name:raw.perfumeName, 
+    brand:raw.brandName, 
+    price:raw.price, 
+    topNotes: raw.notes?.filter((n: any) => n.noteType === 'TOP').map((n: any) => n.noteName) || [],
+    middleNotes: raw.notes?.filter((n: any) => n.noteType === 'MIDDLE').map((n: any) => n.noteName) || [],
+    baseNotes: raw.notes?.filter((n: any) => n.noteType === 'BASE').map((n: any) => n.noteName) || [],
+    emotionTags: raw.emotionTag ? raw.emotionTag.split(',').map((s: string) => s.trim()) : [],
+    customTags: raw.tag ? raw.tag.split(',').map((s: string) => s.trim()) : [],
+    rating: raw.point,
+    description: raw.content,
+  }
+}
 
 const PerfumeDetailPage:React.FC=()=>{
 
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const {perfume_id} = useParams<{perfume_id:string}>();
+  console.log('useParams perfume_id:', perfume_id);
+  const [perfume, setPerfume] = useState<any>(null)
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("accessToken");
-  //   setIsLoggedIn(!!token);
-  // }, []);
+if (!perfume_id) {
+    console.error('perfume_id가 없습니다.');
+    return;
+  }
 
-  const dummyPerfume = {
-    id: "1",
-    imageUrl: "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg",
-    name: "Chanel No. 5",
-    brand: "Chanel",
-    price: 150000,
-    topNotes: ["Aldehydes", "Ylang-Ylang", "Neroli"],
-    middleNotes: ["Jasmine", "Rose"],
-    baseNotes: ["Sandalwood", "Vetiver", "Vanilla"],
-    emotionTags: ["Elegant", "Classic", "Warm", "Sophisticated"],
-    customTags: ["Daily", "Office"],
-    rating: 4.8,
-    description: "A timeless, floral fragrance known for elegance and style."
-  };
+  if (isNaN(Number(perfume_id))) {
+    console.error('perfume_id가 숫자가 아닙니다:', perfume_id);
+    return;
+  }
+
+  useEffect(() => {
+    const fetchPerfume = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/perfumes/public/${perfume_id}`, {
+          
+          // headers: {
+          //   Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          // },
+        });
+      console.log('API 응답 전체:', response);
+      console.log('response.data:', response.data);
+
+        const mappedData = mapPerfumeData(response.data.data ?? response.data)
+        setPerfume(mappedData);
+      } catch (error) {
+        console.error('향수 상세 조회 실패', error);
+      }
+    };
+    fetchPerfume();
+  }, [perfume_id]);
+
+  if (!perfume) return <div>향수 정보를 불러오지 못했습니다.</div>;
 
   return(
     <div>
-      <PerfumeDetailSection perfume={dummyPerfume} isLoggedIn={true}/>
+      <PerfumeDetailSection perfume={perfume} isLoggedIn={true}/>
     </div>
   )
 }

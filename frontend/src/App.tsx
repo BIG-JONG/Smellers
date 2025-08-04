@@ -54,7 +54,7 @@ function AppContent() {
           <Route path="/perfume/create" element={<PostPerfumePage />} />
           <Route path="/perfumes" element={<PerfumeListPage />} />
           <Route path="/follow" element={<FollowListPage />} />
-          <Route path="/perfumes/:id" element={<PerfumeDetailPage />} />
+          <Route path="/perfumes/:perfume_id" element={<PerfumeDetailPage />} />
           
           <Route path="/user/:nickname" element={<UserPerfumeListPage />} />
         </Routes>
