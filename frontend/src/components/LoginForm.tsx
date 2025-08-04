@@ -13,7 +13,7 @@ function LoginForm() {
   const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
   const navigate = useNavigate();
 
-  const onClickButton = async(e: React.MouseEvent<HTMLButtonElement>) => {
+  const onSubmitForm  = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try{
@@ -32,7 +32,7 @@ function LoginForm() {
 
         setTimeout(()=>{
           navigate('/')
-        },1000)
+        },800)
       }
     }catch(err:any){
       console.error("서버 응답 오류:", err.response?.data || err.message); 
@@ -47,7 +47,9 @@ function LoginForm() {
   };
 
   return (
-    <form className="mt-0 flex flex-col items-center justify-center w-full max-w-screen-md bg-white p-8 rounded"> {/* max-w-3xl -> max-w-screen-md, mt-10 -> mt-4 */}
+    <form 
+      onSubmit={onSubmitForm}
+      className="mt-0 flex flex-col items-center justify-center w-full max-w-screen-md bg-white p-8 rounded"> {/* max-w-3xl -> max-w-screen-md, mt-10 -> mt-4 */}
       <h1 className="text-4xl font-extrabold mb-8 text-center">로그인</h1>
       <InputField
         label="이메일"
@@ -67,7 +69,7 @@ function LoginForm() {
       />
       <div className="h-8" />
 
-      <Button onClick={onClickButton}>로그인</Button>
+      <Button type="submit">로그인</Button>
 
       {showAlert && (
         <div className="mt-4 w-full">
