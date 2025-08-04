@@ -12,7 +12,7 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react-jsx", // 이 부분이 반드시 "react-jsx"여야 합니다.
+        "jsx": "react-jsx", 
 
         /* Linting */
         "strict": true,

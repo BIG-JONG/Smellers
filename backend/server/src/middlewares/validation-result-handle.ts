@@ -24,10 +24,10 @@ export const loginValidator = [
 
 // 향수등록 유효성 검사
 export const postsValidator = [
-  body('perfumeName')
-    .notEmpty().withMessage('향수이름이 없습니다.'),
-  body('content')
-    .notEmpty().withMessage('내용이 없습니다.')
+  // body('perfumeName')
+  //   .notEmpty().withMessage('향수이름이 없습니다.'),
+  // body('content')
+  //   .notEmpty().withMessage('내용이 없습니다.')
 ];
 
 // 향수 조회/삭제 유효성 검사
@@ -41,11 +41,11 @@ export const getPostsValidator = [
 export const putPostsValidator = [
   param('perfume_id')
     .isInt().withMessage('perfume ID는 숫자여야 합니다.')
-    .notEmpty().withMessage('perfume ID가 없습니다.'),
-  body('perfumeName')
-    .notEmpty().withMessage('향수이름이 없습니다.'),
-  body('content')
-    .notEmpty().withMessage('내용이 없습니다.')
+    .notEmpty().withMessage('perfume ID가 없습니다.')
+  // body('perfumeName')
+  //   .notEmpty().withMessage('향수이름이 없습니다.'),
+  // body('content')
+  //   .notEmpty().withMessage('내용이 없습니다.')
 ];
 
 // 유효성 검사 결과 처리 미들웨어
@@ -57,7 +57,7 @@ export const handleValidationResult = (
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const extractedErrors = errors.array().map(err => err.msg);
-    //console.log('Validation Error:', extractedErrors);
+    console.log('Validation Error:', extractedErrors);
     return next(new Error('Inputvalidation'));
   }
  // console.log('Validation passed');
