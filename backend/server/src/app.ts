@@ -5,13 +5,8 @@ import userRoutes from './routes/user.routes';
 import perfumeRoutes from './routes/perfume.routes'; // 향수 API 라우트 추가
 import errorHandler from './middlewares/error-handing.middleware';
 import path from 'path';
-<<<<<<< HEAD
 import followRoutes from './routes/follow.routers';
 import {limiter} from './middlewares/rateLimit.middleware'
-=======
-//import followRoutes from './routes/follow.routers';
-import followRoutes from './routes/follow.routers'
->>>>>>> 1860d66 (fix:팔로우 리스트 조회, 토큰 인증 순서 수정)
 
 const PORT = process.env.PORT || 4000;
 
