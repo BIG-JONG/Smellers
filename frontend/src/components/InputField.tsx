@@ -26,8 +26,6 @@ const InputField: React.FC<InputFieldProps> = ({
   const inputId = id || `input-${label.replace(/\s+/g, '-').toLowerCase()}`;
 
   return (
-    // 이 바깥 div는 여전히 `w-full`을 유지하여 부모 폼의 전체 너비를 차지하게 합니다.
-    // 이렇게 해야 InputField 컴포넌트 자체가 폼 내에서 중앙 정렬될 수 있습니다.
     <div className={`mb-4 w-full ${className || ''}`}>
       <label htmlFor={inputId} className="block text-gray-700 text-sm font-bold mb-2">
         {label}
@@ -49,12 +47,7 @@ const InputField: React.FC<InputFieldProps> = ({
           ${error ? 'ring-2 ring-red-500' : ''}
           focus:ring-2 focus:ring-blue-500
           placeholder-gray-400
-
-          /* !!! 이 부분을 수정합니다 !!! */
-          /* w-full을 제거하고 원하는 고정 픽셀 너비를 지정합니다. */
-          /* 예를 들어, w-[500px] 또는 w-[600px] 등으로 변경해 보세요. */
-          /* 여기서는 600px로 설정해 보겠습니다. */
-          w-[600px] /* <-- 여기에 원하는 픽셀 너비를 직접 입력합니다. */
+          w-[550px]
         `}
       />
       {error && <p className="text-red-500 text-xs italic mt-1">{error}</p>}

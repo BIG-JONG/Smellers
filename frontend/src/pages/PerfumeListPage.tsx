@@ -1,19 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅을 임포트합니다.
+import { useNavigate } from 'react-router-dom';
 import Pagination from "@/components/Pagination";
 import PerfumeListSection from "@/components/PerfumeListSection";
-import UserProfileSection from "@/components/UserProfileSection";
-import { Product } from "@/components/ProductCard"; // Product 타입을 임포트합니다.
+import { Product } from "@/components/ProductCard";
 
-const MyPerfumeListPage:React.FC=()=>{
-  const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
+const PerfumeListPage:React.FC=()=>{
+  const navigate = useNavigate(); // useNavigate 훅.
 
-  // 향수 카드를 클릭했을 때 상세 페이지로 이동하는 함수
+  // 향수 카드를 클릭했을 때 상세 페이지로 이동
   const handlePerfumeClick = (id: string) => {
     navigate(`/perfumes/${id}`); // /perfumes/:id 경로로 이동합니다.
   };
 
-  // ProductCard의 Product 인터페이스에 맞게 더미 데이터를 업데이트합니다.
   const dummyPerfumes: Product[] = [
     {
       id: "1",
@@ -21,8 +19,8 @@ const MyPerfumeListPage:React.FC=()=>{
       imageUrl: "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg",
       price: 150000,
       rating: 4.5,
-      reviews: 120, // reviews 필드 추가
-      ingredients: ["Aldehydes", "Ylang-Ylang", "Neroli"] // ingredients 필드 추가
+      reviews: 120,
+      ingredients: ["Aldehydes", "Ylang-Ylang", "Neroli"]
     },
     {
       id: "2",
@@ -54,23 +52,20 @@ const MyPerfumeListPage:React.FC=()=>{
   ];
 
   return(
-    <div>
-      <UserProfileSection
-        profileImageUrl = "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg"
-        nickname= "testUser"
-        email = "test@gmail.com"
-        isCurrentUser = {true}
-      />
+    <div className="pt-[20px]">
       <PerfumeListSection
-        title="내가 등록한 향수"
-        perfumes={dummyPerfumes} // Product 타입의 더미 데이터 전달
+        title="전체 게시물"
+        perfumes={dummyPerfumes}
         currentPage={1}
         totalPage={1}
         onPageChange={() => {}}
-        onPerfumeClick={handlePerfumeClick} // PerfumeListSection에 클릭 핸들러를 전달합니다.
+        onPerfumeClick={handlePerfumeClick} 
       />
+      {/* <div className="mt-8 flex justify-center">
+        <Pagination currentPage={currentPage} totalPage={totalPage} onPageChange={onPageChange} />
+      </div> */}
     </div>
   )
 }
 
-export default MyPerfumeListPage;
+export default PerfumeListPage;

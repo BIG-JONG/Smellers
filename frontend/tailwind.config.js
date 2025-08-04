@@ -7,5 +7,14 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.text-outline': {
+          color: 'transparent',
+          '-webkit-text-stroke': '1px #1f2937',
+        },
+      });
+    },
+  ],
 }

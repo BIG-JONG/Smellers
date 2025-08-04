@@ -1,12 +1,12 @@
 import React from 'react';
-import logoImage from '../assets/aromabaselogo.png'; // 로고 이미지 경로 (프로젝트 assets 폴더에 있는지 확인)
 
 // Header 컴포넌트의 props 타입 정의
 interface HeaderProps {
   navigate: (path: string) => void;
+  toggleSidebar: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ navigate }) => { // onSidebarToggle, isSidebarOpen 제거
+const Header: React.FC<HeaderProps> = ({ navigate }) => {
   const handleLoginClick = () => {
     navigate('/login');
   };
@@ -24,8 +24,15 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => { // onSidebarToggle, is
       {/* 1. 로고 영역 */}
       <div className="flex items-center">
         {/* 클릭하면 홈 페이지로 이동하는 링크입니다. */}
-        <a href="/" className="flex items-center" onClick={(e) => { e.preventDefault(); navigate('/'); }}> {/* navigate 함수 사용 */}
-          <img src={logoImage} alt="AromaBase Logo" className="h-8 mr-2" />
+        <a
+          href="/"
+          className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10" // 글자 스타일 여기서 지정
+          onClick={(e) => {
+            e.preventDefault();
+            navigate('/');
+          }}
+        >
+          AromaBase
         </a>
       </div>
 
@@ -35,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => { // onSidebarToggle, is
           <input
             type="text"
             placeholder="향수, 브랜드, 노트, 유저 검색..."
-            className="w-full py-2 pl-10 pr-4 rounded-full bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-gray-700"
+            className="w-full py-2 pl-10 pr-4 rounded-full bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-700"
             aria-label="Search"
           />
           {/* 검색 아이콘 (SVG) */}
@@ -61,7 +68,7 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => { // onSidebarToggle, is
         {/* 로그인 버튼 */}
         <button
           onClick={handleLoginClick} // 클릭 시 로그인 페이지로 이동
-          className="text-sm text-gray-600 hover:text-indigo-600 transition-colors duration-200 whitespace-nowrap"
+          className="text-sm text-gray-600 hover:text-black transition-colors duration-200 whitespace-nowrap"
         >
           로그인
         </button>
@@ -74,7 +81,7 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => { // onSidebarToggle, is
         </button>
 
         {/* 프로필 아이콘 (SVG) */}
-        <a href="#" onClick={handleProfileClick} className="text-gray-600 hover:text-indigo-600 transition-colors duration-200">
+        <a href="#" onClick={handleProfileClick} className="text-gray-600 hover:text-black transition-colors duration-200">
           <svg
             className="size-7"
             xmlns="http://www.w3.org/2000/svg"

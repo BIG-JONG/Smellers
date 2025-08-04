@@ -1,6 +1,6 @@
 import React from 'react';
 import Avatar from '@/components/Avatar'; // 아바타 컴포넌트 임포트
-import Button from '@/components/Button'; // 버튼 컴포넌트 임포트 (프로필 수정 버튼용)
+import Button from '@/components/Button'; // 버튼 컴포넌트 임포트 
 import FollowButton from '@/components/FollowButton'; // FollowButton 컴포넌트 임포트
 
 interface UserProfileSectionProps {
@@ -15,6 +15,7 @@ interface UserProfileSectionProps {
   onUnfollow?: () => void;   // 언팔로우 버튼 클릭 시 호출될 함수
   isFollowing?: boolean;     // 현재 프로필의 사용자를 팔로우 중인지 여부
   isFollowActionLoading?: boolean; // 팔로우/언팔로우 액션이 진행 중인지 (버튼 비활성화용)
+  onProfileClick?: () => void;
 }
 
 const UserProfileSection: React.FC<UserProfileSectionProps> = ({

@@ -19,68 +19,76 @@ enum NoteType {
 }
 
 model UserInfo {
-  userId     Int         @id @default(autoincrement()) @map("userId")
-  email      String      @unique @map("email")
-  password   String      @map("password")
-  nickname   String      @map("nickname")
-  userStatus UserStatus  @default(Y) @map("userStatus")
+  userId     Int        @id @default(autoincrement()) @map("user_id")
+  email      String     @unique @map("email")
+  password   String     @map("password")
+  nickname   String     @map("nickname")
+  userStatus UserStatus @default(Y) @map("user_status")
+  profileImg String?   @map("profile_img")
 
-  perfumes   PerfumeInfo[]
-  followings FollowingList[]
+  perfumes PerfumeInfo[]
+  follow FollowingList[] @relation("follow")
+  followed FollowingList[] @relation("followed")
 
-  @@map("UserInfo")
+  @@map("user_info")
 }
 
 model PerfumeInfo {
-  perfumeId     Int         @id @default(autoincrement()) @map("perfumeId")
-  userId        Int         @map("userId")
-  perfumeName   String      @map("perfumeName")
-  brandName     String      @map("brandName")
-  content       String      @map("content")
-  tag           String      @map("tag")
-  emotionTag    String      @map("emotionTag")
-  point         Int         @default(0) @map("point")
-  isPublic      String      @default("N") @map("isPublic")
-  perfumeStatus String      @default("Y") @map("perfumeStatus")
-  createdAt     DateTime    @default(now()) @map("createdAt")
-  updatedAt     DateTime    @updatedAt @map("updatedAt")
+  perfumeId     Int      @id @default(autoincrement()) @map("perfume_id")
+  userId        Int      @map("user_id")
+  perfumeName   String   @map("perfume_name")
+  brandName     String   @map("brand_name")
+  content       String   @map("content")
+  tag           String   @map("tag")
+  emotionTag    String   @map("emotion_tag")
+  point         Int      @default(0) @map("point")
+  price         Int      @map("price")
+  isPublic      String   @default("N") @map("is_public")
+  perfumeStatus String   @default("Y") @map("perfume_status")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
-  user     UserInfo      @relation(fields: [userId], references: [userId])
-  images   PerfumeImg[]
-  notes    PerfumeNote[]
+  user   UserInfo      @relation(fields: [userId], references: [userId])
+  images PerfumeImg[]
+  notes  PerfumeNote[]
 
-  @@map("PerfumeInfo")
+  @@map("perfume_info")
 }
 
 model PerfumeImg {
-  perfumeId Int     @id @map("perfumeId")
-  url       String? @map("url")
+  imgId     Int     @id @default(autoincrement()) @map("img_id")
+  perfumeId Int     @map("perfume_id")
+  url_path       String? @map("url_path")
+  //url_file_name String? @map("url_file_name") 
 
-  perfume   PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
+  perfume PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
 
-  @@map("PerfumeImg")
+  @@map("perfume_img")
 }
 
 model PerfumeNote {
-  pnId      Int       @id @default(autoincrement()) @map("pnId")
-  perfumeId Int       @map("perfumeId")
-  noteType  NoteType  @map("noteType")
-  noteName  String    @map("noteName")
+  pnId      Int      @id @default(autoincrement()) @map("pn_id")
+  perfumeId Int      @map("perfume_id")
+  noteType  NoteType @map("note_type")
+  noteName  String   @map("note_name")
 
-  perfume   PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
+  perfume PerfumeInfo @relation(fields: [perfumeId], references: [perfumeId])
 
-  @@map("PerfumeNote")
+  @@map("perfume_note")
 }
 
 model FollowingList {
-  userId     Int       @id @default(autoincrement()) @map("userId")
-  flowId     Int?      @map("flowId")
-  flowStatus String    @default("Y") @map("flowStatus")
-  createdAt  DateTime  @default(now()) @map("createdAt")
-  updatedAt  DateTime  @updatedAt @map("updatedAt")
+  followId     Int      @id @default(autoincrement()) @map("follow_id")
+  userId       Int      @map("user_id")
+  followerId   Int      @map("follower_id")
+  followStatus String   @default("Y") @map("follow_status")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  user       UserInfo @relation(fields: [userId], references: [userId])
+  
 
-  @@map("FollowingList")
+  follow     UserInfo @relation("follow",fields: [userId], references: [userId])
+  followed UserInfo @relation("followed",fields: [followerId], references: [userId])
+
+  @@map("following_list")
 }
-

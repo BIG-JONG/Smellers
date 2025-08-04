@@ -1,7 +1,6 @@
 import React from 'react';
 import StarRating from '@/components/StarRating';
 
-
 export interface Product {
   id: string;
   imageUrl: string;
@@ -28,17 +27,16 @@ function ProductCard({
 
   const handleClick = () => {
     if (onClick) {
-      onClick(product.id); // prop으로 받은 onClick 함수를 호출합니다.
+      onClick(product.id); // prop으로 받은 onClick 함수를 호출.
     }
   };
 
   return (
     <a
-      // App.tsx에 정의된 라우트 경로와 일치하도록 `/perfumes/${product.id}`로 변경합니다.
       href={`/perfumes/${product.id}`}
       onClick={(e) => {
         e.preventDefault(); // <a> 태그의 기본 동작(페이지 새로고침)을 막습니다.
-        handleClick(); // ProductCardProps로 받은 onClick 함수를 호출합니다.
+        handleClick(); // ProductCardProps로 받은 onClick 함수를 호출.
       }}
       className="block w-60 rounded-md border border-gray-100 shadow-lg shadow-gray-100 bg-white overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-md"
     >
