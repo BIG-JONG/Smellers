@@ -1,19 +1,60 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "./Avatar";
 import InputField from "./InputField";
 import Button from "./Button";
 import Alert from "./Alert";
+import { useNavigate } from "react-router-dom";
+import axios from "axios"; // axios 추가
 
 function EditProfileForm(){
 
     const [imgUrl, setImgUrl] = useState<string|undefined>(undefined)
-    const [email, setEmail] = useState("test.email.com")
+    const [email, setEmail] = useState("") // 초기값을 빈 문자열로 변경
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
     const [nickname, setNickname] = useState("")
 
     const [showAlert, setShowAlert] = useState(false)
     const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
+    const [alertMessage, setAlertMessage] = useState("");
+
+    const navigate = useNavigate();
+
+    // 컴포넌트가 처음 렌더링될 때 사용자 정보를 가져오는 로직
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const token = sessionStorage.getItem("token");
+            const userId = sessionStorage.getItem("user_id"); // user_id 가져오기
+            
+            if (!token || !userId) {
+                navigate("/login");
+                return;
+            }
+            try {
+                // 수정: userId를 사용해 특정 사용자 정보 가져오기
+                const response = await axios.get(`http://localhost:4000/users/${userId}`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                    },
+                });
+
+                if (response.status === 200) {
+                    const data = response.data;
+                    setEmail(data.email);
+                    setNickname(data.nickname);
+                    setImgUrl(data.profileImageUrl);
+                } else {
+                    console.error("사용자 정보 가져오기 실패");
+                    navigate("/login");
+                }
+            } catch (error) {
+                console.error("네트워크 오류:", error);
+                navigate("/login");
+            }
+        };
+
+        fetchUserData();
+    }, [navigate]);
 
     const handleImageChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
         const file = e.target.files?.[0]
@@ -23,17 +64,51 @@ function EditProfileForm(){
         }
     }
 
-    const handleSubmit = (e:React.FormEvent)=>{
+    const handleSubmit = async (e:React.FormEvent)=>{ // async 키워드 추가
         e.preventDefault()
         setShowAlert(false) // 새로운 제출 전에 기존 알림 숨기기
 
-        if(password !==passwordConfirm){
+        if(password !== passwordConfirm){
             setAlertType("error")
+            setAlertMessage("비밀번호가 일치하지 않습니다.")
             setShowAlert(true)
             return;
         }
-        setAlertType("success")
-        setShowAlert(true)
+        
+        try {
+            const token = sessionStorage.getItem("token");
+            const userId = sessionStorage.getItem("user_id");
+
+            if (!token || !userId) {
+                setAlertType("error");
+                setAlertMessage("로그인이 필요합니다.");
+                setShowAlert(true);
+                return;
+            }
+
+            // 수정: PATCH API 호출 로직 추가
+            const res = await axios.put(`http://localhost:4000/users/${userId}`, {
+                nickname,
+                password: password || undefined, // 비밀번호가 비어있으면 보내지 않음
+            }, {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                },
+            });
+
+            if (res.status === 200) {
+                setAlertType("success");
+                setAlertMessage("회원 정보가 성공적으로 변경되었습니다.");
+                setShowAlert(true);
+                setTimeout(() => setShowAlert(false), 2000);
+            }
+        } catch (err: any) {
+            console.error("서버 응답 오류:", err.response?.data || err.message); 
+            setAlertType("error")
+            setAlertMessage("회원 정보 변경에 실패했습니다.");
+            setShowAlert(true);
+            setTimeout(()=> setShowAlert(false), 2000);
+        }
     }
 
     return(
@@ -93,13 +168,12 @@ function EditProfileForm(){
                 <div className={`mt-4 w-full h-12 transition-opacity duration-300 ${showAlert ? 'opacity-100' : 'opacity-0'}`}>
                     <Alert
                         type={alertType}
-                        message={
-                            alertType === "error" ? "회원 정보 변경에 실패했습니다." : "회원 정보가 성공적으로 변경되었습니다."
-                        }
+                        message={alertMessage} // alertMessage state를 사용하도록 변경
                     />
                 </div>
             </form>
         </div>
     )
 }
-export default EditProfileForm
+
+export default EditProfileForm;

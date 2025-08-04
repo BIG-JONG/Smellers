@@ -49,13 +49,15 @@ function AppContent() {
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          
+          {/* MyPerfumeListPage에서 프로필 수정 버튼 클릭 시 이동할 경로 */}
           <Route path="/mypage/info-update" element={<UserInfoUpdatePage />} />
           <Route path="/mypage/perfumes" element={<MyPerfumeListPage />} />
+
           <Route path="/perfume/create" element={<PostPerfumePage />} />
           <Route path="/perfumes" element={<PerfumeListPage />} />
           <Route path="/follow" element={<FollowListPage />} />
           <Route path="/perfumes/:id" element={<PerfumeDetailPage />} />
-          
           <Route path="/user/:nickname" element={<UserPerfumeListPage />} />
         </Routes>
       </Layout>
