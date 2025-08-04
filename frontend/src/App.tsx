@@ -55,7 +55,12 @@ function AppContent() {
           <Route path="/perfume/create" element={<PostPerfumePage />} />
           <Route path="/perfumes" element={<PerfumeListPage />} />
           <Route path="/follow" element={<FollowListPage />} />
+<<<<<<< HEAD
           <Route path="/perfumes/:id" element={<PerfumeDetailPage />} />
+=======
+          <Route path="/perfumes/:perfume_id" element={<PerfumeDetailPage />} />
+          
+>>>>>>> origin/develop
           <Route path="/user/:nickname" element={<UserPerfumeListPage />} />
           {/* 4. 새로 추가된 검색 결과 페이지 라우트 */}
           <Route path="/search" element={<SearchResultsPage />} />
