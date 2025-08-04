@@ -110,6 +110,7 @@ export const getMyPerfumeController = async (req: Request, res: Response): Promi
     }
 
     const myPerfumes = await perfumeService.getMyPerfumesService(userId);
+    console.log(myPerfumes)
     res.status(200).json({ data: myPerfumes });
   } catch (error: any) {
     res.status(500).json({ errorMessage: error.message });
