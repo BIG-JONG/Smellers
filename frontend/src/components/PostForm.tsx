@@ -34,6 +34,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
             setImg(perfumeToEdit.imageUrl);
             setPerfumeName(perfumeToEdit.name);
             setPerfumeBrand(perfumeToEdit.brand);
+            setPerfumePrice(perfumeToEdit.price.toString()); 
             // 모든 노트들을 합쳐서 문자열로 변환
             setTopNote(perfumeToEdit.topNotes.join(", "));
             setMiddleNote(perfumeToEdit.middleNotes.join(", "));
@@ -85,7 +86,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
     };
 
     return (
-        <div className="flex flex-col items-center gap-6 w-full max-w-4xl mx-auto">
+        <div className="flex flex-col items-center gap-6 w-full max-w-4xl mx-auto mt-10">
             <div className="flex w-full gap-6 items-start">
                 <div className="flex flex-col items-center gap-4 w-1/3">
                     <input
@@ -131,7 +132,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                         label="가격"
                         type="text" 
                         value={perfumePrice}
-                        onChange={(e) => setPerfumeBrand(e.target.value)}
+                        onChange={(e) => setPerfumePrice(e.target.value)}
                         placeholder="향수 가격 입력"
                     />
                 </div>
@@ -201,7 +202,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                         취소
                     </Button>
                     <Button className="block" type="submit" onClick={handleSubmit}>
-                        {perfumeToEdit ? "수정 완료" : "등록"}
+                        {perfumeToEdit ? "수정" : "등록"}
                     </Button>
                 </div>
             </div>

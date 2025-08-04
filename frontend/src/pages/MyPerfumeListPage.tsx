@@ -54,7 +54,7 @@ const MyPerfumeListPage:React.FC=()=>{
   ];
 
   return(
-    <div className="p-4 pt-[74px]">
+    <div>
       <UserProfileSection
         profileImageUrl = "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg"
         nickname= "testUser"
