@@ -33,6 +33,4 @@ router.get('/',authenticateToken, getMyPerfumeController);
 
 
 
-
-
 export default router;
