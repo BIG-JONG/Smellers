@@ -26,7 +26,7 @@ const PerfumeDetailPage:React.FC=()=>{
   };
 
   return(
-    <div className="p-4 pt-[74px]">
+    <div>
       <PerfumeDetailSection perfume={dummyPerfume} isLoggedIn={true}/>
     </div>
   )

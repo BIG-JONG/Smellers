@@ -16,6 +16,7 @@ import UserPerfumeListPage from './pages/UserPerfumeListPage';
 import FollowListPage from './pages/FollowListPage';
 import PerfumeDetailPage from './pages/PerfumeDetailPage';
 import MainPage from './pages/MainPage';
+import PerfumeListPage from './pages/PerfumeListPage';
 
 // AppContent 컴포넌트를 Router로 감싸기 위해 별도로 정의
 function AppContent() {
@@ -51,7 +52,7 @@ function AppContent() {
           <Route path="/mypage/info-update" element={<UserInfoUpdatePage />} />
           <Route path="/mypage/perfumes" element={<MyPerfumeListPage />} />
           <Route path="/perfume/create" element={<PostPerfumePage />} />
-          <Route path="/perfumes" element={<UserPerfumeListPage />} />
+          <Route path="/perfumes" element={<PerfumeListPage />} />
           <Route path="/follow" element={<FollowListPage />} />
           <Route path="/perfumes/:id" element={<PerfumeDetailPage />} />
           

@@ -4,6 +4,7 @@ import { authenticateToken } from '../middlewares/auth.middleware';
 import { signUpValidator, loginValidator, handleValidationResult } from '../middlewares/validation-result-handle';
 import { authorizeSelf } from '../middlewares/authorization.middleware';
 import  { upload } from '../middlewares/upload.middleware';
+import { limiter, addRateLimitHeaders } from "../middlewares/rateLimit.middleware";
 
 const router = express.Router();
 
