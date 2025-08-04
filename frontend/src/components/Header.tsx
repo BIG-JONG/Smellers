@@ -7,6 +7,15 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ navigate }) => {
+
+  const token = sessionStorage.getItem('token')
+  const isLoggedIn = !!token
+
+  const handleLogout = ()=>{
+    sessionStorage.clear();
+    navigate('/');
+  }
+
   const handleLoginClick = () => {
     navigate('/login');
   };
@@ -16,14 +25,14 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
   };
 
   const handleProfileClick = () => {
-    navigate('/mypage'); // 실제 마이페이지 경로로 변경 필요
+    navigate('/mypage/perfumes'); // 실제 마이페이지 경로로 변경 필요
   };
 
   return (
     <header className="bg-white shadow-md py-4 px-6 flex items-center justify-between sticky top-0 z-50">
       {/* 1. 로고 영역 */}
       <div className="flex items-center">
-        {/* 클릭하면 홈 페이지로 이동하는 링크입니다. */}
+        {/* 클릭하면 홈 페이지로 이동 */}
         <a
           href="/"
           className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10" // 글자 스타일 여기서 지정
@@ -65,20 +74,40 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
 
       {/* 3. 내비게이션 링크 및 사용자 액션 영역 */}
       <nav className="flex items-center space-x-6 ml-auto">
-        {/* 로그인 버튼 */}
-        <button
-          onClick={handleLoginClick} // 클릭 시 로그인 페이지로 이동
-          className="text-sm text-gray-600 hover:text-black transition-colors duration-200 whitespace-nowrap"
-        >
-          로그인
-        </button>
-        {/* 회원가입 버튼 */}
-        <button
-          onClick={handleRegisterClick} // 클릭 시 회원가입 페이지로 이동
-          className="text-sm px-2 py-2 bg-black text-white rounded-md hover:bg-black transition-colors duration-200 whitespace-nowrap"
-        >
-          회원가입
-        </button>
+      {isLoggedIn ? (
+          <>
+            {/* 로그인 시 보여줄 프로필, 로그아웃 버튼 */}
+            <button
+              onClick={handleProfileClick}
+              className="text-sm text-gray-600 hover:text-black transition-colors duration-200 whitespace-nowrap"
+            >
+              마이페이지
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="text-sm px-2 py-2 bg-black text-white rounded-md hover:bg-black transition-colors duration-200 whitespace-nowrap"
+            >
+              로그아웃
+            </button>
+          </>
+        ) : (
+          <>
+            {/* 로그아웃 상태일 때 로그인, 회원가입 버튼 */}
+            <button
+              onClick={() => navigate('/login')}
+              className="text-sm text-gray-600 hover:text-black transition-colors duration-200 whitespace-nowrap"
+            >
+              로그인
+            </button>
+            <button
+              onClick={() => navigate('/signup')}
+              className="text-sm px-2 py-2 bg-black text-white rounded-md hover:bg-black transition-colors duration-200 whitespace-nowrap"
+            >
+              회원가입
+            </button>
+          </>
+        )}
 
         {/* 프로필 아이콘 (SVG) */}
         <a href="#" onClick={handleProfileClick} className="text-gray-600 hover:text-black transition-colors duration-200">
