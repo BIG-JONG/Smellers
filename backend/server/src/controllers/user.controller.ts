@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { createUser, verifyUser, updateUserById, deleteUserById,getUserById, getUserByNickname } from '../services/user.service';
 import { validationResult } from 'express-validator';
 import { getuid } from 'process';
-
+import { deleteUserImageFiles } from '../utils/deleteFiles';
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
   const { email, password, nickname } = req.body;
@@ -34,7 +34,23 @@ export const updateUser = async (req: Request, res: Response, next: NextFunction
   }
 
   try {
-    await updateUserById(requesterId, { nickname, password });
+    const existingUser = await getUserById(requesterId); // 기존 사용자 정보 조회
+    console.log('기존 사용자 정보:', existingUser);
+    let profileImage: string | undefined;
+
+    //  이미지 파일이 업로드된 경우
+    if (req.file) {
+      profileImage = `${req.file.filename}`;
+      console.log('업로드된 이미지 경로:', profileImage);
+
+      // 기존 이미지 파일이 있다면 삭제
+      if (existingUser.profileImg) {
+        deleteUserImageFiles(existingUser.profileImg);
+        console.log('기존 이미지 파일 삭제 완료');
+      }
+    }
+
+    await updateUserById(requesterId, { nickname, password, ...(profileImage && { profileImage }), });
     res.json({ message: '수정 완료' });
   } catch (err) {
     next(err);

@@ -1,6 +1,7 @@
 import * as bcrypt from 'bcrypt';
 import * as  jwt from 'jsonwebtoken';
 import prisma from '../prisma/client';
+import { deletePerfumeImageFiles } from '../utils/deleteFiles';
 
 // 이메일 중복 확인
 const checkDuplicateEmail = async (email: string) => {
@@ -44,11 +45,12 @@ export const verifyUser = async (email: string, password: string) => {
 };
 
 // 사용자 정보 수정
-export const updateUserById = async (user_id: number, data: { nickname?: string; password?: string }) => {
+export const updateUserById = async (user_id: number, data: { nickname?: string; password?: string; profileImage?: string }) => {
   const updateData: any = {};
 
   if (data.nickname) updateData.nickname = data.nickname;
   if (data.password) updateData.password = await bcrypt.hash(data.password, 10);
+  if (data.profileImage) updateData.profileImg = data.profileImage;
 
   return await prisma.userInfo.update({
     where: { userId: user_id },

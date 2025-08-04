@@ -8,17 +8,17 @@ import { PerfumeSearchParams } from '../types/PerfumeSearchParams';
 export const createPerfume = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
-    // multer로부터 받은 파일들
-    const files = req.files as Express.Multer.File[];
-
-    // 이미지 URL 경로 추출
-    const images = files.map(file => ({
-      url_path: `/uploads/${file.filename}`, // 정적 라우팅 필요
-    }));
-
-    console.log('이미지 경로:', images);
-    console.log('req.body.notes:', req.body.notes);
+    // 이미지 파일이 있는 경우만 처리
    
+    const files = req.files as Express.Multer.File[];
+     let images = undefined;
+    if (files && files.length > 0) {
+      images = files.map((file) => ({
+        url_path: `${file.filename}`,
+      }));
+       console.log('파일 이미지 업로드:', images);
+    }
+
     // notes가 JSON 문자열로 전달되므로 파싱
     const parsedNotes = JSON.parse(req.body.notes || '[]');
 
@@ -27,7 +27,7 @@ export const createPerfume = async (req: Request, res: Response, next: NextFunct
       ...req.body,
       price: Number(req.body.price),
       point: Number(req.body.point),
-      images,
+      ...(images && { images }), // 이미지가 있을 때만 포함
       notes: parsedNotes,
     }, req.user!.user_id);
 
@@ -43,15 +43,18 @@ export const updatePerfume = async (req: Request, res: Response, next: NextFunct
   try {
     const perfumeId = Number(req.params.perfume_id);
 
-    // multer로부터 받은 파일들
+    // 이미지 파일이 있는 경우만 처리
+    let images = undefined;
     const files = req.files as Express.Multer.File[];
+    if (files && files.length > 0) {
+      images = files.map((file) => ({
+        url_path: `${file.filename}`,
+      }));
+       console.log('파일 수정용 이미지 업로드:', images);
+    }
 
-    // 이미지 URL 경로 추출
-    const images = files.map(file => ({
-      url_path: `/uploads/${file.filename}`, // 정적 라우팅 필요
-    }));
 
-    console.log('이미지 경로:', images);
+   
     console.log('req.body.notes:', req.body.notes);
    
     // notes가 JSON 문자열로 전달되므로 파싱
@@ -61,7 +64,7 @@ export const updatePerfume = async (req: Request, res: Response, next: NextFunct
       ...req.body,
       price: Number(req.body.price),
       point: Number(req.body.point),
-      images,
+      ...(images && { images }), // 이미지가 있을 때만 포함
       notes: parsedNotes,
     }, req.user!.user_id);
 
