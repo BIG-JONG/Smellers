@@ -62,18 +62,10 @@ function SignupForm() {
       console.error("회원가입 실패:", error);
     }
   };
-<<<<<<< HEAD
-
-  return (
-    <form className="mt-0 flex flex-col items-center justify-center w-full max-w-full bg-white p-8 rounded">
-      <h1 className="text-4xl font-extrabold mb-8 text-center">회원가입</h1>
-      
-=======
 return (
     <form className="mt-0 flex flex-col items-center justify-center w-full max-w-full bg-white p-8 rounded">
       <h1 className="text-4xl font-extrabold mb-8 text-center">회원가입</h1>
 
->>>>>>> origin/develop
       <InputField
         label="이메일"
         type="email"

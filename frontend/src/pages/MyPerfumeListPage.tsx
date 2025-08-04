@@ -33,7 +33,7 @@ const MyPerfumeListPage: React.FC = () => {
 
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:4000/users/profile', {
+        const response = await axios.get(`http://localhost:4000/perfumes/${user_id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -59,7 +59,6 @@ const MyPerfumeListPage: React.FC = () => {
         const response = await axios.get('http://localhost:4000/perfumes/public');
         const allPerfumes = response.data.data;
 
-        // user_id는 문자열이므로 숫자 변환 필요
         const filtered = allPerfumes.filter(
           (perfume: any) => perfume.userId?.toString() === user_id
         );
