@@ -103,6 +103,7 @@ export const getMyPerfumeController = async (req: Request, res: Response): Promi
   try {
     //헤더에서 id값 가져오기(auth-토큰)
     const userId = req.user?.user_id;
+    console.log(userId)
 
     if (!userId) {
       res.status(401).json({ errorMessage: "no user ID" });

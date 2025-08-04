@@ -16,6 +16,12 @@ import  { upload } from '../middlewares/upload.middleware';
 
 const router = express.Router();
 
+//향수 조건별 검색
+router.post('/search', getSearchPerfume);
+
+//전체공개 향수 검색
+router.get('/public', getPublicPerfumes);
+
 router.post('/', postsValidator, authenticateToken,
    handleValidationResult, upload.array('images',1),createPerfume); // 향수 등록(파일등록 포함)
 router.get('/:perfume_id',getPostsValidator,authenticateToken,handleValidationResult, getPerfumeById); // 상세 조회
@@ -23,13 +29,8 @@ router.put('/:perfume_id', putPostsValidator,authenticateToken,
   handleValidationResult, upload.array('images',1), updatePerfume); // 수정(파일등록 포함)
 router.delete('/:perfume_id',getPostsValidator,authenticateToken, handleValidationResult, deletePerfume); // 삭제
 
-router.get('/',  getMyPerfumeController, authenticateToken, authorizeSelf);
+router.get('/',authenticateToken, getMyPerfumeController);
 
-//향수 조건별 검색
-router.post('/search', getSearchPerfume);
-
-//전체공개 향수 검색
-router.get('/public', getPublicPerfumes);
 
 
 
