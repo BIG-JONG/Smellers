@@ -1,17 +1,26 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Link 컴포넌트를 임포트합니다.
+import { Link } from 'react-router-dom'; 
 
-// Sidebar 컴포넌트가 받을 props를 정의합니다.
 interface SidebarProps {
-  isOpen: boolean; // 사이드바 열림/닫힘 상태
+  isOpen: boolean; 
   onMouseLeave?: () => void; // 사이드바에서 마우스가 벗어났을 때 호출될 함수
-  className?: string; // 외부에서 추가적인 Tailwind CSS 클래스를 받을 수 있도록 유지
+  className?: string; 
+  isLoggedIn:boolean
+  user?:{
+    name:string;
+    email:string;
+    profileImageUrl?:string
+  }
 }
+
+  
 
 function Sidebar({
   isOpen,
   onMouseLeave,
-  className, // props 디스트럭처링에 className을 추가 (사용은 안 하지만 타입 체크를 위해 유지)
+  className,
+  isLoggedIn, 
+  user,
 }: SidebarProps) {
 
   return (
@@ -74,13 +83,40 @@ function Sidebar({
 
           <div>
             <p className="text-xs">
-              <strong className="block font-medium">lee</strong> {/* 실제 사용자 이름으로 동적 변경 필요 */}
-              <span> pp@gmail.com </span> {/* 실제 사용자 이메일로 동적 변경 필요 */}
+              <strong className="block font-medium">lee</strong>
+              <span> pp@gmail.com </span>
             </p>
           </div>
         </Link>
       </div>
     </div>
+    //   <div className="fixed left-0 bottom-0 w-full border-t border-gray-100">
+    //     {isLoggedIn && user ? (
+    //       <Link
+    //         to="/mypage/perfumes"
+    //         className="flex w-full items-center gap-2 bg-white p-4 hover:bg-gray-50"
+    //       >
+    //         <img
+    //           alt="User Profile"
+    //           src={
+    //             user.profileImageUrl
+    //               ? user.profileImageUrl
+    //               : 'https://placehold.co/40x40/cccccc/333333?text=User'
+    //           }
+    //           className="w-10 h-10 rounded-full object-cover"
+    //         />
+    //         <div>
+    //           <p className="text-xs">
+    //             <strong className="block font-medium">{user.name}</strong>
+    //             <span>{user.email}</span>
+    //           </p>
+    //         </div>
+    //       </Link>
+    //     ) : (
+    //      null
+    //     )}
+    //   </div>
+    // </div>
   );
 }
 
