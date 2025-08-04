@@ -10,8 +10,7 @@ export const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
   ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
   handler(req, res) { // 제한 초과 시 콜백 함수 
-    res.status(this.statusCode).json({
-      code: this.statusCode, // statusCode 기본값은 429
+  res.status(429).json({
       message: '1분에 10번만 요청 할 수 있습니다.__kgb',
     });
   },
