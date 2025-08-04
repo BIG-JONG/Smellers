@@ -2,7 +2,7 @@ import { useState } from "react";
 import InputField from "./InputField";
 import Button from "./Button";
 import Alert from "./Alert";
-import { useNavigate } from "react-router-dom"; // 페이지 이동을 위해 추가
+import { useNavigate } from "react-router-dom";
 
 function SignupForm() {
   const [email, setEmail] = useState("");
@@ -11,46 +11,60 @@ function SignupForm() {
   const [nickname, setNickname] = useState("");
 
   const [showAlert, setShowAlert] = useState(false);
-  // Alert 타입 추가 (에러/성공 구분을 위해)
   const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
+  const [alertMessage, setAlertMessage] = useState("");
 
-  const navigate = useNavigate(); // useNavigate 훅 사용
+  const navigate = useNavigate();
 
-  const onClickButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault(); // 폼 제출 시 페이지 새로고침 방지
+  const onClickButton = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
 
-    // 간단한 비밀번호 확인 로직 추가
     if (password !== passwordConfirm) {
       setAlertType("error");
+      setAlertMessage("비밀번호가 일치하지 않습니다.");
       setShowAlert(true);
-      // 에러 메시지 표시 후 2초 뒤 숨김
       setTimeout(() => setShowAlert(false), 2000);
-      return; // 비밀번호 불일치 시 함수 종료
+      return;
     }
 
-    // 실제 회원가입 로직 (예시)
-    // 실제로는 여기에 서버 통신 로직이 들어갑니다.
-    if (email === "test@example.com" && password === "password123") { // 임시 성공 조건
-      setAlertType("success");
-      setShowAlert(true);
-      setTimeout(() => {
-        navigate('/login'); // 회원가입 성공 시 로그인 페이지로 이동
-      }, 1000);
-    } else {
+    try {
+      // 백엔드 API 주소로 변경
+      const response = await fetch("http://localhost:4000/users/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, nickname }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setAlertType("success");
+        setAlertMessage("회원가입이 완료되었습니다!");
+        setShowAlert(true);
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+      } else {
+        // 서버에서 보낸 에러 메시지를 alert에 표시
+        setAlertType("error");
+        setAlertMessage(data.message || "회원가입 실패 (서버 에러)");
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 2000);
+      }
+    } catch (error) {
+      // 네트워크 에러 등 예외 처리
       setAlertType("error");
+      setAlertMessage("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
       setShowAlert(true);
       setTimeout(() => setShowAlert(false), 2000);
+      console.error("회원가입 실패:", error);
     }
-  };
-
-  // 로그인 페이지로 이동하는 함수
-  const handleNavigateToLogin = () => {
-    navigate('/login');
   };
 
   return (
-    // 폼 전체의 너비를 'max-w-full'로 설정하여 부모 div에 꽉 차게 합니다.
-    <form className="mt-0 flex flex-col items-center justify-center w-full max-w-full bg-white p-8 rounded"> {/* max-w-screen-xl -> max-w-full로 변경 */}
+    <form className="mt-0 flex flex-col items-center justify-center w-full max-w-full bg-white p-8 rounded">
       <h1 className="text-4xl font-extrabold mb-8 text-center">회원가입</h1>
       
       <InputField
@@ -93,10 +107,7 @@ function SignupForm() {
 
       {showAlert && (
         <div className="mt-4 w-full">
-          <Alert
-            type={alertType}
-            message={alertType === "error" ? "회원가입 실패 (비밀번호 불일치 등)" : "회원가입 완료"}
-          />
+          <Alert type={alertType} message={alertMessage} />
         </div>
       )}
     </form>
