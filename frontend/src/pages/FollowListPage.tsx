@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import SearchInput from "@/components/SearchInput";
@@ -11,13 +10,16 @@ interface RawUserData {
   createdAt: string;
   updatedAt: string;
   followed: {
+    userId: number;
     nickname: string;
     email: string;
     profileImg: string | null;
     userStatus: "Y" | "N";
   };
 }
+
 interface User {
+  userId: number;
   nickname: string;
   email: string;
   profileImageUrl: string;
@@ -26,13 +28,13 @@ interface User {
 
 const mapRawDataToUser = (rawData: RawUserData[]): User[] => {
   return rawData.map(item => ({
+    userId: item.followed.userId,
     nickname: item.followed.nickname,
     email: item.followed.email,
     profileImageUrl: item.followed.profileImg || 'https://placehold.co/40x40',
     isFollowing: true,
   }));
 };
-
 
 const FollowListPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,7 +51,6 @@ const FollowListPage: React.FC = () => {
 
         if (!token || !userIdString) throw new Error('로그인이 필요, 토큰 없음');
         const userId = JSON.parse(userIdString);
-        console.log('userId:', userId);
 
         const res = await axios.get(`http://localhost:4000/following/userList/${userId}`, {
           headers: {
@@ -57,47 +58,43 @@ const FollowListPage: React.FC = () => {
           }
         });
 
+        res.data.data.forEach((item: any) => {
+          // console.log("~~~~~item.followed:", item.followed);
+          // console.log("!!!!!!!!!!!!!userId:", item.followed.userId);
+      });
+
         const mappedUsers = mapRawDataToUser(res.data.data);
-        console.log(res.data.data)
         setFollowingUsers(mappedUsers);
       } catch (error) {
         console.error('팔로잉 리스트 받아오기 실패', error);
       }
     };
+
     fetchFollowingUsers();
   }, []);
 
-  const handleFollowToggle = useCallback((targetNickname: string) => {
+  const handleFollowToggle = useCallback((targetUserId: number) => {
     setFollowingUsers(prevUsers =>
       prevUsers.map(user =>
-        user.nickname === targetNickname
+        user.userId === targetUserId
           ? { ...user, isFollowing: !user.isFollowing }
           : user
       )
     );
   }, []);
 
-  const handleUserClick = useCallback((nickname: string) => {
-    navigate(`/user/${nickname}`);
+  const handleUserClick = useCallback((nickname: string, userId: number) => {
+    navigate(`/user/${nickname}?userId=${userId}`);
   }, [navigate]);
-  
-  // searchTerm에 따라 필터링된 유저 목록
+
   const filteredUsers = followingUsers.filter(user =>
-    user.nickname && user.nickname.toLowerCase().includes(searchTerm.toLowerCase())
+    user.nickname.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-    // 페이지네이션에 따른 아이템 슬라이스
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
   const pagedUsers = filteredUsers.slice(startIndex, endIndex);
-
-  // 총 페이지 수 계산
   const totalPage = Math.ceil(filteredUsers.length / pageSize);
-
-  // 페이지 변경 핸들러
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
 
   return (
     <div className="mt-10">
@@ -115,18 +112,18 @@ const FollowListPage: React.FC = () => {
             email={user.email}
             isCurrentUser={false}
             isFollowing={user.isFollowing}
-            onFollow={() => handleFollowToggle(user.nickname)}
-            onUnfollow={() => handleFollowToggle(user.nickname)}
-            onProfileClick={() => handleUserClick(user.nickname)}
+            onFollow={() => handleFollowToggle(user.userId)}
+            onUnfollow={() => handleFollowToggle(user.userId)}
+            onProfileClick={() => handleUserClick(user.nickname, user.userId)}
           />
         ))}
       </div>
-      
+
       <Pagination
         pageSize={pageSize}
         totalPage={totalPage}
         currentPage={currentPage}
-        onPageChange={handlePageChange}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

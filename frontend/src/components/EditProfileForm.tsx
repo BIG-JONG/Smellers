@@ -155,7 +155,7 @@ function EditProfileForm(){
                 <InputField
                     className="w-full"
                     label="비밀번호 확인"
-                    type="passwordConfirm"
+                    type="password"
                     value={passwordConfirm}
                     onChange={(e)=>setPasswordConfirm(e.target.value)}
                     placeholder="변경할 비밀번호를 한번 더 입력해주세요."

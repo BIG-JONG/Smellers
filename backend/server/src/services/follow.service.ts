@@ -3,7 +3,7 @@ import prisma from '../prisma/client';
 export const followListingService = async (userId: number) => {
   if (!userId) throw new Error("User ID is required")
 
-   const followings = await prisma.followingList.findMany({
+  const followings = await prisma.followingList.findMany({
     where: {
       userId: userId,
       followStatus: 'Y',
@@ -14,6 +14,7 @@ export const followListingService = async (userId: number) => {
       updatedAt: true,
       followed: {      
         select: {
+          userId: true,       // 여기에 userId 꼭 포함!
           nickname: true,
           email: true,
           profileImg: true,
@@ -65,29 +66,24 @@ export const followUserRegistService = async (userId: number, followerUserId: nu
 };
 
 export const getAllPublicPostsService = async (userId: number) => {
-  // 내가 팔로우한 유저들의 ID 추출
-  const followings = await prisma.followingList.findMany({
-    where: {
-      userId: userId,
-      followStatus: 'Y',
-    },
-    select: {
-      followerId: true,
-    },
-  });
-
-  // follow아이디 배열 분리하기
-  const followingIds = followings.map(f => f.followerId);
-
-  // 그 유저들이 등록한 전체공개 향수글 찾기
+    // 내가 팔로우한 유저들의 ID 추출
   const perfumes = await prisma.perfumeInfo.findMany({
     where: {
-      userId: { in: followingIds },
-      perfumeStatus: 'Y', // 공개된 향수글
+      userId: userId,
+      perfumeStatus: 'Y',
     },
     include: {
       images: true,
       notes: true,
+      user: {
+        select: {
+          userId: true,
+          nickname: true,
+          email: true,
+          profileImg: true,
+          userStatus: true,
+        }
+      }
     },
     orderBy: {
       createdAt: 'desc',
