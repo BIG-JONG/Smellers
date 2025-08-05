@@ -8,7 +8,7 @@ import axios from 'axios';
 interface UserProfile {
   nickname: string;
   email: string;
-  profileImageUrl: string;
+  profileImg: string;
 }
 
 const MyPerfumeListPage: React.FC = () => {
@@ -33,7 +33,7 @@ const MyPerfumeListPage: React.FC = () => {
 
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/perfumes/${user_id}`, {
+        const response = await axios.get(`http://localhost:4000/users/${user_id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -43,8 +43,10 @@ const MyPerfumeListPage: React.FC = () => {
         setUser({
           nickname: userData.nickname,
           email: userData.email,
-          profileImageUrl: userData.profileImg || 'https://placehold.co/300x300?text=No+Image',
-        });
+          profileImg: userData.profileImg
+            ? `http://localhost:4000/uploads/${userData.profileImg}`
+            : 'https://placehold.co/300x300?text=No+Image',
+          });
       } catch (err) {
         console.error("사용자 정보를 불러오는 데 실패했습니다:", err);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
@@ -63,7 +65,6 @@ const MyPerfumeListPage: React.FC = () => {
           (perfume: any) => perfume.userId?.toString() === user_id
         );
 
-        // **수정:** 네가 제공한 JSON 데이터 구조에 맞게 매핑 로직 변경
         const fetchedPerfumes: Product[] = filtered.map((perfume: any) => ({
           id: perfume.perfumeId,
           name: perfume.perfumeName,
@@ -108,7 +109,7 @@ const MyPerfumeListPage: React.FC = () => {
     <div>
       {user ? (
         <UserProfileSection
-          profileImageUrl={user.profileImageUrl}
+          profileImageUrl={user.profileImg}
           nickname={user.nickname}
           email={user.email}
           isCurrentUser={true}

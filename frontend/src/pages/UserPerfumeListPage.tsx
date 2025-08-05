@@ -13,12 +13,12 @@ const UserPerfumeListPage: React.FC = () => {
   const navigate = useNavigate();
   const [perfumes, setPerfumes] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<{ nickname: string; email: string; profileImageUrl: string } | null>(null);
+  const [user, setUser] = useState<{ nickname: string; email: string; profileImg: string } | null>(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     if (!token || !userId) {
-      console.error('❌ 요청 불가: token 또는 userId가 존재하지 않음', { token, userId });
+      console.error(' 요청 불가: token 또는 userId가 존재하지 않음', { token, userId });
       return;
     }
 
@@ -31,7 +31,7 @@ const UserPerfumeListPage: React.FC = () => {
           },
         });
 
-        console.log('✅ 응답 성공:', response.data);
+        console.log('응답 성공:', response.data);
 
         const { userInfo, perfumes } = response.data.data;
 
@@ -40,7 +40,7 @@ const UserPerfumeListPage: React.FC = () => {
           name: perfume.perfumeName,
           imageUrl: perfume.images?.[0]?.url_path
             ? `http://localhost:4000/uploads/${perfume.images[0].url_path}`
-            :'',
+            : 'https://placehold.co/150x150?text=No+Image',
           price: perfume.price || 0,
           rating: perfume.point || 0,
           reviews: perfume.reviews?.length || 0,
@@ -50,7 +50,9 @@ const UserPerfumeListPage: React.FC = () => {
         setUser({
           nickname: userInfo.nickname,
           email: userInfo.email,
-          profileImageUrl: userInfo.profileImg  || 'https://placehold.co/300x300?text=No+Image',
+          profileImg: userInfo.profileImg   
+            ? `http://localhost:4000/uploads/${userInfo.profileImg}`
+            : 'https://placehold.co/300x300?text=No+Image',
         });
 
         setPerfumes(mappedPerfumes);
@@ -72,7 +74,7 @@ const UserPerfumeListPage: React.FC = () => {
     <div className="p-4 pt-[74px]">
       {user ? (
         <UserProfileSection
-          profileImageUrl={user.profileImageUrl}
+          profileImageUrl={user.profileImg}
           nickname={user.nickname}
           email={user.email}
           isCurrentUser={false}

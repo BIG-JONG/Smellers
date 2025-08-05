@@ -8,7 +8,6 @@ import Alert from "./Alert";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-// PerfumeDetailSection 컴포넌트의 타입을 임시로 정의합니다.
 interface PerfumeDetailData {
     id: number;
     imageUrl: string;
@@ -25,9 +24,10 @@ interface PerfumeDetailData {
 
 interface PostFormProps {
     perfumeToEdit?: PerfumeDetailData;
+    onCancel: () => void;
 }
 
-function PostForm({ perfumeToEdit }: PostFormProps) {
+function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
     const [img, setImg] = useState<File | undefined>(undefined);
     const [previewImgUrl, setPreviewImgUrl] = useState<string | undefined>(undefined);
     const [perfumeName, setPerfumeName] = useState("");
@@ -126,7 +126,7 @@ function PostForm({ perfumeToEdit }: PostFormProps) {
 
         const method = perfumeToEdit ? "put" : "post";
         const url = perfumeToEdit 
-            ? `http://localhost:4000/perfumes/${perfumeToEdit.id}`
+            ? `http://localhost:4000/perfumes/${Number(perfumeToEdit.id)}`
             : 'http://localhost:4000/perfumes';
 
         try {
@@ -154,7 +154,7 @@ function PostForm({ perfumeToEdit }: PostFormProps) {
     };
 
     const handleCancel = () => {
-        navigate(-1);
+        onCancel();
     };
 
     return (
