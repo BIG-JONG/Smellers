@@ -1,3 +1,4 @@
+// PerfumeDetailSection.tsx
 import React, { useState } from 'react';
 import ImageCard from './ImageCard';
 import StarRating from './StarRating';
@@ -27,7 +28,6 @@ ChartJS.register(
 );
 
 export interface PerfumeDetailData {
-    // id 타입을 number로 명시적으로 지정
     id: number;
     imageUrl: string;
     name: string;
@@ -43,13 +43,18 @@ export interface PerfumeDetailData {
 }
 
 interface PerfumeDetailSectionProps {
-    perfume: PerfumeDetailData;
+    perfume: PerfumeDetailData | null;
     isLoggedIn: boolean;
 }
 
 const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn }) => {
     const [isEditing, setIsEditing] = useState(false);
     const navigate = useNavigate();
+
+    // perfume 객체가 없거나 id가 유효하지 않으면 아무것도 렌더링하지 않음
+    if (!perfume || isNaN(Number(perfume.id))) {
+        return null;
+    }
 
     const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         e.currentTarget.src = 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image';
@@ -166,6 +171,13 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
     };
 
     const handleDeleteClick = async () => {
+        const perfumeId = Number(perfume.id);
+        if (isNaN(perfumeId) || perfumeId <= 0) {
+            alert("유효하지 않은 향수 ID입니다. 관리자에게 문의하세요.");
+            console.error("삭제하려는 향수의 ID가 유효하지 않습니다:", perfume.id);
+            return;
+        }
+
         if (window.confirm(`${perfume.name} 향수를 정말 삭제하시겠습니까?`)) {
             const token = sessionStorage.getItem("token");
             if (!token) {
@@ -174,13 +186,13 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
             }
 
             try {
-                // DELETE 요청에 perfume.id (number 타입) 전달
-                await axios.delete(`http://localhost:4000/perfumes/${perfume.id}`, {
+                await axios.delete(`http://localhost:4000/perfumes/${perfumeId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     }
                 });
                 alert("향수 삭제 완료!");
+                // 삭제 후 메인 페이지로 이동
                 navigate('/');
             } catch (error) {
                 console.error("향수 삭제 실패", error);
@@ -193,90 +205,88 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
         setIsEditing(false);
     };
 
-    if (!isEditing) {
-        return (
-            <div className="flex flex-col items-center w-full">
-                {/* 향수 상세 정보 상단 섹션 */}
-                <div className="flex flex-col md:flex-row items-start gap-12 md:gap-24 p-6 md:p-12 max-w-4xl mx-auto bg-white rounded-lg">
-                    {/* 왼쪽 이미지 영역 */}
-                    <div className="flex-shrink-0 w-full md:w-1/3 flex justify-center">
-                        <ImageCard src={perfume.imageUrl} alt={perfume.name} onError={handleImageError} />
-                    </div>
-                    {/* 오른쪽 상세 정보 영역 */}
-                    <div className="flex flex-col gap-2 w-full md:w-2/3">
-                        <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200">{perfume.name}</h2>
-                        <p className="mt-2 text-lg font-semibold text-gray-600 dark:text-gray-300">{perfume.brand}</p>
-                        <p className="text-md font-bold text-black dark:text-black">
-                            ₩ {perfume.price.toLocaleString()}
-                        </p>
-                        {perfume.description && (
-                            <p className="mt-5 text-gray-700 dark:text-gray-300 leading-relaxed">
-                                {perfume.description}
-                            </p>
-                        )}
-                        <div className="flex items-center">
-                            <StarRating rating={perfume.rating} maxRating={5} />
-                            <span className="ml-2 text-gray-600">({perfume.rating.toFixed(1)})</span>
-                        </div>
-                        {perfume.emotionTags && perfume.emotionTags.length > 0 && (
-                            <div className="mt-4">
-                                <div className="flex flex-wrap gap-2">
-                                    {perfume.emotionTags.map((tagText, index) => (
-                                        <Tag key={index} text={tagText} colorClasses="bg-blue-100 text-blue-800" />
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                        {perfume.customTags && perfume.customTags.length > 0 && (
-                            <div className="mt-4">
-                                <div className="flex flex-wrap gap-2">
-                                    {perfume.customTags.map((tagText, index) => (
-                                        <Tag key={index} text={tagText} colorClasses="bg-green-100 text-green-800" />
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-                {/* 향의 구성 비율 섹션 */}
-                <div className="w-full max-w-4xl bg-white p-8 rounded-lg mt-8 flex flex-col items-center">
-                    <h3 className="text-xl font-semibold text-gray-800 mb-6">향의 구성 비율</h3>
-                    {allIndividualNotes.length > 0 ? (
-                        <div className="relative w-full" style={{ height: `${allIndividualNotes.length * 35 + 50}px` }}>
-                            <Bar data={noteChartData} options={noteChartOptions} />
-                        </div>
-                    ) : (
-                        <p className="text-gray-500 mt-4">표시할 향료 데이터가 없습니다.</p>
-                    )}
-                    <div className="w-full mt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-700">
-                        <div className="flex items-center">
-                            <span className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: categoryColors.top.bg }}></span>
-                            탑 노트
-                        </div>
-                        <div className="flex items-center">
-                            <span className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: categoryColors.middle.bg }}></span>
-                            미들 노트
-                        </div>
-                        <div className="flex items-center">
-                            <span className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: categoryColors.base.bg }}></span>
-                            베이스 노트
-                        </div>
-                    </div>
-                </div>
-                <div className='flex gap-2 mt-20'>
-                    {isLoggedIn && (
-                        <>
-                            <Button actionType="edit" onClick={handleEditClick}>수정</Button>
-                            <Button actionType='delete' onClick={handleDeleteClick}>삭제</Button>
-                        </>
-                    )}
-                </div>
-                <div className='mt-17 mb-20'/>
-            </div>
-        );
-    } else {
+    // 수정 폼이 켜졌을 때와 꺼졌을 때를 분리하여 렌더링
+    if (isEditing) {
         return <PostForm perfumeToEdit={perfume} onCancel={handleCancelEdit} />;
     }
+
+    // isEditing이 false일 때, 즉 일반적인 상세 페이지를 보여줌
+    return (
+        <div className="flex flex-col items-center w-full">
+            <div className="flex flex-col md:flex-row items-start gap-12 md:gap-24 p-6 md:p-12 max-w-4xl mx-auto bg-white rounded-lg">
+                <div className="flex-shrink-0 w-full md:w-1/3 flex justify-center">
+                    <ImageCard src={perfume.imageUrl} alt={perfume.name} onError={handleImageError} />
+                </div>
+                <div className="flex flex-col gap-2 w-full md:w-2/3">
+                    <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-200">{perfume.name}</h2>
+                    <p className="mt-2 text-lg font-semibold text-gray-600 dark:text-gray-300">{perfume.brand}</p>
+                    <p className="text-md font-bold text-black dark:text-black">
+                        ₩ {perfume.price.toLocaleString()}
+                    </p>
+                    {perfume.description && (
+                        <p className="mt-5 text-gray-700 dark:text-gray-300 leading-relaxed">
+                            {perfume.description}
+                        </p>
+                    )}
+                    <div className="flex items-center">
+                        <StarRating rating={perfume.rating} maxRating={5} />
+                        <span className="ml-2 text-gray-600">({perfume.rating.toFixed(1)})</span>
+                    </div>
+                    {perfume.emotionTags && perfume.emotionTags.length > 0 && (
+                        <div className="mt-4">
+                            <div className="flex flex-wrap gap-2">
+                                {perfume.emotionTags.map((tagText, index) => (
+                                    <Tag key={index} text={tagText} colorClasses="bg-blue-100 text-blue-800" />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    {perfume.customTags && perfume.customTags.length > 0 && (
+                        <div className="mt-4">
+                            <div className="flex flex-wrap gap-2">
+                                {perfume.customTags.map((tagText, index) => (
+                                    <Tag key={index} text={tagText} colorClasses="bg-green-100 text-green-800" />
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+            <div className="w-full max-w-4xl bg-white p-8 rounded-lg mt-8 flex flex-col items-center">
+                <h3 className="text-xl font-semibold text-gray-800 mb-6">향의 구성 비율</h3>
+                {allIndividualNotes.length > 0 ? (
+                    <div className="relative w-full" style={{ height: `${allIndividualNotes.length * 35 + 50}px` }}>
+                        <Bar data={noteChartData} options={noteChartOptions} />
+                    </div>
+                ) : (
+                    <p className="text-gray-500 mt-4">표시할 향료 데이터가 없습니다.</p>
+                )}
+                <div className="w-full mt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-700">
+                    <div className="flex items-center">
+                        <span className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: categoryColors.top.bg }}></span>
+                        탑 노트
+                    </div>
+                    <div className="flex items-center">
+                        <span className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: categoryColors.middle.bg }}></span>
+                        미들 노트
+                    </div>
+                    <div className="flex items-center">
+                        <span className="w-4 h-4 rounded-full mr-2" style={{ backgroundColor: categoryColors.base.bg }}></span>
+                        베이스 노트
+                    </div>
+                </div>
+            </div>
+            <div className='flex gap-2 mt-20'>
+                {isLoggedIn && (
+                    <>
+                        <Button actionType="edit" onClick={handleEditClick}>수정</Button>
+                        <Button actionType='delete' onClick={handleDeleteClick}>삭제</Button>
+                    </>
+                )}
+            </div>
+            <div className='mt-17 mb-20'/>
+        </div>
+    );
 };
 
 export default PerfumeDetailSection;
