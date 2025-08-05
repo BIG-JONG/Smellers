@@ -78,7 +78,9 @@ export const updatePerfume = async (req: Request, res: Response, next: NextFunct
 // 향수 상세 조회
 export const getPerfumeById = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    
     const perfumeId = Number(req.params.perfume_id);
+    console.log(perfumeId)
     const perfume = await perfumeService.getPerfumeById(perfumeId);
     res.json(perfume);
   } catch (err) {
