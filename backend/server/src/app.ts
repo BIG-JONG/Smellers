@@ -8,6 +8,7 @@ import path from 'path';
 import followRoutes from './routes/follow.routers';
 import {limiter} from './middlewares/rateLimit.middleware'
 
+
 const PORT = process.env.PORT || 4000;
 
 dotenv.config({ path: './.env' });

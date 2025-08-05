@@ -20,6 +20,7 @@ import PerfumeListPage from './pages/PerfumeListPage';
 
 // 3. 새로 만든 검색 결과 페이지를 import 합니다.
 import SearchResultsPage from './pages/SearchResultsPage'; 
+import Faq from './components/Faq';
 
 
 // AppContent 컴포넌트를 Router로 감싸기 위해 별도로 정의
@@ -64,6 +65,7 @@ function AppContent() {
           <Route path="/user/:nickname" element={<UserPerfumeListPage />} />
           {/* 4. 새로 추가된 검색 결과 페이지 라우트 */}
           <Route path="/search" element={<SearchResultsPage />} />
+          <Route path="/faq" element={<Faq />} />
         </Routes>
       </Layout>
       <Footer className="mt-auto" />
