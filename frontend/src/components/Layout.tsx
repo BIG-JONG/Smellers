@@ -10,7 +10,7 @@ type LayoutProps = {
 interface UserInfo {
   name: string;
   email: string;
-  profileImageUrl?: string;
+  profileImg?: string;
 }
 
 function Layout({ children }: LayoutProps) {
@@ -36,7 +36,7 @@ function Layout({ children }: LayoutProps) {
             setUserInfo({
               name: res.data.nickname,
               email: res.data.email,
-              profileImageUrl: res.data.profileImageUrl
+              profileImg: res.data.profileImg
             });
           }
         } catch (err) {
