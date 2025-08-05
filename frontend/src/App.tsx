@@ -18,29 +18,23 @@ import PerfumeDetailPage from './pages/PerfumeDetailPage';
 import MainPage from './pages/MainPage';
 import PerfumeListPage from './pages/PerfumeListPage';
 
-// 3. 새로 만든 검색 결과 페이지 import
-import SearchResultsPage from './pages/SearchResultsPage'; 
-import Faq from './components/Faq';
+// 3. 검색 결과 페이지들 import
+import SearchResultsPage from './pages/SearchResultsPage';
+import UserSearchResultsPage from './pages/UserSearchPage'; // 유저 검색 결과 페이지를 추가했습니다.
 
 // AppContent 컴포넌트를 Router로 감싸기 위해 별도로 정의
 function AppContent() {
   const navigate = useNavigate();
 
-  // Header에서 navigate만 사용
   const handleNavigate = useCallback((path: string) => {
     navigate(path);
   }, [navigate]);
   
-  // Header는 자체적으로 사이드바 상태를 관리
-  const toggleSidebar = useCallback(() => {
-  }, []);
-
   return (
     <div className="flex flex-col min-h-screen">
-      {/* 이제 Header에 navigate 함수만 전달합니다. */}
+      {/* Header에 navigate 함수만 전달하고, toggleSidebar는 제거했습니다. */}
       <Header
         navigate={handleNavigate}
-        toggleSidebar={toggleSidebar}
       />
       <Layout>
         <Routes>
@@ -59,8 +53,12 @@ function AppContent() {
           <Route path="/perfumes/:id" element={<PerfumeDetailPage />} />
 
           <Route path="/user/:nickname" element={<UserPerfumeListPage />} />
+          
+          {/* 향수 검색 페이지 라우트 */}
           <Route path="/search" element={<SearchResultsPage />} />
-          <Route path="/faq" element={<Faq />} />
+          
+          {/* 유저 검색 페이지 라우트 - 이 부분을 추가했습니다. */}
+          <Route path="/search/user" element={<UserSearchResultsPage />} />
         </Routes>
       </Layout>
       <Footer className="mt-auto" />
