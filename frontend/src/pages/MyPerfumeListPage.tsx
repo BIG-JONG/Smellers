@@ -43,7 +43,7 @@ const MyPerfumeListPage: React.FC = () => {
         setUser({
           nickname: userData.nickname,
           email: userData.email,
-          profileImageUrl: userData.profileImageUrl || 'https://placehold.co/300x300?text=No+Image',
+          profileImageUrl: userData.profileImg || 'https://placehold.co/300x300?text=No+Image',
         });
       } catch (err) {
         console.error("사용자 정보를 불러오는 데 실패했습니다:", err);
@@ -67,7 +67,9 @@ const MyPerfumeListPage: React.FC = () => {
         const fetchedPerfumes: Product[] = filtered.map((perfume: any) => ({
           id: perfume.perfumeId,
           name: perfume.perfumeName,
-          imageUrl: perfume.images?.[0]?.url_path || 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image',
+          imageUrl: perfume.images?.[0]?.url_path 
+            ? `http://localhost:4000/uploads/${perfume.images[0].url_path}`
+            : 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image',
           price: perfume.price || 0,
           rating: perfume.point || 0,
           reviews: perfume.reviews?.length || 0,

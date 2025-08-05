@@ -25,7 +25,9 @@ const PerfumeListPage:React.FC=()=>{
         const mappedPerfumes = res.data.data.map((item:any)=>({
           id:item.perfumeId.toString(),
           name:item.perfumeName,
-          imageUrl: item.images?.[0]?.url || '', 
+          imageUrl: item.images?.[0]?.url_path
+            ? `http://localhost:4000/uploads/${item.images[0].url_path}`
+            :'',
           price: item.price || 0, 
           ingredients: item.notes?.map((note: any) => note.noteName) || [],
           rating: Number(item.point),

@@ -44,33 +44,33 @@ const FollowListPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchFollowingUsers = async () => {
-      try {
-        const token = sessionStorage.getItem('token');
-        const userIdString = sessionStorage.getItem('user_id');
+  const fetchFollowingUsers = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      const userIdString = sessionStorage.getItem('user_id');
 
-        if (!token || !userIdString) throw new Error('로그인이 필요, 토큰 없음');
-        const userId = JSON.parse(userIdString);
+      if (!token || !userIdString) throw new Error('로그인이 필요, 토큰 없음');
+      const userId = JSON.parse(userIdString);
 
-        const res = await axios.get(`http://localhost:4000/following/userList/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        });
-
-        res.data.data.forEach((item: any) => {
-          // console.log("~~~~~item.followed:", item.followed);
-          // console.log("!!!!!!!!!!!!!userId:", item.followed.userId);
+      const res = await axios.get(`http://localhost:4000/following/userList/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
-        const mappedUsers = mapRawDataToUser(res.data.data);
+      const mappedUsers = mapRawDataToUser(res.data.data).map(user => ({
+        ...user,
+        profileImageUrl: user.profileImageUrl 
+          ? `http://localhost:4000/uploads/${user.profileImageUrl}` 
+          : 'https://placehold.co/40x40'
+      }));
+
         setFollowingUsers(mappedUsers);
       } catch (error) {
         console.error('팔로잉 리스트 받아오기 실패', error);
       }
     };
-
-    fetchFollowingUsers();
+      fetchFollowingUsers();
   }, []);
 
   const handleFollowToggle = useCallback((targetUserId: number) => {
