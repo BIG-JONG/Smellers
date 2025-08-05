@@ -8,7 +8,7 @@ interface SidebarProps {
   user?:{
     name: string;
     email: string;
-    profileImageUrl?: string;
+    profileImg?: string;
   };
   onLogout: () => void;
 }
@@ -19,6 +19,7 @@ function Sidebar({
   isLoggedIn, 
   user,
 }: SidebarProps) {
+console.log('Sidebar user.profileImg:', user?.profileImg);
 
   return (
     <div
@@ -61,6 +62,11 @@ function Sidebar({
               게시판
             </Link>
           </li>
+          <li>
+            <Link to="/faq" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+              FAQ
+            </Link>
+          </li>
         </ul>
       </div>
 
@@ -70,8 +76,8 @@ function Sidebar({
             <Link to="/mypage/perfumes" className="flex w-full items-center gap-2 bg-white p-4 hover:bg-gray-50">
               <img
                 alt="User Profile"
-                src={user.profileImageUrl || 'https://placehold.co/40x40/cccccc/333333?text=User'}
-                className="size-10 rounded-full object-cover"
+                src={user.profileImg ? `http://localhost:4000/uploads/${user.profileImg}` : 'https://placehold.co/40x40/cccccc/333333?text=User'}
+                className="w-10 h-10 rounded-full object-cover"
               />
               <div>
                 <p className="text-xs">
