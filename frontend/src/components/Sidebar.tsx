@@ -19,7 +19,7 @@ function Sidebar({
   isLoggedIn, 
   user,
 }: SidebarProps) {
-console.log('Sidebar user.profileImg:', user?.profileImg);
+// console.log('Sidebar user.profileImg:', user?.profileImg);
 
   return (
     <div
