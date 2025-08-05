@@ -29,9 +29,12 @@ const UserProfileSection: React.FC<UserProfileSectionProps> = ({
   onUnfollow,
   isFollowing,
   isFollowActionLoading,
+  onProfileClick,
 }) => {
   return (
-    <section className="inline-flex flex-col items-center p-8 bg-white rounded-lg">
+    <section className="inline-flex flex-col items-center p-8 bg-white rounded-lg cursor-pointer"
+      onClick = {onProfileClick}
+    >
     {/* <section className="w-full max-w-4xl bg-white p-8 rounded-lg flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8"> */}
       {/* 프로필 이미지 */}
       <div className="mb-4">
