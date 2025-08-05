@@ -93,12 +93,27 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
         setLoading(true);
 
         const token = sessionStorage.getItem("token");
+
         if (!token) {
             setAlertType("error");
             setAlertMessage("로그인이 필요합니다.");
             setShowAlert(true);
             setLoading(false);
             return;
+        }
+
+        // ⭐ 수정된 부분: id가 NaN인지 확인하고, 유효한 숫자인지 검증합니다.
+        const perfumeId = perfumeToEdit?.id;
+        const isEditingMode = perfumeToEdit !== undefined;
+        
+        if (isEditingMode) {
+            if (perfumeId === undefined || isNaN(Number(perfumeId))) {
+                setAlertType("error");
+                setAlertMessage("수정할 향수 정보가 유효하지 않습니다.");
+                setShowAlert(true);
+                setLoading(false);
+                return;
+            }
         }
         
         const notes = [
@@ -110,23 +125,22 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
         const formData = new FormData();
         formData.append("perfumeName", perfumeName);
         formData.append("brandName", perfumeBrand);
-        formData.append("price", perfumePrice);
+        formData.append("price", String(perfumePrice));
         formData.append("content", description);
         formData.append("tag", parseTags(tag).join(','));
         formData.append("emotionTag", parseTags(emotion).join(','));
         formData.append("isPublic", "Y");
         formData.append("perfumeStatus", "Y");
         formData.append("notes", JSON.stringify(notes));
-        // 임시 방편으로 point 필드를 추가
-        formData.append("point", "0"); 
+        formData.append("point", String(0)); 
 
         if (img) {
             formData.append("images", img);
         }
 
-        const method = perfumeToEdit ? "put" : "post";
-        const url = perfumeToEdit 
-            ? `http://localhost:4000/perfumes/${Number(perfumeToEdit.id)}`
+        const method = isEditingMode ? "put" : "post";
+        const url = isEditingMode 
+            ? `http://localhost:4000/perfumes/${perfumeId}`
             : 'http://localhost:4000/perfumes';
 
         try {
@@ -139,14 +153,14 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
 
             if (res.status === 201 || res.status === 200) {
                 setAlertType("success");
-                setAlertMessage(perfumeToEdit ? "향수 정보가 성공적으로 수정되었습니다." : "향수 정보가 성공적으로 등록되었습니다.");
+                setAlertMessage(isEditingMode ? "향수 정보가 성공적으로 수정되었습니다." : "향수 정보가 성공적으로 등록되었습니다.");
                 setShowAlert(true);
                 setTimeout(() => navigate('/'), 2000);
             }
         } catch (err: any) {
             console.error("서버 응답 오류:", err.response?.data || err.message);
             setAlertType("error");
-            setAlertMessage(perfumeToEdit ? "향수 정보 수정에 실패했습니다." : "향수 정보 등록에 실패했습니다.");
+            setAlertMessage(isEditingMode ? "향수 정보 수정에 실패했습니다." : "향수 정보 등록에 실패했습니다.");
             setShowAlert(true);
         } finally {
             setLoading(false);
