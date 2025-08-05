@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import UserProfileSection from "@/components/UserProfileSection";
 import PerfumeListSection from "@/components/PerfumeListSection";
 import { Product } from "@/components/ProductCard";
 import axios from 'axios';
 
 const UserPerfumeListPage: React.FC = () => {
-  const { nickname } = useParams();
   const [searchParams] = useSearchParams();
   const userId = searchParams.get('userId');
 
