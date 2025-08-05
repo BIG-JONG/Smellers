@@ -31,9 +31,7 @@ router.put('/:perfume_id', putPostsValidator,authenticateToken,
   handleValidationResult, upload.array('images',1), updatePerfume); // 수정(파일등록 포함)
 router.delete('/:perfume_id',getPostsValidator,authenticateToken, handleValidationResult, deletePerfume); // 삭제
 
-
 router.get('/', authenticateToken, getMyPerfumeController);
-
 
 
 export default router;

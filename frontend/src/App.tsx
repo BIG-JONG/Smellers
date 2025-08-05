@@ -17,26 +17,27 @@ import FollowListPage from './pages/FollowListPage';
 import PerfumeDetailPage from './pages/PerfumeDetailPage';
 import MainPage from './pages/MainPage';
 import PerfumeListPage from './pages/PerfumeListPage';
-import Faq from './components/Faq';
+
+// 3. 새로 만든 검색 결과 페이지를 import 합니다.
+import SearchResultsPage from './pages/SearchResultsPage'; 
+
 
 // AppContent 컴포넌트를 Router로 감싸기 위해 별도로 정의
 function AppContent() {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // 사이드바 토글 함수
   const toggleSidebar = useCallback(() => {
     setIsSidebarOpen(prev => !prev);
   }, []);
 
-  // 사이드바 닫기 함수 (마우스 이탈 시 사용)
   const closeSidebar = useCallback(() => {
     setIsSidebarOpen(false);
   }, []);
 
   const handleNavigate = useCallback((path: string) => {
     navigate(path);
-    closeSidebar(); // 페이지 이동 시 사이드바 닫기
+    closeSidebar();
   }, [navigate, closeSidebar]);
 
   return (
@@ -50,15 +51,19 @@ function AppContent() {
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          
           <Route path="/mypage/info-update" element={<UserInfoUpdatePage />} />
           <Route path="/mypage/perfumes" element={<MyPerfumeListPage />} />
           <Route path="/perfume/create" element={<PostPerfumePage />} />
           <Route path="/perfumes" element={<PerfumeListPage />} />
           <Route path="/follow" element={<FollowListPage />} />
+
           <Route path="/perfumes/:perfume_id" element={<PerfumeDetailPage />} />
-          <Route path="/faq" element={<Faq/>}/>
-          
+          <Route path="/perfumes/:id" element={<PerfumeDetailPage />} />
+
           <Route path="/user/:nickname" element={<UserPerfumeListPage />} />
+          {/* 4. 새로 추가된 검색 결과 페이지 라우트 */}
+          <Route path="/search" element={<SearchResultsPage />} />
         </Routes>
       </Layout>
       <Footer className="mt-auto" />

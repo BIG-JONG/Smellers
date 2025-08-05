@@ -162,6 +162,7 @@ export const getMyPerfumesService = async (userId: number) => {
       images: true,
       notes: true,
     },
+    
   });
 }
 

@@ -1,76 +1,139 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅을 임포트합니다.
-import Pagination from "@/components/Pagination";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PerfumeListSection from "@/components/PerfumeListSection";
 import UserProfileSection from "@/components/UserProfileSection";
-import { Product } from "@/components/ProductCard"; // Product 타입을 임포트합니다.
+import { Product } from "@/components/ProductCard";
+import axios from 'axios';
 
-const MyPerfumeListPage:React.FC=()=>{
-  const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
+interface UserProfile {
+  nickname: string;
+  email: string;
+  profileImageUrl: string;
+}
 
-  // 향수 카드를 클릭했을 때 상세 페이지로 이동하는 함수
+const MyPerfumeListPage: React.FC = () => {
+  const navigate = useNavigate();
+  const [perfumes, setPerfumes] = useState<Product[]>([]);
+  const [user, setUser] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    const user_id = sessionStorage.getItem("user_id");
+
+    if (!token || !user_id) {
+      setError("로그인이 필요합니다.");
+      setLoading(false);
+      return;
+    }
+
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/perfumes/${user_id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const userData = response.data;
+        setUser({
+          nickname: userData.nickname,
+          email: userData.email,
+          profileImageUrl: userData.profileImageUrl || 'https://placehold.co/300x300?text=No+Image',
+        });
+      } catch (err) {
+        console.error("사용자 정보를 불러오는 데 실패했습니다:", err);
+        setError("사용자 정보를 불러오는 데 실패했습니다.");
+      }
+    };
+
+    const fetchMyPerfumes = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        const response = await axios.get('http://localhost:4000/perfumes/public');
+        const allPerfumes = response.data.data;
+
+        const filtered = allPerfumes.filter(
+          (perfume: any) => perfume.userId?.toString() === user_id
+        );
+
+        // **수정:** 네가 제공한 JSON 데이터 구조에 맞게 매핑 로직 변경
+        const fetchedPerfumes: Product[] = filtered.map((perfume: any) => ({
+          id: perfume.perfumeId,
+          name: perfume.perfumeName,
+          imageUrl: perfume.images?.[0]?.url_path || 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image',
+          price: perfume.price || 0,
+          rating: perfume.point || 0,
+          reviews: perfume.reviews?.length || 0,
+          ingredients: perfume.notes?.map((note: any) => note.noteName) || []
+        }));
+
+        setPerfumes(fetchedPerfumes);
+        setTotalPage(1);
+      } catch (err: any) {
+        console.error("향수 리스트를 가져오는 데 실패했습니다:", err);
+        setError("향수 목록을 가져오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    // 두 API를 모두 호출합니다.
+    fetchUserInfo();
+    fetchMyPerfumes();
+
+  }, []);
+
   const handlePerfumeClick = (id: string) => {
-    navigate(`/perfumes/${id}`); // /perfumes/:id 경로로 이동합니다.
+    navigate(`/perfumes/${id}`);
   };
 
-  // ProductCard의 Product 인터페이스에 맞게 더미 데이터를 업데이트합니다.
-  const dummyPerfumes: Product[] = [
-    {
-      id: "1",
-      name: "Chanel No. 5",
-      imageUrl: "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg",
-      price: 150000,
-      rating: 4.5,
-      reviews: 120, // reviews 필드 추가
-      ingredients: ["Aldehydes", "Ylang-Ylang", "Neroli"] // ingredients 필드 추가
-    },
-    {
-      id: "2",
-      name: "Dior Sauvage",
-      imageUrl: "https://www.dior.com/couture/var/dior/sites/beauty/img/packshot-product/f/F077752000_F077752000_E01_GHC.jpg",
-      price: 120000,
-      rating: 4.0,
-      reviews: 80,
-      ingredients: ["Bergamot", "Ambroxan"]
-    },
-    {
-      id: "3",
-      name: "Gucci Bloom",
-      imageUrl: "https://www.gucci.com/assets/category_image_square/Bloom_Eau_de_Parfum_for_Her.jpg",
-      price: 130000,
-      rating: 4.0,
-      reviews: 95,
-      ingredients: ["Jasmine", "Tuberose"]
-    },
-    {
-      id: "4",
-      name: "Creed Aventus",
-      imageUrl: "https://www.creedfragrances.co.uk/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/a/v/aventus_100ml.jpg",
-      price: 300000,
-      rating: 4.0,
-      reviews: 150,
-      ingredients: ["Pineapple", "Blackcurrant", "Musk"]
-    },
-  ];
+  const handleEditProfileClick = () => {
+    navigate('/mypage/info-update');
+  };
 
-  return(
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  return (
     <div>
-      <UserProfileSection
-        profileImageUrl = "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg"
-        nickname= "testUser"
-        email = "test@gmail.com"
-        isCurrentUser = {true}
-      />
-      <PerfumeListSection
-        title="내가 등록한 향수"
-        perfumes={dummyPerfumes} // Product 타입의 더미 데이터 전달
-        currentPage={1}
-        totalPage={1}
-        onPageChange={() => {}}
-        onPerfumeClick={handlePerfumeClick} // PerfumeListSection에 클릭 핸들러를 전달합니다.
-      />
+      {user ? (
+        <UserProfileSection
+          profileImageUrl={user.profileImageUrl}
+          nickname={user.nickname}
+          email={user.email}
+          isCurrentUser={true}
+          onEditProfile={handleEditProfileClick}
+        />
+      ) : (
+        <div className="text-center mt-10">사용자 정보를 불러오는 중...</div>
+      )}
+
+      {loading ? (
+        <div className="text-center mt-10">로딩 중...</div>
+      ) : error ? (
+        <div className="text-center mt-10 text-red-500">{error}</div>
+      ) : perfumes.length === 0 ? (
+        <div className="text-center mt-10">등록된 향수가 없습니다.</div>
+      ) : (
+        <PerfumeListSection
+          title="내가 등록한 향수"
+          perfumes={perfumes}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          onPageChange={handlePageChange}
+          onPerfumeClick={handlePerfumeClick}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default MyPerfumeListPage;
