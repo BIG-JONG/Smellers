@@ -1,77 +1,99 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate 훅을 임포트합니다.
-import Pagination from "@/components/Pagination";
-import PerfumeListSection from "@/components/PerfumeListSection";
+import React, { useEffect, useState } from 'react';
+import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import UserProfileSection from "@/components/UserProfileSection";
-import { Product } from "@/components/ProductCard"; // Product 타입을 임포트합니다.
+import PerfumeListSection from "@/components/PerfumeListSection";
+import { Product } from "@/components/ProductCard";
+import axios from 'axios';
 
-const UserPerfumeListPage:React.FC=()=>{
-  const navigate = useNavigate(); // useNavigate 훅을 사용합니다.
+const UserPerfumeListPage: React.FC = () => {
+  const { nickname } = useParams();
+  const [searchParams] = useSearchParams();
+  const userId = searchParams.get('userId');
 
-  // 향수 카드를 클릭했을 때 상세 페이지로 이동하는 함수
+  const navigate = useNavigate();
+  const [perfumes, setPerfumes] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<{ nickname: string; email: string; profileImageUrl: string } | null>(null);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('token');
+    if (!token || !userId) {
+      console.error('❌ 요청 불가: token 또는 userId가 존재하지 않음', { token, userId });
+      return;
+    }
+
+    const fetchPublicPosts = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4000/following/allPublicPost?userId=${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        console.log('✅ 응답 성공:', response.data);
+
+        const { userInfo, perfumes } = response.data.data;
+
+        const mappedPerfumes: Product[] = perfumes.map((perfume: any) => ({
+          id: perfume.perfumeId,
+          name: perfume.perfumeName,
+          imageUrl: perfume.images?.[0]?.url_path || 'https://placehold.co/300x400?text=No+Image',
+          price: perfume.price || 0,
+          rating: perfume.point || 0,
+          reviews: perfume.reviews?.length || 0,
+          ingredients: perfume.notes?.map((note: any) => note.noteName) || []
+        }));
+
+        setUser({
+          nickname: userInfo.nickname,
+          email: userInfo.email,
+          profileImageUrl: userInfo.profileImg  || 'https://placehold.co/300x300?text=No+Image',
+        });
+
+        setPerfumes(mappedPerfumes);
+      } catch (err) {
+        console.error("공개 글 조회 실패", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPublicPosts();
+  }, [userId]);
+
   const handlePerfumeClick = (id: string) => {
-    navigate(`/perfumes/${id}`); // /perfumes/:id 경로로 이동합니다.
+    navigate(`/perfumes/${id}`);
   };
 
-  // ProductCard의 Product 인터페이스에 맞게 더미 데이터를 업데이트합니다.
-  const dummyPerfumes: Product[] = [
-    {
-      id: "1",
-      name: "Chanel No. 5",
-      imageUrl: "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg",
-      price: 150000,
-      rating: 4.5,
-      reviews: 120,
-      ingredients: ["Aldehydes", "Ylang-Ylang", "Neroli"]
-    },
-    {
-      id: "2",
-      name: "Dior Sauvage",
-      imageUrl: "https://www.dior.com/couture/var/dior/sites/beauty/img/packshot-product/f/F077752000_F077752000_E01_GHC.jpg",
-      price: 120000,
-      rating: 4.0,
-      reviews: 80,
-      ingredients: ["Bergamot", "Ambroxan"]
-    },
-    {
-      id: "3",
-      name: "Gucci Bloom",
-      imageUrl: "https://www.gucci.com/assets/category_image_square/Bloom_Eau_de_Parfum_for_Her.jpg",
-      price: 130000,
-      rating: 4.0,
-      reviews: 95,
-      ingredients: ["Jasmine", "Tuberose"]
-    },
-    {
-      id: "4",
-      name: "Creed Aventus",
-      imageUrl: "https://www.creedfragrances.co.uk/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/a/v/aventus_100ml.jpg",
-      price: 300000,
-      rating: 4.0,
-      reviews: 150,
-      ingredients: ["Pineapple", "Blackcurrant", "Musk"]
-    },
-  ];
-
-  return(
+  return (
     <div className="p-4 pt-[74px]">
-      <UserProfileSection
-        profileImageUrl = "https://www.chanel.com/images/w_0.51,h_0.51,c_crop/q_auto:good,f_auto,fl_lossy,dpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg"
-        nickname= "testUser"
-        email = "test@gmail.com"
-        isCurrentUser = {false}
-        isFollowing={true}
-      />
-      <PerfumeListSection
-        title="전체 게시물"
-        perfumes={dummyPerfumes} // Product 타입의 더미 데이터 전달
-        currentPage={1}
-        totalPage={1}
-        onPageChange={() => {}}
-        onPerfumeClick={handlePerfumeClick} // PerfumeListSection에 클릭 핸들러를 전달합니다.
-      />
+      {user ? (
+        <UserProfileSection
+          profileImageUrl={user.profileImageUrl}
+          nickname={user.nickname}
+          email={user.email}
+          isCurrentUser={false}
+          isFollowing={true}
+        />
+      ) : (
+        <div className="text-center">유저 정보를 불러오는 중...</div>
+      )}
+
+      {loading ? (
+        <div className="text-center mt-10">로딩 중...</div>
+      ) : (
+        <PerfumeListSection
+          title="전체 게시물"
+          perfumes={perfumes}
+          currentPage={1}
+          totalPage={1}
+          onPageChange={() => {}}
+          onPerfumeClick={handlePerfumeClick}
+        />
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default UserPerfumeListPage;
