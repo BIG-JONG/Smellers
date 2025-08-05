@@ -8,8 +8,9 @@ function Faq({
 }:FaqProps){
   return(
     <div className="w-full max-w-[900px] mx-auto min-h-[300px] mt-10">
+      <h2 className="text-2xl font-medium flex justify-center font-bold font-black">FAQ</h2>
       {/* 1 */}
-      <details className="group [&_summary::-webkit-details-marker]:hidden max-h-[200px] overflow-y-auto" open>
+      <details className="group [&_summary::-webkit-details-marker]:hidden max-h-[200px] overflow-y-auto mt-10" open>
         <summary
           className="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-gray-50 p-4 text-gray-900 cursor-pointer"
         >

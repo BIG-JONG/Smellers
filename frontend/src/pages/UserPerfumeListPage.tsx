@@ -38,7 +38,9 @@ const UserPerfumeListPage: React.FC = () => {
         const mappedPerfumes: Product[] = perfumes.map((perfume: any) => ({
           id: perfume.perfumeId,
           name: perfume.perfumeName,
-          imageUrl: perfume.images?.[0]?.url_path || 'https://placehold.co/300x400?text=No+Image',
+          imageUrl: perfume.images?.[0]?.url_path
+            ? `http://localhost:4000/uploads/${perfume.images[0].url_path}`
+            :'',
           price: perfume.price || 0,
           rating: perfume.point || 0,
           reviews: perfume.reviews?.length || 0,
