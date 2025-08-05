@@ -4,10 +4,14 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 function mapPerfumeData(raw: any) {
+
+    const imageUrl = raw.images?.[0]?.url_path 
+      ? `http://localhost:4000/uploads/${raw.images[0].url_path}` 
+      : 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image';
+
     return {
-        // ID를 숫자로 변환
         id: Number(raw.perfume_id),
-        imageUrl: raw.images?.[0]?.url_path ?? '',
+        imageUrl: imageUrl,
         name: raw.perfumeName,
         brand: raw.brandName,
         price: raw.price,
