@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom'; 
 
 interface SidebarProps {
@@ -17,7 +16,6 @@ interface SidebarProps {
 function Sidebar({
   isOpen,
   onMouseLeave,
-  className,
   isLoggedIn, 
   user,
 }: SidebarProps) {

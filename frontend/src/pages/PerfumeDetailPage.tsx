@@ -5,7 +5,8 @@ import axios from 'axios';
 
 function mapPerfumeData(raw: any) {
     return {
-        id: String(raw.perfume_id),
+        // ID를 숫자로 변환
+        id: Number(raw.perfume_id),
         imageUrl: raw.images?.[0]?.url_path ?? '',
         name: raw.perfumeName,
         brand: raw.brandName,
@@ -33,9 +34,6 @@ const PerfumeDetailPage: React.FC = () => {
         const fetchPerfume = async () => {
             try {
                 const response = await axios.get(`http://localhost:4000/perfumes/public/${id}`);
-                console.log('API 응답 전체:', response);
-                console.log('response.data:', response.data);
-
                 const mappedData = mapPerfumeData(response.data.data ?? response.data);
                 setPerfume(mappedData);
             } catch (error) {

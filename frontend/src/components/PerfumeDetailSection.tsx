@@ -13,7 +13,9 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import Button from './Button';
-import PostForm from './PostForm'; 
+import PostForm from './PostForm';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(
     CategoryScale,
@@ -25,7 +27,8 @@ ChartJS.register(
 );
 
 export interface PerfumeDetailData {
-    id: string;
+    // id 타입을 number로 명시적으로 지정
+    id: number;
     imageUrl: string;
     name: string;
     brand: string;
@@ -45,7 +48,8 @@ interface PerfumeDetailSectionProps {
 }
 
 const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn }) => {
-    const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태 추가
+    const [isEditing, setIsEditing] = useState(false);
+    const navigate = useNavigate();
 
     const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         e.currentTarget.src = 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image';
@@ -157,25 +161,38 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
         },
     };
 
-    // 수정 버튼 클릭 핸들러
     const handleEditClick = () => {
         setIsEditing(true);
     };
 
-    // 삭제 버튼 클릭 핸들러
-    const handleDeleteClick = () => {
+    const handleDeleteClick = async () => {
         if (window.confirm(`${perfume.name} 향수를 정말 삭제하시겠습니까?`)) {
-            alert("향수 삭제 완료!");
-            // TODO: 실제 삭제 API 호출 및 페이지 이동 로직 추가
+            const token = sessionStorage.getItem("token");
+            if (!token) {
+                alert("로그인이 필요합니다.");
+                return;
+            }
+
+            try {
+                // DELETE 요청에 perfume.id (number 타입) 전달
+                await axios.delete(`http://localhost:4000/perfumes/${perfume.id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    }
+                });
+                alert("향수 삭제 완료!");
+                navigate('/');
+            } catch (error) {
+                console.error("향수 삭제 실패", error);
+                alert("향수 삭제에 실패했습니다. 관리자에게 문의하세요.");
+            }
         }
     };
 
-    // 취소 버튼 클릭 핸들러 (수정 모드 종료)
     const handleCancelEdit = () => {
         setIsEditing(false);
     };
 
-    // 수정 모드가 아닐 때 (상세 페이지)
     if (!isEditing) {
         return (
             <div className="flex flex-col items-center w-full">
@@ -249,8 +266,8 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                 <div className='flex gap-2 mt-20'>
                     {isLoggedIn && (
                         <>
-                          <Button actionType="edit" onClick={handleEditClick}>수정</Button>
-                          <Button actionType='delete' onClick={handleDeleteClick}>삭제</Button>
+                            <Button actionType="edit" onClick={handleEditClick}>수정</Button>
+                            <Button actionType='delete' onClick={handleDeleteClick}>삭제</Button>
                         </>
                     )}
                 </div>
@@ -258,7 +275,6 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
             </div>
         );
     } else {
-        // 수정 모드일 때 (PostForm 컴포넌트 렌더링)
         return <PostForm perfumeToEdit={perfume} onCancel={handleCancelEdit} />;
     }
 };
