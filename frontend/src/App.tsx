@@ -17,8 +17,10 @@ import FollowListPage from './pages/FollowListPage';
 import PerfumeDetailPage from './pages/PerfumeDetailPage';
 import MainPage from './pages/MainPage';
 import PerfumeListPage from './pages/PerfumeListPage';
+
 // 3. 새로 만든 검색 결과 페이지를 import 합니다.
 import SearchResultsPage from './pages/SearchResultsPage'; 
+
 
 // AppContent 컴포넌트를 Router로 감싸기 위해 별도로 정의
 function AppContent() {
@@ -55,7 +57,10 @@ function AppContent() {
           <Route path="/perfume/create" element={<PostPerfumePage />} />
           <Route path="/perfumes" element={<PerfumeListPage />} />
           <Route path="/follow" element={<FollowListPage />} />
+
+          <Route path="/perfumes/:perfume_id" element={<PerfumeDetailPage />} />
           <Route path="/perfumes/:id" element={<PerfumeDetailPage />} />
+
           <Route path="/user/:nickname" element={<UserPerfumeListPage />} />
           {/* 4. 새로 추가된 검색 결과 페이지 라우트 */}
           <Route path="/search" element={<SearchResultsPage />} />
