@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { followListingService, followUserRegistService, getAllPublicPostsService } from "../services/follow.service";
+import prisma from "../prisma/client";
 
 export const followListingController = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -29,13 +30,40 @@ export const followUserRegist = async (req: Request, res: Response): Promise<voi
 };
 
 export const getAllPublicPosts = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const userId = Number(req.user?.user_id); // 토큰에서 추출
+try {
+    const userId = Number(req.query.userId);
+    if (!userId || isNaN(userId)) {
+      res.status(400).json({ message: '유효하지 않은 userId입니다.' });
+      return;
+    }
 
     const perfumes = await getAllPublicPostsService(userId);
 
-    res.status(200).json(perfumes);
+    const userInfo = await prisma.userInfo.findUnique({
+      where: { userId },
+      select: {
+        userId: true,
+        nickname: true,
+        email: true,
+        profileImg: true,
+        userStatus: true,
+      },
+    });
+
+    res.status(200).json({ data: { userInfo, perfumes } });
   } catch (err) {
-    res.status(500).json({ message: '향수 글 조회 실패', error: err });
+    res.status(500).json({ message: '유저 공개 글 조회 실패', error: err });
   }
 };
+
+// export const getAllPublicPosts = async (req: Request, res: Response): Promise<void> => {
+//   try {
+//     const userId = Number(req.user?.user_id); // 토큰에서 추출
+
+//     const perfumes = await getAllPublicPostsService(userId);
+
+//     res.status(200).json(perfumes);
+//   } catch (err) {
+//     res.status(500).json({ message: '향수 글 조회 실패', error: err });
+//   }
+// };
