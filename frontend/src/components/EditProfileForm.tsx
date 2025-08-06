@@ -17,7 +17,8 @@ function EditProfileForm() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
   const [alertMessage, setAlertMessage] = useState("");
-
+  const [img, setImg] = useState<File | null>(null);
+const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,9 +53,12 @@ function EditProfileForm() {
   }, [navigate]);
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+      const token = sessionStorage.getItem("token");
+      const userId = sessionStorage.getItem("user_id");
+      const file = e.target.files?.[0];
 
+    if (!file) return;
+setImg(file);
     // 선택한 이미지 미리보기
     setImgUrl(URL.createObjectURL(file));
 
@@ -62,20 +66,7 @@ function EditProfileForm() {
       const token = sessionStorage.getItem("token");
       if (!token) throw new Error("토큰이 없습니다.");
 
-      const formData = new FormData();
-      formData.append("image", file);
-
-      // 서버에 이미지 업로드
-      const uploadRes = await axios.post("http://localhost:4000/upload/image", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // 서버가 파일명(또는 이미지 경로 일부)을 반환한다고 가정
-      const uploadedFilename = uploadRes.data.url.split("/uploads/")[1]; // "filename.jpg" 형태로 자르기
-      setUploadedImageFilename(uploadedFilename);
+   
     } catch (error) {
       setAlertType("error");
       setAlertMessage("이미지 업로드에 실패했습니다.");
@@ -103,14 +94,15 @@ function EditProfileForm() {
         setShowAlert(true);
         return;
       }
-
+  const formData = new FormData();
+formData.append("nickname", nickname);
+formData.append("password", password);
+if (img) {
+  formData.append("image", img);
+}
+  console.log(img) 
       await axios.put(
-        `http://localhost:4000/users/${userId}`,
-        {
-          nickname,
-          password: password || undefined,
-          profileImage: uploadedImageFilename,  // 서버에서 기대하는 key명
-        },
+        `http://localhost:4000/users/${userId}`, formData,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
