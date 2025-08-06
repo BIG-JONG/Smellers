@@ -92,3 +92,22 @@ export const getAllPublicPostsService = async (userId: number) => {
 
   return perfumes;
 };
+
+export const unfollowingService = async (userId: number, followerId: number) => {
+  const updated = await prisma.followingList.updateMany({
+    where: {
+      userId,
+      followerId,
+      followStatus: 'Y',
+    },
+    data: {
+      followStatus: 'N',
+    },
+  });
+
+  if (updated.count === 0) {
+    throw new Error('언팔로우 대상이 없거나 이미 언팔 상태입니다');
+  }
+
+  return { message: 'Unfollowed successfully' };
+};

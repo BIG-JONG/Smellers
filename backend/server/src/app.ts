@@ -6,7 +6,9 @@ import perfumeRoutes from './routes/perfume.routes';
 import errorHandler from './middlewares/error-handing.middleware';
 import path from 'path';
 import followRoutes from './routes/follow.routers';
-import {limiter} from './middlewares/rateLimit.middleware'
+
+//1분에 50번 요청 제한 - 크롤링 방지
+import { crawlLimiter } from "../src/middlewares/rateLimit.middleware";
 
 
 const PORT = process.env.PORT || 4000;
@@ -22,9 +24,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // 라우팅
-app.use('/users', userRoutes);
-app.use('/perfumes', perfumeRoutes);
-app.use('/following', followRoutes);
+app.use('/users', crawlLimiter, userRoutes);
+app.use('/perfumes', crawlLimiter, perfumeRoutes);
+app.use('/following', crawlLimiter, followRoutes);
 
 //에러 핸들러 미들웨어는 라우팅 이후에 설정
 app.use(errorHandler);
