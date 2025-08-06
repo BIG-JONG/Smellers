@@ -17,7 +17,7 @@ function EditProfileForm() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
   const [alertMessage, setAlertMessage] = useState("");
-
+  const [img, setImg] = useState<File | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,8 +53,9 @@ function EditProfileForm() {
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
 
+    if (!file) return;
+    setImg(file);
     // 선택한 이미지 미리보기
     setImgUrl(URL.createObjectURL(file));
 
@@ -62,20 +63,7 @@ function EditProfileForm() {
       const token = sessionStorage.getItem("token");
       if (!token) throw new Error("토큰이 없습니다.");
 
-      const formData = new FormData();
-      formData.append("image", file);
 
-      // 서버에 이미지 업로드
-      const uploadRes = await axios.post("http://localhost:4000/upload/image", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // 서버가 파일명(또는 이미지 경로 일부)을 반환한다고 가정
-      const uploadedFilename = uploadRes.data.url.split("/uploads/")[1]; // "filename.jpg" 형태로 자르기
-      setUploadedImageFilename(uploadedFilename);
     } catch (error) {
       setAlertType("error");
       setAlertMessage("이미지 업로드에 실패했습니다.");
@@ -103,14 +91,23 @@ function EditProfileForm() {
         setShowAlert(true);
         return;
       }
+      const formData = new FormData();
+      formData.append("nickname", nickname);
+      const changePassword = password ? password : null
+      if (changePassword) {
+        formData.append("password", password);
+      }
+
+
+      if (img) {
+        formData.append("images", img);
+      }
+      for (const [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
 
       await axios.put(
-        `http://localhost:4000/users/${userId}`,
-        {
-          nickname,
-          password: password || undefined,
-          profileImage: uploadedImageFilename,  // 서버에서 기대하는 key명
-        },
+        `http://localhost:4000/users/${userId}`, formData,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -129,65 +126,33 @@ function EditProfileForm() {
 
   return (
     <div className="w-full flex justify-center">
-      <form
-        className="m-10 flex flex-col items-center justify-center w-full max-w-4xl gap-6"
-        onSubmit={handleSubmit}
-      >
+      <form className="m-10 flex flex-col items-center justify-center w-full max-w-4xl gap-6" onSubmit={handleSubmit}>
         <Avatar src={imgUrl} size="xl" />
         <p className="text-center text-lg">
           <span className="font-bold text-xl">{nickname}</span>님, 변경할 정보를 입력해주세요.
         </p>
         <label className="block w-full text-center cursor-pointer bg-gray-100 rounded py-2 hover:bg-gray-200">
           이미지 업로드
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
+          <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
         </label>
 
-        <InputField
-          className="w-full text-gray-500"
-          label="이메일"
-          type="email"
-          value={email}
-          onChange={() => {}}
+        <InputField className="w-full text-gray-500" label="이메일" type="email" value={email} onChange={() => { }}
           readOnly
         />
-        <InputField
-          className="w-full text-gray-600"
-          label="닉네임"
-          type="text"
-          value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
+        <InputField className="w-full text-gray-600" label="닉네임" type="text" value={nickname} onChange={(e) => setNickname(e.target.value)}
           placeholder="변경할 닉네임을 입력해주세요."
         />
-        <InputField
-          className="w-full"
-          label="비밀번호"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+        <InputField className="w-full" label="비밀번호" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
           placeholder="변경할 비밀번호를 입력해주세요."
         />
-        <InputField
-          className="w-full"
-          label="비밀번호 확인"
-          type="password"
-          value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
+        <InputField className="w-full" label="비밀번호 확인" type="password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)}
           placeholder="변경할 비밀번호를 한번 더 입력해주세요."
         />
         <Button type="submit" className="w-full">
           정보 수정
         </Button>
 
-        <div
-          className={`mt-4 w-full h-12 transition-opacity duration-300 ${
-            showAlert ? "opacity-100" : "opacity-0"
-          }`}
-        >
+        <div className={`mt-4 w-full h-12 transition-opacity duration-300 ${showAlert ? "opacity-100" : "opacity-0"}`}>
           <Alert type={alertType} message={alertMessage} />
         </div>
       </form>
