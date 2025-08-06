@@ -1,69 +1,127 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import UserProfileSection from "@/components/UserProfileSection";
 import PerfumeListSection from "@/components/PerfumeListSection";
 import { Product } from "@/components/ProductCard";
 import axios from 'axios';
 
+interface RawUserData {
+  nickname: string;
+  email: string;
+  profileImg: string | null;
+}
+
+interface RawPostData {
+  perfumeId: number;
+  perfumeName: string;
+  price: number;
+  point: number;
+  reviews: any[];
+  notes: any[];
+  images: { url_path: string }[];
+}
+
 const UserPerfumeListPage: React.FC = () => {
   const [searchParams] = useSearchParams();
-  const userId = searchParams.get('userId');
+  const targetUserId = searchParams.get('userId');
 
   const navigate = useNavigate();
   const [perfumes, setPerfumes] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<{ nickname: string; email: string; profileImg: string } | null>(null);
+  const [user, setUser] = useState<RawUserData | null>(null);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [isFollowActionLoading, setIsFollowActionLoading] = useState(false);
+  const [isCurrentUser, setIsCurrentUser] = useState(false);
+
+  const fetchUserData = useCallback(async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      const currentUserIdString = sessionStorage.getItem('user_id');
+
+      if (!token || !targetUserId || !currentUserIdString) {
+        console.error('요청 불가: token, targetUserId 또는 currentUserId가 존재하지 않음', { token, targetUserId, currentUserIdString });
+        setLoading(false);
+        return;
+      }
+      const currentUserId = JSON.parse(currentUserIdString);
+      setIsCurrentUser(currentUserId === parseInt(targetUserId, 10));
+
+      const response = await axios.get(`http://localhost:4000/following/allPublicPost?userId=${targetUserId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('응답 성공:', response.data);
+      const { userInfo, perfumes: serverPerfumes, isFollowing: initialIsFollowing } = response.data.data;
+
+      const mappedPerfumes: Product[] = serverPerfumes.map((perfume: RawPostData) => ({
+        id: perfume.perfumeId,
+        name: perfume.perfumeName,
+        imageUrl: perfume.images?.[0]?.url_path
+          ? `http://localhost:4000/uploads/${perfume.images[0].url_path}`
+          : 'https://placehold.co/150x150?text=No+Image',
+        price: perfume.price || 0,
+        rating: perfume.point || 0,
+        reviews: perfume.reviews?.length || 0,
+        ingredients: perfume.notes?.map((note: any) => note.noteName) || []
+      }));
+
+      setUser({
+        nickname: userInfo.nickname,
+        email: userInfo.email,
+        profileImg: userInfo.profileImg
+      });
+      setPerfumes(mappedPerfumes);
+      if (typeof initialIsFollowing !== 'undefined') {
+        setIsFollowing(initialIsFollowing);
+      }
+    } catch (err) {
+      console.error("데이터를 가져오지 못했습니다.", err);
+      setIsFollowing(false);
+    } finally {
+      setLoading(false);
+    }
+  }, [targetUserId]);
 
   useEffect(() => {
-    const token = sessionStorage.getItem('token');
-    if (!token || !userId) {
-      console.error(' 요청 불가: token 또는 userId가 존재하지 않음', { token, userId });
-      return;
+    if (targetUserId) {
+      fetchUserData();
     }
+  }, [fetchUserData, targetUserId]);
 
-    const fetchPublicPosts = async () => {
-      try {
-        const response = await axios.get(`http://localhost:4000/following/allPublicPost?userId=${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        console.log('응답 성공:', response.data);
-
-        const { userInfo, perfumes } = response.data.data;
-
-        const mappedPerfumes: Product[] = perfumes.map((perfume: any) => ({
-          id: perfume.perfumeId,
-          name: perfume.perfumeName,
-          imageUrl: perfume.images?.[0]?.url_path
-            ? `http://localhost:4000/uploads/${perfume.images[0].url_path}`
-            : 'https://placehold.co/150x150?text=No+Image',
-          price: perfume.price || 0,
-          rating: perfume.point || 0,
-          reviews: perfume.reviews?.length || 0,
-          ingredients: perfume.notes?.map((note: any) => note.noteName) || []
-        }));
-
-        setUser({
-          nickname: userInfo.nickname,
-          email: userInfo.email,
-          profileImg: userInfo.profileImg   
-            ? `http://localhost:4000/uploads/${userInfo.profileImg}`
-            : 'https://placehold.co/300x300?text=No+Image',
-        });
-
-        setPerfumes(mappedPerfumes);
-      } catch (err) {
-        console.error("공개 글 조회 실패", err);
-      } finally {
-        setLoading(false);
+  const handleFollowToggle = useCallback(async (isCurrentlyFollowing: boolean) => {
+    setIsFollowActionLoading(true);
+    try {
+      const token = sessionStorage.getItem('token');
+      if (!token || !targetUserId) {
+        throw new Error('로그인이 필요하거나 대상 유저 ID가 없습니다.');
       }
-    };
+      const targetIdNum = parseInt(targetUserId, 10);
 
-    fetchPublicPosts();
-  }, [userId]);
+      if (isCurrentlyFollowing) {
+        // Unfollow API는 문서에 없지만, 기존의 DELETE를 사용합니다.
+        await axios.get(`http://localhost:4000/following/unfollow/${targetIdNum}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          data: { userId: targetIdNum }
+        });
+        alert('언팔로우 되었습니다.');
+      } else {
+        // Follow API를 문서에 맞춰 GET으로 변경
+        await axios.get(`http://localhost:4000/following/userRegister/${targetIdNum}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        alert('팔로우 되었습니다.');
+      }
+      setIsFollowing(!isCurrentlyFollowing);
+    } catch (error) {
+      console.error('팔로우/언팔로우 실패:', error);
+      alert('작업에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsFollowActionLoading(false);
+    }
+  }, [targetUserId]);
 
   const handlePerfumeClick = (id: string) => {
     navigate(`/perfumes/${id}`);
@@ -73,11 +131,14 @@ const UserPerfumeListPage: React.FC = () => {
     <div className="p-4 pt-[74px]">
       {user ? (
         <UserProfileSection
-          profileImageUrl={user.profileImg}
+          profileImageUrl={user.profileImg || 'https://placehold.co/300x300?text=No+Image'}
           nickname={user.nickname}
           email={user.email}
-          isCurrentUser={false}
-          isFollowing={true}
+          isCurrentUser={isCurrentUser}
+          isFollowing={isFollowing}
+          isFollowActionLoading={isFollowActionLoading}
+          onFollow={() => handleFollowToggle(false)}
+          onUnfollow={() => handleFollowToggle(true)}
         />
       ) : (
         <div className="text-center">유저 정보를 불러오는 중...</div>
@@ -87,7 +148,7 @@ const UserPerfumeListPage: React.FC = () => {
         <div className="text-center mt-10">로딩 중...</div>
       ) : (
         <PerfumeListSection
-          // title="전체 게시물"
+          title={`${user?.nickname || '유저'}의 공개 게시물`}
           perfumes={perfumes}
           currentPage={1}
           totalPage={1}
