@@ -87,7 +87,7 @@ const UserPerfumeListPage: React.FC = () => {
         <div className="text-center mt-10">로딩 중...</div>
       ) : (
         <PerfumeListSection
-          title="전체 게시물"
+          // title="전체 게시물"
           perfumes={perfumes}
           currentPage={1}
           totalPage={1}

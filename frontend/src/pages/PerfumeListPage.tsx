@@ -53,7 +53,7 @@ const PerfumeListPage:React.FC=()=>{
   return(
     <div className="pt-[20px]">
       <PerfumeListSection
-        title="전체 게시물"
+        // title="전체 게시물"
         perfumes={currentPerfumes}
         currentPage={currentPage}
         totalPage={totalPage}

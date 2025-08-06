@@ -11,7 +11,7 @@ function mapPerfumeData(raw: any) {
       : 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image';
 
     return {
-        id: Number(raw.perfume_id),
+        id: Number(raw.perfumeId),
         imageUrl: imageUrl,
         name: raw.perfumeName,
         brand: raw.brandName,
@@ -71,6 +71,7 @@ const PerfumeDetailPage: React.FC = () => {
                 }
 
                 const mappedData = mapPerfumeData(rawData);
+                console.log("매핑된 최종 데이터:", mappedData);
                 setPerfume(mappedData);
                 
             } catch (error) {
