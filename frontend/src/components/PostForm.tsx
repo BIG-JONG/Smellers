@@ -155,7 +155,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                 setAlertType("success");
                 setAlertMessage(isEditingMode ? "향수 정보가 성공적으로 수정되었습니다." : "향수 정보가 성공적으로 등록되었습니다.");
                 setShowAlert(true);
-                setTimeout(() => navigate('/'), 2000);
+                setTimeout(() => navigate('/perfumes'), 2000);
             }
         } catch (err: any) {
             console.error("서버 응답 오류:", err.response?.data || err.message);
