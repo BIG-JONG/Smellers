@@ -3,7 +3,7 @@ import ProductCard, { Product } from './ProductCard'; // Product 타입 임포�
 import Pagination from './Pagination'; // Pagination 컴포넌트 임포트
 
 interface PerfumeListSectionProps {
-  title: string;
+  title?: string;
   perfumes: Product[]; // Product 배열을 받습니다.
   currentPage: number;
   totalPage: number;

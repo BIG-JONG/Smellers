@@ -5,12 +5,12 @@ import MainInfo from "@/components/MainInfo";
 import RecommendPerfume from "@/components/RecommendPerfume";
 
 interface Post {
-  _id: string;
+  perfumeId: number;
   perfumeName: string;
-  brand: string;
+  brandName: string;
   images: { url_path: string }[];
   content: string; 
-  createdAt: string; // 최신순 정렬을 위한 필드
+  createdAt: string;
 }
 
 const MainPage: React.FC = () => {
@@ -24,8 +24,16 @@ const MainPage: React.FC = () => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get('http://localhost:4000/perfumes/public');
-        const fetchedPosts: Post[] = response.data.data;
+        const fetchedPosts: Post[] = response.data.data.map((item: any) => ({
+          perfumeId: item.perfumeId, 
+          perfumeName: item.perfumeName,
+          brandName: item.brandName, 
+          images: item.images,
+          content: item.content,
+          createdAt: item.createdAt,
+        }));
 
+        
         if (fetchedPosts && fetchedPosts.length > 0) {
           // 1. 최신 게시물 5개 불러오기
           // 'createdAt' 필드를 기준으로 내림차순 정렬
@@ -74,9 +82,9 @@ const MainPage: React.FC = () => {
         >
           <RecommendPerfume
             post={{
-              _id: randomPost._id,
+              perfumeId: randomPost.perfumeId,
               perfumeName: randomPost.perfumeName,
-              brand: randomPost.brand,
+              brandName: randomPost.brandName,
               images: randomPost.images,
               content: randomPost.content,
               createdAt: randomPost.createdAt,
@@ -87,17 +95,21 @@ const MainPage: React.FC = () => {
       
       {/* 아래 5개: 가장 최신 게시글 5개를 깔끔하게 일렬 정렬 */}
       <div className="container mx-auto px-4 mt-20">
-        <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">최신 게시글</h2>
+        {/* <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">최신 게시글</h2> */}
         {latestPosts.length > 0 ? (
           <div className="flex justify-center md:justify-between gap-4 flex-wrap md:flex-nowrap">
             {latestPosts.map((post) => (
               <a
-                key={post._id}
-                href={`/perfume-detail/${post._id}`}
+                key={post.perfumeId}
+                href={`/perfumes/${post.perfumeId}`}
                 className="w-full sm:w-1/2 md:w-1/5 p-2"
               >
                 <CurrentPost
-                  src={post.images?.[0]?.url_path || 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image'}
+                  src={
+                    post.images?.[0]?.url_path
+                      ? `http://localhost:4000/uploads/${post.images[0].url_path}`
+                      : 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image'
+                  }
                   datetime={new Date(post.createdAt).toLocaleDateString()}
                   perfumeName={post.perfumeName}
                   content={post.content}

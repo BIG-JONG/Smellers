@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { followListingService, followUserRegistService, getAllPublicPostsService } from "../services/follow.service";
+import { followListingService, followUserRegistService, getAllPublicPostsService, unfollowingService } from "../services/follow.service";
 import prisma from "../prisma/client";
 
 export const followListingController = async (req: Request, res: Response): Promise<void> => {
@@ -53,6 +53,22 @@ try {
     res.status(200).json({ data: { userInfo, perfumes } });
   } catch (err) {
     res.status(500).json({ message: '유저 공개 글 조회 실패', error: err });
+  }
+};
+
+export const unfollowingController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const followerId = parseInt(req.params.id, 10); // 언팔 대상
+    const userId = req.user?.user_id; // 토큰에서 추출된 나 (팔로우한 사람)
+
+    if (!userId || isNaN(followerId)) {
+      throw new Error('필요한 값이 없습니다.');
+    }
+
+    const result = await unfollowingService(userId, followerId);
+    res.status(200).json({ data: result });
+  } catch (error: any) {
+    res.status(401).json({ errorMessage: error.message });
   }
 };
 

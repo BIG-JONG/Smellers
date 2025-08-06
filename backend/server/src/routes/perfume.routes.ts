@@ -10,9 +10,9 @@ import {
 } from '../controllers/perfume.controller';
 import { authenticateToken } from '../middlewares/auth.middleware';
 import { postsValidator, getPostsValidator, putPostsValidator, handleValidationResult } from '../middlewares/validation-result-handle';
-//error나서 제외
-import { authorizeSelf } from '../middlewares/authorization.middleware';
 import { upload } from '../middlewares/upload.middleware';
+//1분에 30번 요청 제한
+import { crawlLimiter } from "../middlewares/rateLimit.middleware";
 
 
 const router = express.Router();
@@ -24,12 +24,12 @@ router.post('/search', getSearchPerfume);
 router.get('/public', getPublicPerfumes);
 
 router.post('/', postsValidator, authenticateToken,
-   handleValidationResult, upload.array('images',1),createPerfume); // 향수 등록(파일등록 포함)
-router.get('/:perfume_id',getPostsValidator,authenticateToken,handleValidationResult, getPerfumeById); // 상세 조회
-router.get('/public/:perfume_id',getPostsValidator,handleValidationResult, getPerfumeById); // 상세 조회
-router.put('/:perfume_id', putPostsValidator,authenticateToken, 
-  handleValidationResult, upload.array('images',1), updatePerfume); // 수정(파일등록 포함)
-router.delete('/:perfume_id',getPostsValidator,authenticateToken, handleValidationResult, deletePerfume); // 삭제
+  handleValidationResult, upload.array('images', 1), createPerfume); // 향수 등록(파일등록 포함)
+router.get('/:perfume_id', getPostsValidator, authenticateToken, handleValidationResult, getPerfumeById); // 상세 조회
+router.get('/public/:perfume_id', getPostsValidator, handleValidationResult, getPerfumeById); // 상세 조회
+router.put('/:perfume_id', putPostsValidator, authenticateToken,
+  handleValidationResult, upload.array('images', 1), updatePerfume); // 수정(파일등록 포함)
+router.delete('/:perfume_id', getPostsValidator, authenticateToken, handleValidationResult, deletePerfume); // 삭제
 
 router.get('/', authenticateToken, getMyPerfumeController);
 

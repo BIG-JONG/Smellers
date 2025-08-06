@@ -4,10 +4,15 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { PerfumeDetailData } from '@/components/PerfumeDetailSection';
 
-function mapPerfumeData(raw: any): PerfumeDetailData {
+function mapPerfumeData(raw: any) {
+
+    const imageUrl = raw.images?.[0]?.url_path 
+      ? `http://localhost:4000/uploads/${raw.images[0].url_path}` 
+      : 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image';
+
     return {
-        id: Number(raw.perfumeId), // ⭐⭐ perfumeId로 수정 ⭐⭐
-        imageUrl: raw.images?.[0]?.url_path ?? '',
+        id: Number(raw.perfumeId),
+        imageUrl: imageUrl,
         name: raw.perfumeName,
         brand: raw.brandName,
         price: raw.price,
@@ -57,7 +62,7 @@ const PerfumeDetailPage: React.FC = () => {
                     rawData = rawData.data;
                 }
                 
-                // ⭐⭐ 여기도 rawData.perfume_id 대신 rawData.perfumeId를 사용해야 합니다. ⭐⭐
+            
                 if (!rawData || isNaN(Number(rawData.perfumeId))) {
                     console.error("서버에서 받은 데이터가 유효하지 않습니다. rawData:", rawData);
                     setPerfume(null);
@@ -66,6 +71,7 @@ const PerfumeDetailPage: React.FC = () => {
                 }
 
                 const mappedData = mapPerfumeData(rawData);
+                console.log("매핑된 최종 데이터:", mappedData);
                 setPerfume(mappedData);
                 
             } catch (error) {
