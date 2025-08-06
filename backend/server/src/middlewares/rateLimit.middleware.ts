@@ -3,15 +3,15 @@ import { Request, Response, NextFunction } from 'express';
 import dayjs from 'dayjs';
 
 //limiter 생성
-export const limiter = rateLimit({
+export const loginLimiter = rateLimit({
   windowMs: 1 * 60 * 1000, // 1 minutes
-  limit: 10, // Limit each IP to 100 requests per `window` (here, per 10 minutes).
+  limit: 5, // Limit each IP to 100 requests per `window` (here, per 10 minutes).
   standardHeaders: 'draft-8', // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
   ipv6Subnet: 56, // Set to 60 or 64 to be less aggressive, or 52 or 48 to be more aggressive
   handler(req, res) { // 제한 초과 시 콜백 함수 
-  res.status(429).json({
-      message: '1분에 10번만 요청 할 수 있습니다.__kgb',
+    res.status(429).json({
+      message: '1분에 5번만 요청 할 수 있습니다.login__kgb',
     });
   },
 });
@@ -30,3 +30,14 @@ export const addRateLimitHeaders = (req: Request, res: Response, next: NextFunct
   }
   next();
 };
+
+//크롤링 방지
+export const crawlLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1분
+  limit: 50, // 1분에 최대 30회 허용
+  standardHeaders: 'draft-8',
+  legacyHeaders: false,
+  message: {
+    message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요. (크롤링 제한)_kgb',
+  },
+});
