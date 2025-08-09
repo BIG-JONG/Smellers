@@ -38,7 +38,7 @@ export const verifyUser = async (email: string, password: string) => {
   }
 
   // 토큰 생성
-  const token = jwt.sign({ user_id : user.userId }, process.env.SECRET_KEY!, { expiresIn: '1d' });
+  const token = jwt.sign({ user_id : user.userId }, process.env.SECRET_KEY!, { expiresIn: '7d' });
   //console.log('verifyUser user_id:', user.userId );
   console.log('토큰 생성:', token);
   return { token, user_id: user.userId };

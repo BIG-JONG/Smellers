@@ -175,7 +175,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
         <div className="flex flex-col items-center gap-6 w-full max-w-4xl mx-auto mt-10">
             <form onSubmit={handleSubmit} className="w-full">
                 <h1 className="text-4xl font-extrabold mb-8 text-center">
-                    {perfumeToEdit ? "향수 수정" : "향수 등록"}
+                    {/* {perfumeToEdit ? "향수 수정" : "향수 등록"} */}
                 </h1>
                 <div className="flex w-full gap-6 items-start">
                     <div className="flex flex-col items-center gap-4 w-1/3">
