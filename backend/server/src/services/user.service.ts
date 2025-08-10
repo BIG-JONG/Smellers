@@ -66,6 +66,7 @@ export const deleteUserById = async (user_id: number) => {
   });
 };
 
+//사용자 상세조회 
 export const getUserById = async (user_id: number) => {
   const user = await prisma.userInfo.findUnique({ where: { userId: user_id } });
   if (!user) throw new Error('UserNotFound');

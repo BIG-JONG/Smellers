@@ -1,5 +1,11 @@
 import express from "express";
-import { followListingController, followUserRegist, getAllPublicPosts, unfollowingController } from "../controllers/follow.controller";
+import {
+  followListingController,
+  followUserRegist,
+  getAllPublicPosts,
+  unfollowingController,
+  checkFollowController
+} from "../controllers/follow.controller";
 import { authenticateToken } from "../middlewares/auth.middleware";
 
 
@@ -16,5 +22,8 @@ router.get('/allPublicPost', authenticateToken, getAllPublicPosts);
 
 //언팔로우
 router.get('/unfollow/:id', authenticateToken, unfollowingController);
+
+//팔로우한 사람 상세페이지에서 팔로우, 팔로잉 여부를 결정 - 0810 19시
+router.get('/check/:id', authenticateToken, checkFollowController);
 
 export default router;
