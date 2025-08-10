@@ -19,6 +19,7 @@ interface RawPostData {
   reviews: any[];
   notes: any[];
   images: { url_path: string }[];
+  perfumeStatus: string;
 }
 
 const UserPerfumeListPage: React.FC = () => {
@@ -56,7 +57,9 @@ const UserPerfumeListPage: React.FC = () => {
       const { userInfo, perfumes: serverPerfumes, isFollowing: initialIsFollowing } = response.data.data;
       console.log('API에서 받은 isFollowing 값:', initialIsFollowing);
 
-      const mappedPerfumes: Product[] = serverPerfumes.map((perfume: RawPostData) => ({
+      const activePerfumes = serverPerfumes.filter((perfume: RawPostData) => perfume.perfumeStatus !== 'N');
+      
+      const mappedPerfumes: Product[] = activePerfumes.map((perfume: RawPostData) => ({
         id: perfume.perfumeId,
         name: perfume.perfumeName,
         imageUrl: perfume.images?.[0]?.url_path

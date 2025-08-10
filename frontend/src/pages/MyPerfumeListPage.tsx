@@ -62,8 +62,8 @@ const MyPerfumeListPage: React.FC = () => {
         const allPerfumes = response.data.data;
 
         const filtered = allPerfumes.filter(
-          (perfume: any) => perfume.userId?.toString() === user_id
-        );
+          (perfume: any) => perfume.userId?.toString() === user_id && perfume.perfumeStatus !== 'N'
+        );
 
         const fetchedPerfumes: Product[] = filtered.map((perfume: any) => ({
           id: perfume.perfumeId,

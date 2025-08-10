@@ -16,7 +16,6 @@ import { Bar } from 'react-chartjs-2';
 import Button from './Button';
 import PostForm from './PostForm';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 ChartJS.register(
     CategoryScale,
@@ -45,11 +44,11 @@ export interface PerfumeDetailData {
 interface PerfumeDetailSectionProps {
     perfume: PerfumeDetailData | null;
     isLoggedIn: boolean;
+    onDelete: () => void;
 }
 
-const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn }) => {
+const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
-    const navigate = useNavigate();
 
     // perfume 객체가 없거나 id가 유효하지 않으면 아무것도 렌더링하지 않음
     if (!perfume || isNaN(Number(perfume.id))) {
@@ -192,8 +191,7 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                     }
                 });
                 alert("향수 삭제 완료!");
-                // 삭제 후 메인 페이지로 이동
-                navigate('/');
+                onDelete();
             } catch (error) {
                 console.error("향수 삭제 실패", error);
                 alert("향수 삭제에 실패했습니다. 관리자에게 문의하세요.");

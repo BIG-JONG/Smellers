@@ -11,6 +11,7 @@ interface Post {
   images: { url_path: string }[];
   content: string; 
   createdAt: string;
+  perfumeStatus:string;
 }
 
 const MainPage: React.FC = () => {
@@ -31,34 +32,31 @@ const MainPage: React.FC = () => {
           images: item.images,
           content: item.content,
           createdAt: item.createdAt,
+          perfumeStatus: item.perfumeStatus,
         }));
 
+        const activePosts = fetchedPosts.filter(post => post.perfumeStatus !== 'N');
         
-        if (fetchedPosts && fetchedPosts.length > 0) {
-          // 1. 최신 게시물 5개 불러오기
-          // 'createdAt' 필드를 기준으로 내림차순 정렬
-          const sortedPosts = [...fetchedPosts].sort(
+        if (activePosts.length > 0) {
+          const sortedPosts = [...activePosts].sort(
             (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
           setLatestPosts(sortedPosts.slice(0, 5));
 
-          // 2. 전체 게시물 중 랜덤 게시물 하나 선택
-          const randomIndex = Math.floor(Math.random() * fetchedPosts.length);
-          setRandomPost(fetchedPosts[randomIndex]);
+          const randomIndex = Math.floor(Math.random() * activePosts.length);
+          setRandomPost(activePosts[randomIndex]);
 
-          setAllPosts(fetchedPosts);
+          setAllPosts(activePosts);
         } else {
           setLatestPosts([]);
           setRandomPost(null);
         }
       } catch (err) {
-        console.error("게시물을 불러오는 데 실패했습니다:", err);
         setError("게시물을 불러오는 데 실패했습니다. 서버 상태를 확인해주세요.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchPosts();
   }, []);
 
@@ -73,7 +71,6 @@ const MainPage: React.FC = () => {
   return (
     <div className="mt-35">
       <MainInfo />
-      {/* 가운데: 전체 게시물 중 랜덤으로 선택된 추천 게시물을 표시 */}
       {randomPost && (
         <a 
           href="https://nonfiction.com/product/detail.html?product_no=640&cate_no=151&display_group=1"
@@ -98,7 +95,9 @@ const MainPage: React.FC = () => {
         {/* <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">최신 게시글</h2> */}
         {latestPosts.length > 0 ? (
           <div className="flex justify-center md:justify-between gap-4 flex-wrap md:flex-nowrap">
-            {latestPosts.map((post) => (
+            {latestPosts
+              .filter(post => post.perfumeStatus !== 'N')
+              .map((post) => (
               <a
                 key={post.perfumeId}
                 href={`/perfumes/${post.perfumeId}`}

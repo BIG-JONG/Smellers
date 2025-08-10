@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PerfumeDetailSection from "@/components/PerfumeDetailSection";
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { PerfumeDetailData } from '@/components/PerfumeDetailSection';
 
@@ -28,6 +28,7 @@ function mapPerfumeData(raw: any) {
 
 const PerfumeDetailPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate(); 
     const [perfume, setPerfume] = useState<PerfumeDetailData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -70,6 +71,13 @@ const PerfumeDetailPage: React.FC = () => {
                     return;
                 }
 
+                  if (rawData.perfumeStatus === 'N') {
+                    console.warn(`향수 ID ${id}는 삭제된 상태입니다.`);
+                    setPerfume(null);
+                    setIsLoading(false);
+                    return;
+                }
+
                 const mappedData = mapPerfumeData(rawData);
                 console.log("매핑된 최종 데이터:", mappedData);
                 setPerfume(mappedData);
@@ -88,6 +96,10 @@ const PerfumeDetailPage: React.FC = () => {
 
         fetchPerfume();
     }, [id]);
+    const handleDeleteSuccess = () => {
+        navigate('/'); // 메인 페이지로 이동
+    };
+
 
     if (isLoading) {
         return <div>향수 정보를 불러오는 중입니다...</div>;
@@ -101,7 +113,10 @@ const PerfumeDetailPage: React.FC = () => {
 
     return (
         <div>
-            <PerfumeDetailSection perfume={perfume} isLoggedIn={isLoggedIn} />
+            <PerfumeDetailSection 
+                perfume={perfume} 
+                isLoggedIn={isLoggedIn} 
+                onDelete={handleDeleteSuccess}/>
         </div>
     );
 };
