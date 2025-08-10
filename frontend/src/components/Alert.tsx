@@ -27,7 +27,7 @@ const Alert: React.FC<AlertProps> = ({ message, type = 'info', className }) => {
   const getIcon = (alertType: string) => {
     switch (alertType) {
       case 'success': //성공
-        return '✔️';
+        return '✅';
       case 'error': //에러
         return '❌';
       case 'warning': //경고

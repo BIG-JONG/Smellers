@@ -58,6 +58,10 @@ function Layout({ children }: LayoutProps) {
     navigate('/');
   };
 
+  const handleSidebarClose = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <div className="relative min-h-screen flex flex-col">
       <Sidebar
@@ -69,6 +73,7 @@ function Layout({ children }: LayoutProps) {
         isLoggedIn={!!userInfo}
         user={userInfo || undefined}
         onLogout={handleLogout}
+        onMouseLeave={handleSidebarClose}
       />
 
       <button

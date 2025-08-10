@@ -50,7 +50,7 @@ function Button({
             onEdit(perfume);
         } else if (actionType === 'delete' && onDelete && perfume) {
             if (window.confirm(`${perfume.name} 향수를 정말 삭제하시겠습니까?`)) {
-                onDelete(perfume.id);
+                onDelete(perfume.id.toString());
             }
         }
     };

@@ -145,7 +145,7 @@ const FollowListPage: React.FC = () => {
                     />
                 </div>
             </div>
-
+        {pagedUsers.length > 0 ? (
             <div className="space-y-4">
                 {pagedUsers.map(user => (
                     <UserProfileSection
@@ -162,13 +162,19 @@ const FollowListPage: React.FC = () => {
                     />
                 ))}
             </div>
-
+        ) : (
+        <div className="text-center text-gray-500 py-10">
+            <p>검색 결과가 없습니다.</p>
+        </div>
+        )}
+         {filteredUsers.length > 0 && (
             <Pagination
                 pageSize={pageSize}
                 totalPage={totalPage}
                 currentPage={currentPage}
                 onPageChange={setCurrentPage}
             />
+        )}
         </div>
     );
 };

@@ -19,6 +19,7 @@ interface RawPostData {
   reviews: any[];
   notes: any[];
   images: { url_path: string }[];
+  perfumeStatus: string;
 }
 
 const UserPerfumeListPage: React.FC = () => {
@@ -52,11 +53,13 @@ const UserPerfumeListPage: React.FC = () => {
           'Content-Type': 'application/json',
         },
       });
-
       console.log('응답 성공:', response.data);
       const { userInfo, perfumes: serverPerfumes, isFollowing: initialIsFollowing } = response.data.data;
+      console.log('API에서 받은 isFollowing 값:', initialIsFollowing);
 
-      const mappedPerfumes: Product[] = serverPerfumes.map((perfume: RawPostData) => ({
+      const activePerfumes = serverPerfumes.filter((perfume: RawPostData) => perfume.perfumeStatus !== 'N');
+      
+      const mappedPerfumes: Product[] = activePerfumes.map((perfume: RawPostData) => ({
         id: perfume.perfumeId,
         name: perfume.perfumeName,
         imageUrl: perfume.images?.[0]?.url_path
@@ -68,11 +71,16 @@ const UserPerfumeListPage: React.FC = () => {
         ingredients: perfume.notes?.map((note: any) => note.noteName) || []
       }));
 
+      const profileImageUrl = userInfo.profileImg
+      ? `http://localhost:4000/uploads/${userInfo.profileImg}`
+      : 'https://placehold.co/300x300?text=No+Image';
+        
       setUser({
         nickname: userInfo.nickname,
         email: userInfo.email,
-        profileImg: userInfo.profileImg
+        profileImg: profileImageUrl 
       });
+
       setPerfumes(mappedPerfumes);
       if (typeof initialIsFollowing !== 'undefined') {
         setIsFollowing(initialIsFollowing);
@@ -101,14 +109,14 @@ const UserPerfumeListPage: React.FC = () => {
       const targetIdNum = parseInt(targetUserId, 10);
 
       if (isCurrentlyFollowing) {
-        // Unfollow API는 문서에 없지만, 기존의 DELETE를 사용합니다.
+        // await axios.delete(`http://localhost:4000/following/unfollow/${targetIdNum}`, {
         await axios.get(`http://localhost:4000/following/unfollow/${targetIdNum}`, {
           headers: { Authorization: `Bearer ${token}` },
           data: { userId: targetIdNum }
         });
         alert('언팔로우 되었습니다.');
       } else {
-        // Follow API를 문서에 맞춰 GET으로 변경
+        // await axios.post(`http://localhost:4000/following/userRegister/${targetIdNum}`, {
         await axios.get(`http://localhost:4000/following/userRegister/${targetIdNum}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -148,7 +156,6 @@ const UserPerfumeListPage: React.FC = () => {
         <div className="text-center mt-10">로딩 중...</div>
       ) : (
         <PerfumeListSection
-          title={`${user?.nickname || '유저'}의 공개 게시물`}
           perfumes={perfumes}
           currentPage={1}
           totalPage={1}
