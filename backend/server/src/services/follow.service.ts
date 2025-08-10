@@ -1,5 +1,6 @@
 import prisma from '../prisma/client';
 
+//팔로우 조회
 export const followListingService = async (userId: number) => {
   if (!userId) throw new Error("User ID is required")
 
@@ -110,4 +111,17 @@ export const unfollowingService = async (userId: number, followerId: number) => 
   }
 
   return { message: 'Unfollowed successfully' };
+};
+
+// - 0810 19시 컨트롤러 상세페이지에서 팔로우 여부조회 
+export const isFollowingService = async (myUserId: number, targetUserId: number) => {
+  const follow = await prisma.followingList.findFirst({
+    where: {
+      userId: myUserId,
+      followerId: targetUserId,
+      followStatus: 'Y',
+    },
+  });
+
+  return !!follow;
 };

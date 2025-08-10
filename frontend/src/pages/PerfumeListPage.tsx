@@ -21,8 +21,9 @@ const PerfumeListPage:React.FC=()=>{
     const fetchPerfumes = async()=>{
       try{
         const res = await axios.get('http://localhost:4000/perfumes/public')
+        const activePerfumes = res.data.data.filter((item: any) => item.perfumeStatus !== 'N');
 
-        const mappedPerfumes = res.data.data.map((item:any)=>({
+        const mappedPerfumes = activePerfumes.map((item:any)=>({
           id:item.perfumeId.toString(),
           name:item.perfumeName,
           imageUrl: item.images?.[0]?.url_path

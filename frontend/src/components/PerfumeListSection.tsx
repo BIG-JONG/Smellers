@@ -31,7 +31,7 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
           />
         ))}
       </div>
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8 flex justify-center mb-20">
         <Pagination currentPage={currentPage} totalPage={totalPage} onPageChange={onPageChange} />
       </div>
     </div>

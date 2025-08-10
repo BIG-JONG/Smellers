@@ -1,5 +1,11 @@
 import { Request, Response } from "express";
-import { followListingService, followUserRegistService, getAllPublicPostsService, unfollowingService } from "../services/follow.service";
+import {
+  followListingService,
+  followUserRegistService,
+  getAllPublicPostsService,
+  unfollowingService,
+  isFollowingService
+} from "../services/follow.service";
 import prisma from "../prisma/client";
 
 export const followListingController = async (req: Request, res: Response): Promise<void> => {
@@ -30,7 +36,7 @@ export const followUserRegist = async (req: Request, res: Response): Promise<voi
 };
 
 export const getAllPublicPosts = async (req: Request, res: Response): Promise<void> => {
-try {
+  try {
     const userId = Number(req.query.userId);
     if (!userId || isNaN(userId)) {
       res.status(400).json({ message: '유효하지 않은 userId입니다.' });
@@ -71,6 +77,28 @@ export const unfollowingController = async (req: Request, res: Response): Promis
     res.status(401).json({ errorMessage: error.message });
   }
 };
+
+// - 0810 19시 컨트롤러 상세페이지에서 팔로우 여부조회 
+export const checkFollowController = async (req: Request, res: Response) => {
+  try {
+    const myUserId = req.user.userId; // auth 미들웨어에서 넣어준 로그인 사용자 ID
+    const targetUserId = parseInt(req.params.id, 10);
+
+    if (isNaN(targetUserId)) {
+      return res.status(400).json({ message: '잘못된 사용자 ID입니다.' });
+    }
+
+    const isFollowing = await isFollowingService(myUserId, targetUserId);
+
+    res.status(200).json({ isFollowing });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: '팔로우 여부 확인 실패' });
+  }
+};
+
+
+
 
 // export const getAllPublicPosts = async (req: Request, res: Response): Promise<void> => {
 //   try {

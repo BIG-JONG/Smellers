@@ -6,6 +6,7 @@ import UserProfile from '@/components/UserProfile';
 interface User {
   userId: string;
   nickname: string;
+  profileImg: string | null;
 }
 
 const UserSearchResultsPage: React.FC = () => {
@@ -37,8 +38,6 @@ const UserSearchResultsPage: React.FC = () => {
           return;
         }
 
-        console.log(`[프론트엔드] 유저 검색 요청: /users/findUser/${query}`);
-        
         const response = await axios.get(
           `http://localhost:4000/users/findUser/${query}`,
           {
@@ -49,27 +48,23 @@ const UserSearchResultsPage: React.FC = () => {
           }
         );
         
-        console.log(`[프론트엔드] 받은 데이터:`, response.data);
-
         if (response.data && Array.isArray(response.data)) {
           const mappedUsers = response.data.map((item: any) => ({
             userId: item.userId.toString(),
             nickname: item.nickname,
+            profileImg: item.profileImg || null,
           }));
           
-          console.log(`[프론트엔드] 매핑된 유저 (${mappedUsers.length}개):`, mappedUsers);
           setUsers(mappedUsers);
         } else {
-          console.error("[프론트엔드] 받은 데이터 형식이 올바르지 않습니다.", response.data);
           setError("검색 결과 데이터 형식이 올바르지 않습니다.");
           setUsers([]);
         }
       } catch (err: any) {
-        console.error("유저 검색 결과를 가져오는 데 실패했습니다:", err);
         if (err.response && err.response.status === 401) {
-            setError("로그인 세션이 만료되었거나, 로그인이 필요합니다.");
+            setError("로그인 세션이 만료");
         } else {
-            setError("유저 검색 실패: 서버 에러 또는 API 로직을 확인해주세요.");
+            setError("유저 검색 실패: 백 로직을 확인");
         }
         setUsers([]);
       } finally {
@@ -102,6 +97,7 @@ const UserSearchResultsPage: React.FC = () => {
             <UserProfile
               key={user.userId}
               nickName={user.nickname}
+              profileImageUrl={user.profileImg ? `http://localhost:4000/uploads/${user.profileImg}` : undefined}
               onClick={() => handleUserClick(user.userId, user.nickname)}
             />
           ))}
