@@ -28,14 +28,11 @@ const SearchResultsPage: React.FC = () => {
       setPerfumes([]);
       
       try {
-        console.log(`[프론트엔드] 백엔드로 POST 요청 전송: { perfumeName: "${query}" }`);
         const response = await axios.post(
           `http://localhost:4000/perfumes/search`,
           { perfumeName: query } 
         );
         
-        console.log(`[프론트엔드] 백엔드에서 받은 원시 데이터:`, response.data);
-
         if (response.data && Array.isArray(response.data.data)) {
           const mappedPerfumes: Product[] = response.data.data.map((item: any) => ({
             id: item.perfumeId.toString(),
@@ -47,19 +44,16 @@ const SearchResultsPage: React.FC = () => {
             reviews: item.reviews?.length || 0,
             ingredients: item.notes?.map((note: any) => note.noteName) || [],
           }));
-          
-          console.log(`[프론트엔드] 매핑된 검색 결과 (${mappedPerfumes.length} 개):`, mappedPerfumes);
+
           setPerfumes(mappedPerfumes);
         } else {
-          console.error("[프론트엔드] 백엔드에서 받은 데이터 형식이 올바르지 않습니다.", response.data);
-          setError("검색 결과 데이터 형식이 올바르지 않습니다.");
+          setError("검색 결과 데이터 형식이 올바르지 않음.");
           setPerfumes([]);
         }
 
         setCurrentPage(1);
       } catch (err) {
-        console.error("검색 결과를 가져오는 데 실패했습니다:", err);
-        setError("검색 결과를 가져오는 데 실패했습니다. 백엔드 서버 및 API 로직을 확인해주세요.");
+        setError("검색 결과를 가져오는 데 실패 백 로직을 확인.");
         setPerfumes([]);
       } finally {
         setLoading(false);

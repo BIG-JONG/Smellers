@@ -127,7 +127,7 @@ function EditProfileForm() {
   return (
     <div className="w-full flex justify-center">
       <form className="m-10 flex flex-col items-center justify-center w-full max-w-4xl gap-6" onSubmit={handleSubmit}>
-        <Avatar src={imgUrl} size="xl" />
+        <Avatar imageUrl={imgUrl} size="xl" />
         <p className="text-center text-lg">
           <span className="font-bold text-xl">{nickname}</span>님, 변경할 정보를 입력해주세요.
         </p>
@@ -136,7 +136,7 @@ function EditProfileForm() {
           <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
         </label>
 
-        <InputField className="w-full text-gray-500" label="이메일" type="email" value={email} onChange={() => { }}
+        <InputField className="w-full" label="이메일" type="email" value={email} onChange={() => { }}
           readOnly
         />
         <InputField className="w-full text-gray-600" label="닉네임" type="text" value={nickname} onChange={(e) => setNickname(e.target.value)}

@@ -35,7 +35,7 @@ const UserProfileSection: React.FC<UserProfileSectionProps> = ({
       onClick={onProfileClick}
     >
       <div className="mb-4">
-        <Avatar src={profileImageUrl} alt={`${nickname} 프로필`} size="xl" />
+        <Avatar imageUrl={profileImageUrl} alt={`${nickname} 프로필`} size="xl" />
       </div>
 
       <div className="text-center">
