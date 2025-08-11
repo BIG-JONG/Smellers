@@ -7,6 +7,7 @@ import {
   getPublicPerfumes, 
   getMyPerfumeController, 
   getSearchPerfume,
+  getNoteList,
 } from '../controllers/perfume.controller';
 import { authenticateToken } from '../middlewares/auth.middleware';
 import { postsValidator, getPostsValidator, putPostsValidator, handleValidationResult } from '../middlewares/validation-result-handle';
@@ -30,6 +31,8 @@ router.post('/search', getSearchPerfume);
 
 //전체공개 향수 검색
 router.get('/public', getPublicPerfumes);
+
+router.get('/noteList/:note_type', getNoteList);
 
 
 

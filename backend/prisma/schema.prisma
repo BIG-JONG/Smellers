@@ -77,6 +77,15 @@ model PerfumeNote {
   @@map("perfume_note")
 }
 
+model perfumeNoteData {
+  pndId     Int      @id @default(autoincrement()) @map("pnd_id")
+  noteType  NoteType @map("note_type")
+  noteCategory String   @map("note_category")
+  noteName  String   @map("note_name")
+
+  @@map("perfume_note_data")
+}
+
 model FollowingList {
   followId     Int      @id @default(autoincrement()) @map("follow_id")
   userId       Int      @map("user_id")

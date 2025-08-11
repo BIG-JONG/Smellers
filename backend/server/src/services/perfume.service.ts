@@ -213,3 +213,18 @@ export const getpublicPerfumesService = async () => {
     },
   });
 }
+
+export const getNoteListService = async (noteType: string) => {
+  if (!noteType) {
+    throw new Error('노트 타입이 필요합니다.');
+  }
+
+  return await prisma.perfumeNoteData.findMany({
+    where: {
+      noteType: noteType as NoteType, // NoteType은 Prisma에서 정의된 enum 타입입니다.
+    },
+    select: {
+      noteName: true,
+    },
+  });
+}

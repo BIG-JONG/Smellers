@@ -1,4 +1,4 @@
-@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyLCJpYXQiOjE3NTQyODMxNjAsImV4cCI6MTc1NDM2OTU2MH0.DR0zqsJAW4fMsY7-N4b8vJugfuh8gDVMU_P8k0zqhYc
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJpYXQiOjE3NTQ5MDIxODAsImV4cCI6MTc1NDk4ODU4MH0.OmxfCiM0Kx6JXYgXC5oUDtIjwz8NmKwNbcmJkyVpRSk
 
 ###향수등록
 POST http://localhost:4000/perfumes
@@ -82,18 +82,18 @@ POST http://localhost:4000/users/login
 Content-Type: application/json
 
 {
-  "email": "user2@example.com",
+  "email": "user5@example.com",
   "password": "password123"
 }
 
 ### 회원정보 수정 (Update User) - 토큰 정상
-PUT http://localhost:4000/users/2
+PUT http://localhost:4000/users/13
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "nickname": "으하하수정함",
-  "password": "password123"
+ 
+  "password": "1234"
 }
 
 
@@ -109,3 +109,14 @@ Authorization: Bearer {{token}}
 DELETE http://localhost:4000/users/1
 Authorization: Bearer {{token}}
 
+
+
+### 향수 노트 목록 조회 (Get Note List)
+GET http://localhost:4000/perfumes/noteList/MIDDLE
+
+
+### 향수 노트 목록 조회 (Get Note List)
+GET http://localhost:4000/perfumes/noteList/TOP
+
+### 향수 노트 목록 조회 (Get Note List)
+GET http://localhost:4000/perfumes/noteList/BASE
