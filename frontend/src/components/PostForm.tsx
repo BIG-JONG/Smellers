@@ -92,6 +92,14 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
         setShowAlert(false);
         setLoading(true);
 
+        if(!perfumeName|| !perfumeBrand || !perfumePrice ){
+            setAlertType("warning");
+            setAlertMessage("필수 입력 값을 입력하지 않았습니다. (제품명, 브랜드, 가격)을 입력하세요.");
+            setShowAlert(true);
+            setLoading(false);
+            return;
+        }
+
         const token = sessionStorage.getItem("token");
 
         if (!token) {
@@ -155,7 +163,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                 setAlertType("success");
                 setAlertMessage(isEditingMode ? "향수 정보가 성공적으로 수정되었습니다." : "향수 정보가 성공적으로 등록되었습니다.");
                 setShowAlert(true);
-                setTimeout(() => navigate('/perfumes'), 2000);
+                setTimeout(() => navigate('/perfumes'), 2000); 
             }
         } catch (err: any) {
             console.error("서버 응답 오류:", err.response?.data || err.message);
@@ -297,7 +305,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                     </div>
                 </div>
             </form>
-            <div className={`mt-4 w-full h-12 transition-opacity duration-300 ${showAlert ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`mt-4 w-full h-12 mb-20 transition-opacity duration-300 ${showAlert ? 'opacity-100' : 'opacity-0'}`}>
                 <Alert type={alertType} message={alertMessage} />
             </div>
         </div>
