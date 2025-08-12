@@ -81,7 +81,7 @@ export const unfollowingController = async (req: Request, res: Response): Promis
 // - 0810 19시 컨트롤러 상세페이지에서 팔로우 여부조회 
 export const checkFollowController = async (req: Request, res: Response) => {
   try {
-    const myUserId = req.user.userId; // auth 미들웨어에서 넣어준 로그인 사용자 ID
+    const myUserId = Number(req.user?.user_id); // auth 미들웨어에서 넣어준 로그인 사용자 ID
     const targetUserId = parseInt(req.params.id, 10);
 
     if (isNaN(targetUserId)) {
