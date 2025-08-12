@@ -4,6 +4,7 @@ import SearchInput from "@/components/SearchInput";
 import UserProfileSection from "@/components/UserProfileSection";
 import Pagination from "@/components/Pagination";
 import axios from "axios";
+import Alert from '@/components/Alert';
 
 // API 응답 데이터 형식을 위한 인터페이스
 interface RawUserData {
@@ -18,6 +19,7 @@ interface RawUserData {
         userStatus: "Y" | "N";
     };
 }
+    
 
 // 컴포넌트에서 사용할 사용자 데이터 형식
 interface User {
@@ -46,6 +48,10 @@ const FollowListPage: React.FC = () => {
     const [isFollowActionLoading, setIsFollowActionLoading] = useState(false);
     const pageSize = 18;
     const navigate = useNavigate();
+
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
+    const [alertMessage, setAlertMessage] = useState("");
 
     // 팔로잉 유저 목록을 불러오는 비동기 함수
     const fetchFollowingUsers = useCallback(async () => {
@@ -96,25 +102,39 @@ const FollowListPage: React.FC = () => {
                     headers: { Authorization: `Bearer ${token}` },
                     data: { userId: targetUserId }
                 });
-                alert('언팔로우 되었습니다.');
+                setAlertType("success");
+                setAlertMessage("언팔로우가 되엇습니다.")
+                setShowAlert(true);
 
-                // 수정된 부분: 언팔로우 성공 시 해당 사용자를 리스트에서 제거
+                setTimeout(() => {
                 setFollowingUsers(prevUsers => prevUsers.filter(user => user.userId !== targetUserId));
+                setShowAlert(false); 
+            }, );
+
             } else {
                 // 팔로우 API 호출
                 await axios.post(`http://localhost:4000/following/userRegister/${targetUserId}`, {}, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                alert('팔로우 되었습니다.');
-
-                // 팔로우 성공 시 해당 사용자를 리스트에 추가하는 로직은 이 페이지에서는 필요하지 않습니다.
+                setAlertType("success");
+                setAlertMessage("팔로우 되었습니다.");
             }
 
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
+
         } catch (error) {
-            console.error('팔로우/언팔로우 실패:', error);
-            alert('작업에 실패했습니다. 다시 시도해주세요.');
+            setAlertType("error");
+            setAlertMessage("작업에 실패했습니다. 다시 시도해주세요.");
+            setShowAlert(true);
+            setTimeout(() => {
+                setShowAlert(false);
+            }, 3000);
         } finally {
             setIsFollowActionLoading(false);
+          
         }
     }, []);
 
@@ -166,6 +186,11 @@ const FollowListPage: React.FC = () => {
         <div className="text-center text-gray-500 py-10">
             <p>검색 결과가 없습니다.</p>
         </div>
+        )}
+        {showAlert && (
+            <div className="mt-4">
+                <Alert message={alertMessage} type={alertType} />
+            </div>
         )}
          {filteredUsers.length > 0 && (
             <Pagination

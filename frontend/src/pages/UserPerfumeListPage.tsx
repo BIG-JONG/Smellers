@@ -4,6 +4,7 @@ import UserProfileSection from "@/components/UserProfileSection";
 import PerfumeListSection from "@/components/PerfumeListSection";
 import { Product } from "@/components/ProductCard";
 import axios from 'axios';
+import Alert from '@/components/Alert';
 
 interface RawUserData {
   nickname: string;
@@ -34,6 +35,10 @@ const UserPerfumeListPage: React.FC = () => {
   const [isFollowActionLoading, setIsFollowActionLoading] = useState(false);
   const [isCurrentUser, setIsCurrentUser] = useState(false);
 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
+  const [alertMessage, setAlertMessage] = useState("");
+
   const fetchUserData = useCallback(async () => {
     try {
       const token = sessionStorage.getItem('token');
@@ -53,9 +58,19 @@ const UserPerfumeListPage: React.FC = () => {
           'Content-Type': 'application/json',
         },
       });
-      console.log('응답 성공:', response.data);
-      const { userInfo, perfumes: serverPerfumes, isFollowing: initialIsFollowing } = response.data.data;
-      console.log('API에서 받은 isFollowing 값:', initialIsFollowing);
+      // console.log('응답 성공:', response.data);
+
+      const { userInfo, perfumes: serverPerfumes } = response.data.data;
+      // console.log('API에서 받은 isFollowing 값:', initialIsFollowing);
+
+      //팔로우 여부 확인
+      let initialIsFollowing = false;
+      if(currentUserId !== parseInt(targetUserId, 10)){
+        const followCheckResponse = await axios.get(`http://localhost:4000/following/check/${targetUserId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        initialIsFollowing = followCheckResponse.data.isFollowing;
+      }
 
       const activePerfumes = serverPerfumes.filter((perfume: RawPostData) => perfume.perfumeStatus !== 'N');
       
@@ -114,18 +129,32 @@ const UserPerfumeListPage: React.FC = () => {
           headers: { Authorization: `Bearer ${token}` },
           data: { userId: targetIdNum }
         });
-        alert('언팔로우 되었습니다.');
+        setAlertType("success");
+        setAlertMessage("언팔로우가 되엇습니다.")
       } else {
         // await axios.post(`http://localhost:4000/following/userRegister/${targetIdNum}`, {
         await axios.get(`http://localhost:4000/following/userRegister/${targetIdNum}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        alert('팔로우 되었습니다.');
+        setAlertType("success");
+        setAlertMessage("팔로우 되었습니다.");
       }
+
+      setIsFollowing(!isCurrentlyFollowing);
+      setShowAlert(true);
+      setTimeout(() => {
+          setShowAlert(false); 
+      }, 2000);
+
       setIsFollowing(!isCurrentlyFollowing);
     } catch (error) {
-      console.error('팔로우/언팔로우 실패:', error);
-      alert('작업에 실패했습니다. 다시 시도해주세요.');
+      // console.error('팔로우/언팔로우 실패:', error);
+      setAlertType("error");
+      setAlertMessage("작업에 실패했습니다. 다시 시도해주세요.");
+      setShowAlert(true);
+      setTimeout(() => {
+          setShowAlert(false);
+      }, 3000);
     } finally {
       setIsFollowActionLoading(false);
     }
@@ -137,6 +166,7 @@ const UserPerfumeListPage: React.FC = () => {
 
   return (
     <div className="p-4 pt-[74px]">
+     
       {user ? (
         <UserProfileSection
           profileImageUrl={user.profileImg || 'https://placehold.co/300x300?text=No+Image'}
@@ -150,6 +180,12 @@ const UserPerfumeListPage: React.FC = () => {
         />
       ) : (
         <div className="text-center">유저 정보를 불러오는 중...</div>
+      )}
+
+       {showAlert && (
+        <div className="mt-4">
+            <Alert message={alertMessage} type={alertType} />
+        </div>
       )}
 
       {loading ? (
