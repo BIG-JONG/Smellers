@@ -21,11 +21,14 @@ const PerfumeListPage:React.FC=()=>{
     const fetchPerfumes = async()=>{
       try{
         const res = await axios.get('http://localhost:4000/perfumes/public')
+        const activePerfumes = res.data.data.filter((item: any) => item.perfumeStatus !== 'N');
 
-        const mappedPerfumes = res.data.data.map((item:any)=>({
+        const mappedPerfumes = activePerfumes.map((item:any)=>({
           id:item.perfumeId.toString(),
           name:item.perfumeName,
-          imageUrl: item.images?.[0]?.url || '', 
+          imageUrl: item.images?.[0]?.url_path
+            ? `http://localhost:4000/uploads/${item.images[0].url_path}`
+            :'',
           price: item.price || 0, 
           ingredients: item.notes?.map((note: any) => note.noteName) || [],
           rating: Number(item.point),
@@ -51,7 +54,7 @@ const PerfumeListPage:React.FC=()=>{
   return(
     <div className="pt-[20px]">
       <PerfumeListSection
-        title="전체 게시물"
+        // title="전체 게시물"
         perfumes={currentPerfumes}
         currentPage={currentPage}
         totalPage={totalPage}

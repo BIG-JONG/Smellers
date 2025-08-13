@@ -24,6 +24,7 @@ const InputField: React.FC<InputFieldProps> = ({
   readOnly = false
 }) => {
   const inputId = id || `input-${label.replace(/\s+/g, '-').toLowerCase()}`;
+  const readOnlyClass = readOnly ? " text-gray-500 cursor-not-allowed" : "text-gray-700";
 
   return (
     <div className={`mb-4 w-full ${className || ''}`}>
@@ -40,7 +41,7 @@ const InputField: React.FC<InputFieldProps> = ({
         readOnly={readOnly}
         className={`
           mt-0.5
-          rounded-lg text-gray-700 leading-tight
+          rounded-lg leading-tight
           py-5 px-4
           h-auto min-h-0
           appearance-none border-none !ring-0 !shadow-none outline-none
@@ -48,6 +49,7 @@ const InputField: React.FC<InputFieldProps> = ({
           focus:ring-2 focus:ring-blue-500
           placeholder-gray-400
           w-[550px]
+          ${readOnlyClass}
         `}
       />
       {error && <p className="text-red-500 text-xs italic mt-1">{error}</p>}

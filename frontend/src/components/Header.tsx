@@ -1,41 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-// Header 컴포넌트의 props 타입 정의
 interface HeaderProps {
   navigate: (path: string) => void;
-  toggleSidebar: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ navigate }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchType, setSearchType] = useState('perfume');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const token = sessionStorage.getItem('token')
-  const isLoggedIn = !!token
+  const token = sessionStorage.getItem('token');
+  const isLoggedIn = !!token;
 
-  const handleLogout = ()=>{
+  const handleLogout = () => {
     sessionStorage.clear();
     navigate('/');
-  }
-
-  const handleLoginClick = () => {
-    navigate('/login');
   };
 
-  const handleRegisterClick = () => {
-    navigate('/signup');
+  const handleSearch = () => {
+    if (searchQuery.trim()) {
+      const query = searchQuery.trim(); 
+      if (searchType === 'user') {
+        navigate(`/search/user?q=${query}`);
+      } else {
+        navigate(`/search?q=${query}`);
+      }
+    }
   };
 
-  const handleProfileClick = () => {
-    navigate('/mypage/perfumes'); // 실제 마이페이지 경로로 변경 필요
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleTypeSelect = (type: string) => {
+    setSearchType(type);
+    setIsDropdownOpen(false);
   };
 
   return (
     <header className="bg-white shadow-md py-4 px-6 flex items-center justify-between sticky top-0 z-50">
-      {/* 1. 로고 영역 */}
       <div className="flex items-center">
-        {/* 클릭하면 홈 페이지로 이동 */}
         <a
           href="/"
-          className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10" // 글자 스타일 여기서 지정
+          className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10"
           onClick={(e) => {
             e.preventDefault();
             navigate('/');
@@ -45,55 +58,95 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
         </a>
       </div>
 
-      {/* 2. 검색창 영역 */}
-      <div className="flex-grow mx-8 max-w-md">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="향수, 브랜드, 노트, 유저 검색..."
-            className="w-full py-2 pl-10 pr-4 rounded-full bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-700"
-            aria-label="Search"
-          />
-          {/* 검색 아이콘 (SVG) */}
-          <svg
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-5"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+      <div className="flex-grow mx-8 max-w-md flex items-center">
+        {/* 검색 입력창과 드롭다운을 감싸는 컨테이너 */}
+        <div className="flex items-center w-full relative bg-gray-100 rounded-full border border-gray-300">
+          {/* 드롭다운 버튼 */}
+          <div className="relative">
+            <button
+              onClick={toggleDropdown}
+              className="flex items-center justify-center h-10 px-4 text-sm text-gray-600 rounded-l-full bg-gray-100 border-r border-gray-300 hover:bg-gray-200 transition-colors duration-200 focus:outline-none"
+            >
+              {searchType === 'perfume' ? '향수' : '유저'}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4 ml-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            {isDropdownOpen && (
+              <div className="absolute top-full left-0 mt-2 w-28 bg-white border border-gray-300 rounded-md shadow-lg z-50">
+                <button
+                  onClick={() => handleTypeSelect('perfume')}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  향수
+                </button>
+                <button
+                  onClick={() => handleTypeSelect('user')}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  유저
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* 검색 입력창 */}
+          <div className="relative flex-grow">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder={searchType === 'perfume' ? '향수 검색...' : '유저 닉네임 검색...'}
+              className="w-full h-10 py-2 pl-10 pr-4 bg-gray-100 rounded-r-full focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-700"
+              aria-label="Search"
             />
-          </svg>
+            <button
+              onClick={handleSearch}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 size-5"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* 3. 내비게이션 링크 및 사용자 액션 영역 */}
       <nav className="flex items-center space-x-6 ml-auto">
-      {isLoggedIn ? (
+        {isLoggedIn ? (
           <>
-            {/* 로그인 시 보여줄 프로필, 로그아웃 버튼 */}
             <button
-              onClick={handleProfileClick}
+              onClick={() => navigate('/mypage/perfumes')}
               className="text-sm text-gray-600 hover:text-black transition-colors duration-200 whitespace-nowrap"
             >
               마이페이지
             </button>
-
             <button
               onClick={handleLogout}
-              className="text-sm px-2 py-2 bg-black text-white rounded-md hover:bg-black transition-colors duration-200 whitespace-nowrap"
+              className="text-sm px-4 py-2 bg-black text-white rounded-md hover:bg-black transition-colors duration-200 whitespace-nowrap"
             >
               로그아웃
             </button>
           </>
         ) : (
           <>
-            {/* 로그아웃 상태일 때 로그인, 회원가입 버튼 */}
             <button
               onClick={() => navigate('/login')}
               className="text-sm text-gray-600 hover:text-black transition-colors duration-200 whitespace-nowrap"
@@ -102,15 +155,20 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
             </button>
             <button
               onClick={() => navigate('/signup')}
-              className="text-sm px-2 py-2 bg-black text-white rounded-md hover:bg-black transition-colors duration-200 whitespace-nowrap"
+              className="text-sm px-4 py-2 bg-black text-white rounded-md hover:bg-black transition-colors duration-200 whitespace-nowrap"
             >
               회원가입
             </button>
           </>
         )}
-
-        {/* 프로필 아이콘 (SVG) */}
-        <a href="#" onClick={handleProfileClick} className="text-gray-600 hover:text-black transition-colors duration-200">
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate('/mypage/perfumes');
+          }}
+          className="text-gray-600 hover:text-black transition-colors duration-200"
+        >
           <svg
             className="size-7"
             xmlns="http://www.w3.org/2000/svg"

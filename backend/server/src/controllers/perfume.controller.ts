@@ -78,7 +78,9 @@ export const updatePerfume = async (req: Request, res: Response, next: NextFunct
 // 향수 상세 조회
 export const getPerfumeById = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    
     const perfumeId = Number(req.params.perfume_id);
+    console.log(perfumeId)
     const perfume = await perfumeService.getPerfumeById(perfumeId);
     res.json(perfume);
   } catch (err) {
@@ -103,6 +105,7 @@ export const getMyPerfumeController = async (req: Request, res: Response): Promi
   try {
     //헤더에서 id값 가져오기(auth-토큰)
     const userId = req.user?.user_id;
+    console.log(userId)
 
     if (!userId) {
       res.status(401).json({ errorMessage: "no user ID" });
@@ -110,6 +113,7 @@ export const getMyPerfumeController = async (req: Request, res: Response): Promi
     }
 
     const myPerfumes = await perfumeService.getMyPerfumesService(userId);
+    console.log(myPerfumes)
     res.status(200).json({ data: myPerfumes });
   } catch (error: any) {
     res.status(500).json({ errorMessage: error.message });
