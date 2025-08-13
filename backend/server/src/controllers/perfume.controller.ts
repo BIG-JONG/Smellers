@@ -1,5 +1,5 @@
 // perfume.controller.ts
-import { Request, Response, NextFunction } from 'express';
+import e, { Request, Response, NextFunction } from 'express';
 import * as perfumeService from '../services/perfume.service';
 import { parseNoteType } from '../utils/changeNoteType';
 import { PerfumeSearchParams } from '../types/PerfumeSearchParams';
@@ -157,3 +157,16 @@ export const getPublicPerfumes = async (req: Request, res: Response) => {
     res.status(401).json({ errorMessage: error.message });
   }
 };
+
+export const getNoteList = async (req: Request, res: Response) => {
+  const noteType = req.params.note_type;
+  if (!noteType) {
+    return res.status(400).json({ errorMessage: '노트 타입이 필요합니다.' });
+  } 
+  try {
+    const noteList = await perfumeService.getNoteListService(noteType);
+    res.json({ data: noteList });
+  } catch (error: any) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+}
