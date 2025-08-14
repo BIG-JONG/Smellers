@@ -21,6 +21,7 @@ interface RawPostData {
   notes: any[];
   images: { url_path: string }[];
   perfumeStatus: string;
+  createdAt: string;
 }
 
 const UserPerfumeListPage: React.FC = () => {
@@ -74,8 +75,12 @@ const UserPerfumeListPage: React.FC = () => {
 
       const activePerfumes = serverPerfumes.filter((perfume: RawPostData) => perfume.perfumeStatus !== 'N');
       
-      const mappedPerfumes: Product[] = activePerfumes.map((perfume: RawPostData) => ({
-        id: perfume.perfumeId,
+       const sortedPerfumes = [...activePerfumes].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      const mappedPerfumes: Product[] = sortedPerfumes.map((perfume: RawPostData) => ({
+        id:  String(perfume.perfumeId), 
         name: perfume.perfumeName,
         imageUrl: perfume.images?.[0]?.url_path
           ? `http://localhost:4000/uploads/${perfume.images[0].url_path}`

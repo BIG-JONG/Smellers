@@ -1,45 +1,41 @@
 import React, { useState } from 'react';
 
-// StarRating 타입 정의
 interface StarRatingProps {
-  rating: number; // 현재 표시할 별점 (읽기 전용 모드) 또는 사용자가 선택한 값 (클릭 가능 모드)
-  onRatingChange?: (newRating: number) => void; // 별점 변경 시 호출될 함수 (이 prop이 없으면 '읽기 전용')
-  maxRating?: number; // 최대 별점 (기본값 5)
+  rating: number; 
+  onRatingChange?: (newRating: number) => void;
+  maxRating?: number; 
   className?:string
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ rating, onRatingChange, maxRating = 5 }) => {
-  const [hoverRating, setHoverRating] = useState(0); // 마우스 오버 시 임시 별점
-  const isClickable = !!onRatingChange; // onRatingChange가 있으면 클릭 가능 모드
+  const [hoverRating, setHoverRating] = useState(0); 
+  const isClickable = !!onRatingChange; 
 
-  // 별 색상 (Tailwind CSS)
-  const filledColor = 'text-black'; // 채워진 별 색상
-  const emptyColor = 'text-gray-300';   // 비어있는 별 색상
+  const filledColor = 'text-black'; 
+  const emptyColor = 'text-gray-300';   
   
   return (
     <div
-      className="flex items-center" // 별들을 가로로 나열
-      onMouseLeave={() => isClickable && setHoverRating(0)} // 마우스가 영역 벗어나면 호버 초기화
+      className="flex items-center" 
+      onMouseLeave={() => isClickable && setHoverRating(0)}
     >
-      {[...Array(maxRating)].map((_, index) => { // maxRating 개수만큼 별을 반복해서 렌더링
-        const starValue = index + 1; // 1부터 maxRating까지의 별 값
+      {[...Array(maxRating)].map((_, index) => { 
+        const starValue = index + 1; 
 
-        // 보여줄 별점
-        const displayRating = isClickable ? hoverRating : rating;
+        const displayRating = hoverRating > 0 ? hoverRating : rating;
 
-        // 현재 별이 채워져야 하는지 (별 값이 표시 별점보다 작거나 같으면 채움)
         const isFilled = starValue <= displayRating;
 
         return (
           <span
-            key={index} // React 리스트 렌더링을 위한 고유 키
+            key={index} 
             className={`
-              w-4 h-4                 // 고정된 별 크기
-              ${isFilled ? filledColor : emptyColor} // 별 색상 적용
-              ${isClickable ? 'cursor-pointer' : ''}  // 클릭 가능하면 마우스 커서 변경
-              transition-colors duration-200         // 색상 변경 시 부드러운 전환 효과
+              w-4 h-4                 
+              ${isFilled ? filledColor : emptyColor} 
+              ${isClickable ? 'cursor-pointer' : ''}  
+              transition-colors duration-200         
             `}
-            // 클릭 가능 모드일 때만 이벤트 처리
+
             onClick={() => isClickable && onRatingChange?.(starValue)}
             onMouseEnter={() => isClickable && setHoverRating(starValue)}
           >

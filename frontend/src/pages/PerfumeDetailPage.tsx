@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { PerfumeDetailData } from '@/components/PerfumeDetailSection';
 
-function mapPerfumeData(raw: any) {
+function mapPerfumeData(raw: any):PerfumeDetailData {
 
     const imageUrl = raw.images?.[0]?.url_path 
       ? `http://localhost:4000/uploads/${raw.images[0].url_path}` 
@@ -21,7 +21,7 @@ function mapPerfumeData(raw: any) {
         baseNotes: raw.notes?.filter((n: any) => n.noteType === 'BASE').map((n: any) => n.noteName) || [],
         emotionTags: raw.emotionTag ? raw.emotionTag.split(',').map((s: string) => s.trim()) : [],
         customTags: raw.tag ? raw.tag.split(',').map((s: string) => s.trim()) : [],
-        rating: raw.point,
+        point: raw.point,
         description: raw.content,
     };
 }
