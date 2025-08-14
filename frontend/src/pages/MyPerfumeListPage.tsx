@@ -11,6 +11,20 @@ interface UserProfile {
   profileImg: string;
 }
 
+interface RawPostData {
+  perfumeId: number;
+  perfumeName: string;
+  price: number;
+  point: number;
+  reviews: any[];
+  notes: any[];
+  images: { url_path: string }[];
+  perfumeStatus: string;
+  userId: number;
+  createdAt: string; 
+}
+
+
 const MyPerfumeListPage: React.FC = () => {
   const navigate = useNavigate();
   const [perfumes, setPerfumes] = useState<Product[]>([]);
@@ -62,10 +76,14 @@ const MyPerfumeListPage: React.FC = () => {
         const allPerfumes = response.data.data;
 
         const filtered = allPerfumes.filter(
-          (perfume: any) => perfume.userId?.toString() === user_id && perfume.perfumeStatus !== 'N'
+          (perfume: RawPostData) => perfume.userId?.toString() === user_id && perfume.perfumeStatus !== 'N'
         );
 
-        const fetchedPerfumes: Product[] = filtered.map((perfume: any) => ({
+         const sortedPerfumes = [...filtered].sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+
+        const fetchedPerfumes: Product[] = sortedPerfumes.map((perfume: any) => ({
           id: perfume.perfumeId,
           name: perfume.perfumeName,
           imageUrl: perfume.images?.[0]?.url_path 
@@ -127,7 +145,7 @@ const MyPerfumeListPage: React.FC = () => {
         <div className="text-center mt-10">등록된 향수가 없습니다.</div>
       ) : (
         <PerfumeListSection
-          title="내가 등록한 향수"
+          // title="내가 등록한 향수"
           perfumes={perfumes}
           currentPage={currentPage}
           totalPage={totalPage}

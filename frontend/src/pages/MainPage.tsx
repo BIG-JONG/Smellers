@@ -3,15 +3,18 @@ import axios from 'axios';
 import CurrentPost from "@/components/CurrentPost";
 import MainInfo from "@/components/MainInfo";
 import RecommendPerfume from "@/components/RecommendPerfume";
+import ProductCard from '@/components/ProductCard';
 
 interface Post {
   perfumeId: number;
   perfumeName: string;
   brandName: string;
   images: { url_path: string }[];
-  content: string; 
+  ingredients: string[]; 
   createdAt: string;
   perfumeStatus:string;
+  price: number; 
+  rating: number;
 }
 
 const MainPage: React.FC = () => {
@@ -30,9 +33,12 @@ const MainPage: React.FC = () => {
           perfumeName: item.perfumeName,
           brandName: item.brandName, 
           images: item.images,
+          ingredients: item.notes?.map((note: any) => note.noteName) || [],
           content: item.content,
           createdAt: item.createdAt,
           perfumeStatus: item.perfumeStatus,
+          price: item.price || 0,
+          rating: Number(item.point), 
         }));
 
         const activePosts = fetchedPosts.filter(post => post.perfumeStatus !== 'N');
@@ -83,7 +89,7 @@ const MainPage: React.FC = () => {
               perfumeName: randomPost.perfumeName,
               brandName: randomPost.brandName,
               images: randomPost.images,
-              content: randomPost.content,
+              ingredients: randomPost.ingredients,
               createdAt: randomPost.createdAt,
             }}
           />
@@ -98,22 +104,21 @@ const MainPage: React.FC = () => {
             {latestPosts
               .filter(post => post.perfumeStatus !== 'N')
               .map((post) => (
-              <a
-                key={post.perfumeId}
-                href={`/perfumes/${post.perfumeId}`}
-                className="w-full sm:w-1/2 md:w-1/5 p-2"
-              >
-                <CurrentPost
-                  src={
-                    post.images?.[0]?.url_path
-                      ? `http://localhost:4000/uploads/${post.images[0].url_path}`
-                      : 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image'
-                  }
-                  datetime={new Date(post.createdAt).toLocaleDateString()}
-                  perfumeName={post.perfumeName}
-                  content={post.content}
-                />
-              </a>
+          <div key={post.perfumeId} className="w-full sm:w-1/2 md:w-1/5">
+                <ProductCard // ⭐️ CurrentPost 대신 ProductCard를 사용합니다.
+                  product={{
+                    id: String(post.perfumeId),
+                    imageUrl: post.images?.[0]?.url_path
+                      ? `http://localhost:4000/uploads/${post.images[0].url_path}`
+                      : 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image',
+                    name: post.perfumeName,
+                    ingredients: post.ingredients,
+                    price: post.price,
+                    rating: post.rating, 
+                  }}
+                  onClick={() => window.location.href = `/perfumes/${post.perfumeId}`}
+                />
+              </div>
             ))}
           </div>
         ) : (

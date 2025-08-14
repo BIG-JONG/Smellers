@@ -37,7 +37,7 @@ export interface PerfumeDetailData {
     baseNotes: string[];
     emotionTags: string[];
     customTags: string[];
-    rating: number;
+    point: number;
     description: string;
 }
 
@@ -268,8 +268,8 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                         </p>
                     )}
                     <div className="flex items-center">
-                        <StarRating rating={perfume.rating} maxRating={5} />
-                        <span className="ml-2 text-gray-600">({perfume.rating.toFixed(1)})</span>
+                         <StarRating rating={perfume.point} maxRating={5} />
+                        <span className="ml-2 text-gray-600">({perfume.point.toFixed(1)})</span>
                     </div>
                     {perfume.emotionTags && perfume.emotionTags.length > 0 && (
                         <div className="mt-4">
