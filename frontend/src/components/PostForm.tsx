@@ -45,7 +45,35 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
     const [alertMessage, setAlertMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const [topNoteOptions, setTopNoteOptions] = useState<string[]>([]);
+    const [middleNoteOptions, setMiddleNoteOptions] = useState<string[]>([]);
+    const [baseNoteOptions, setBaseNoteOptions] = useState<string[]>([]);
+
     const navigate = useNavigate();
+
+     useEffect(() => {
+        const fetchNotes = async () => {
+            try {
+                const token = sessionStorage.getItem("token");
+                const config = {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                };
+
+                const [topRes, middleRes, baseRes] = await Promise.all([
+                    axios.get('http://localhost:4000/perfumes/noteList/TOP', token ? config : {}),
+                    axios.get('http://localhost:4000/perfumes/noteList/MIDDLE', token ? config : {}),
+                    axios.get('http://localhost:4000/perfumes/noteList/BASE', token ? config : {}),
+                ]);
+
+                setTopNoteOptions(topRes.data.data.map((note: { noteName: string }) => note.noteName));
+                setMiddleNoteOptions(middleRes.data.data.map((note: { noteName: string }) => note.noteName));
+                setBaseNoteOptions(baseRes.data.data.map((note: { noteName: string }) => note.noteName));
+            } catch (err) {
+                console.error("노트 목록을 가져오는 데 실패했습니다:", err);
+            }
+        };
+        fetchNotes();
+    }, []);
 
     useEffect(() => {
         if (perfumeToEdit) {
@@ -239,7 +267,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                     <div className="flex-1 w-full">
                         <MultiSelectDropdown
                             label="탑 노트"
-                            options={["라벤더", "머스크", "샌달우드"]}
+                            options={topNoteOptions}
                             value={selectedTop}
                             onChange={setSelectedTop}
                             maxSelect={3}
@@ -247,7 +275,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                         />
                         <MultiSelectDropdown
                             label="미들 노트"
-                            options={["라벤더", "머스크", "샌달우드"]}
+                            options={middleNoteOptions}
                             value={selectedMiddle}
                             onChange={setSelectedMiddle}
                             maxSelect={3}
@@ -255,7 +283,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                         />
                         <MultiSelectDropdown
                             label="베이스 노트"
-                            options={["라벤더", "머스크", "샌달우드"]}
+                            options={baseNoteOptions}
                             value={selectedBase}
                             onChange={setSelectedBase}
                             maxSelect={3}
