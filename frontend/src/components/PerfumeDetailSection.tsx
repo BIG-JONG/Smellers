@@ -1,5 +1,5 @@
 // PerfumeDetailSection.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ImageCard from './ImageCard';
 import StarRating from './StarRating';
 import Tag from './Tag';
@@ -46,21 +46,82 @@ interface PerfumeDetailSectionProps {
     isLoggedIn: boolean;
     onDelete: () => void;
 }
+const areNotesEqual = (notes1: string[], notes2: string[]): boolean => {
+    if (notes1.length !== notes2.length) {
+        return false;
+    }
+    const sortedNotes1 = [...notes1].sort();
+    const sortedNotes2 = [...notes2].sort();
+    return sortedNotes1.every((note, index) => note === sortedNotes2[index]);
+};
+
 
 const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn, onDelete }) => {
     const [isEditing, setIsEditing] = useState(false);
+    const [noteKanValues, setNoteKanValues] = useState<{ [noteName: string]: number }>({});
 
-    // perfume 객체가 없거나 id가 유효하지 않으면 아무것도 렌더링하지 않음
+    const prevPerfumeNotesRef = useRef<{
+        id: number | null,
+        top: string[],
+        middle: string[],
+        base: string[]
+    }>({ id: null, top: [], middle: [], base: [] });
+
     if (!perfume || isNaN(Number(perfume.id))) {
         return null;
     }
+   
+
+    useEffect(() => {
+        const currentPerfumeId = perfume.id;
+        const currentTopNotes = perfume.topNotes;
+        const currentMiddleNotes = perfume.middleNotes;
+        const currentBaseNotes = perfume.baseNotes;
+
+        const prevPerfumeId = prevPerfumeNotesRef.current.id;
+        const prevTopNotes = prevPerfumeNotesRef.current.top;
+        const prevMiddleNotes = prevPerfumeNotesRef.current.middle;
+        const prevBaseNotes = prevPerfumeNotesRef.current.base;
+        
+        const hasIdChanged = currentPerfumeId !== prevPerfumeId;
+        const hasNotesChanged = 
+            !areNotesEqual(currentTopNotes, prevTopNotes) ||
+            !areNotesEqual(currentMiddleNotes, prevMiddleNotes) ||
+            !areNotesEqual(currentBaseNotes, prevBaseNotes);
+
+        if (hasIdChanged || hasNotesChanged) {
+            const newKanValues: { [noteName: string]: number } = {};
+            const getRandomInRange = (min: number, max: number): number => {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            };
+
+            [...currentTopNotes, ...currentMiddleNotes, ...currentBaseNotes].forEach(note => {
+                let kanValue;
+                if (currentTopNotes.includes(note)) {
+                    kanValue = getRandomInRange(1, 3);
+                } else if (currentMiddleNotes.includes(note)) {
+                    kanValue = getRandomInRange(4, 6);
+                } else { // base note
+                    kanValue = getRandomInRange(7, 9);
+                }
+                newKanValues[note] = kanValue;
+            });
+
+            setNoteKanValues(newKanValues);
+        } 
+
+        prevPerfumeNotesRef.current = {
+            id: currentPerfumeId,
+            top: currentTopNotes,
+            middle: currentMiddleNotes,
+            base: currentBaseNotes
+        };
+    }, [perfume.id, perfume.topNotes, perfume.middleNotes, perfume.baseNotes]);
+
+
 
     const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
         e.currentTarget.src = 'https://placehold.co/300x400/CCCCCC/333333?text=No+Image';
-    };
-
-    const getRandomInRange = (min: number, max: number): number => {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
     };
 
     const categoryColors = {
@@ -70,27 +131,9 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
     };
 
     const allIndividualNotes = [
-        ...perfume.topNotes.map(note => ({
-            name: note,
-            category: '탑 노트',
-            kan: getRandomInRange(1, 3),
-            color: categoryColors.top.bg,
-            borderColor: categoryColors.top.border
-        })),
-        ...perfume.middleNotes.map(note => ({
-            name: note,
-            category: '미들 노트',
-            kan: getRandomInRange(4, 6),
-            color: categoryColors.middle.bg,
-            borderColor: categoryColors.middle.border
-        })),
-        ...perfume.baseNotes.map(note => ({
-            name: note,
-            category: '베이스 노트',
-            kan: getRandomInRange(7, 9),
-            color: categoryColors.base.bg,
-            borderColor: categoryColors.base.border
-        })),
+        ...perfume.topNotes.map(note => ({ name: note, category: '탑 노트', color: categoryColors.top.bg, borderColor: categoryColors.top.border, kan: noteKanValues[note] || 0 })),
+        ...perfume.middleNotes.map(note => ({ name: note, category: '미들 노트', color: categoryColors.middle.bg, borderColor: categoryColors.middle.border, kan: noteKanValues[note] || 0 })),
+        ...perfume.baseNotes.map(note => ({ name: note, category: '베이스 노트', color: categoryColors.base.bg, borderColor: categoryColors.base.border, kan: noteKanValues[note] || 0 })),
     ];
 
     const chartLabels = allIndividualNotes.map(note => note.name);
@@ -203,12 +246,10 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
         setIsEditing(false);
     };
 
-    // 수정 폼이 켜졌을 때와 꺼졌을 때를 분리하여 렌더링
     if (isEditing) {
         return <PostForm perfumeToEdit={perfume} onCancel={handleCancelEdit} />;
     }
 
-    // isEditing이 false일 때, 즉 일반적인 상세 페이지를 보여줌
     return (
         <div className="flex flex-col items-center w-full">
             <div className="flex flex-col md:flex-row items-start gap-12 md:gap-24 p-6 md:p-12 max-w-4xl mx-auto bg-white rounded-lg">
