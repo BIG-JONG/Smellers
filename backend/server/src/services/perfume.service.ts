@@ -108,10 +108,28 @@ export const updatePerfume = async (perfume_id: number, data: any, userId: numbe
 };
 
 // 향수 상세 조회
+// export const getPerfumeById = async (perfume_id: number) => {
+//   const perfume = await prisma.perfumeInfo.findUnique({
+//     where: { perfumeId: perfume_id },
+//     include: { notes: true, images: true },
+//   });
+//   if (!perfume) throw new Error ('PerfumeNotFound');
+//   return perfume;
+// };
 export const getPerfumeById = async (perfume_id: number) => {
   const perfume = await prisma.perfumeInfo.findUnique({
     where: { perfumeId: perfume_id },
-    include: { notes: true, images: true },
+    include: { 
+      notes: true, 
+      images: true, 
+      user: {
+        select: {
+          userId: true,
+          nickname: true,
+          profileImg: true,
+        }
+      }
+    },
   });
   if (!perfume) throw new Error ('PerfumeNotFound');
   return perfume;
