@@ -7,7 +7,7 @@ interface AvatarProps {
   className?: string;
 }
 
-const Avatar: React.FC<AvatarProps> = ({ imageUrl, alt = 'User Avatar', size = 'md', className }) => {
+const Avatar: React.FC<AvatarProps> = ({ imageUrl, alt = 'https://placehold.co/40x40/cccccc/333333?text=User', size = 'md', className }) => {
   const getSizeClasses = (avatarSize: string) => {
   switch (avatarSize) {
     case 'sm': 

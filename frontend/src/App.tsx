@@ -21,6 +21,7 @@ import PerfumeListPage from './pages/PerfumeListPage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import UserSearchResultsPage from './pages/UserSearchPage'; // 유저 검색 결과 페이지를 추가했습니다.
 import Faq from './components/Faq';
+import ScrollTop from './components/ScrollTop';
 
 function AppContent() {
   const navigate = useNavigate();
@@ -35,6 +36,7 @@ function AppContent() {
         navigate={handleNavigate}
       />
       <Layout>
+        <ScrollTop/>
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
