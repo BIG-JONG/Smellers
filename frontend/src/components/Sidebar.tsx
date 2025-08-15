@@ -42,7 +42,7 @@ function Sidebar({
               </li>
               <li>
                 <Link to="/mypage/perfumes" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
-                  마이페이지
+                  나의 향수 목록
                 </Link>
               </li>
               <li>
@@ -59,7 +59,7 @@ function Sidebar({
           ) : null}
           <li>
             <Link to="/perfumes" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-              게시판
+              전체 게시판
             </Link>
           </li>
           <li>

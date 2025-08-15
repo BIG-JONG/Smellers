@@ -16,6 +16,7 @@ import { Bar } from 'react-chartjs-2';
 import Button from './Button';
 import PostForm from './PostForm';
 import axios from 'axios';
+import UserProfile from './UserProfile';
 
 ChartJS.register(
     CategoryScale,
@@ -45,6 +46,9 @@ interface PerfumeDetailSectionProps {
     perfume: PerfumeDetailData | null;
     isLoggedIn: boolean;
     onDelete: () => void;
+    author: { userId: number; nickname: string; profileImg: string | null } | null;
+    handleAuthorClick: (userId: number, nickname: string) => void;
+
 }
 const areNotesEqual = (notes1: string[], notes2: string[]): boolean => {
     if (notes1.length !== notes2.length) {
@@ -56,7 +60,7 @@ const areNotesEqual = (notes1: string[], notes2: string[]): boolean => {
 };
 
 
-const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn, onDelete }) => {
+const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn, onDelete, author, handleAuthorClick }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [noteKanValues, setNoteKanValues] = useState<{ [noteName: string]: number }>({});
 
@@ -291,6 +295,7 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                     )}
                 </div>
             </div>
+            
             <div className="w-full max-w-4xl bg-white p-8 rounded-lg mt-8 flex flex-col items-center">
                 <h3 className="text-xl font-semibold text-gray-800 mb-6">향의 구성 비율</h3>
                 {allIndividualNotes.length > 0 ? (
@@ -315,6 +320,19 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                     </div>
                 </div>
             </div>
+            {author && (
+                <div className="mt-5 p-3 bg-white  w-full max-w-4xl">
+                    <UserProfile
+                        nickName={author.nickname}
+                        profileImageUrl={
+                            author.profileImg
+                                ? `http://localhost:4000/uploads/${author.profileImg}`
+                                : 'https://placehold.co/40x40'
+                        }
+                        onClick={() => handleAuthorClick(author.userId, author.nickname)}
+                    />
+                </div>
+            )}
             <div className='flex gap-2 mt-20'>
                 {isLoggedIn && (
                     <>

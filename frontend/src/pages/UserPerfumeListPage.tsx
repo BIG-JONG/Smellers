@@ -23,6 +23,7 @@ interface RawPostData {
   perfumeStatus: string;
   createdAt: string;
 }
+const itemPerPage = 20;
 
 const UserPerfumeListPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -40,13 +41,18 @@ const UserPerfumeListPage: React.FC = () => {
   const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
   const [alertMessage, setAlertMessage] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [allPerfumes, setAllPerfumes] = useState<Product[]>([]);
+
   const fetchUserData = useCallback(async () => {
     try {
       const token = sessionStorage.getItem('token');
       const currentUserIdString = sessionStorage.getItem('user_id');
 
       if (!token || !targetUserId || !currentUserIdString) {
-        console.error('요청 불가: token, targetUserId 또는 currentUserId가 존재하지 않음', { token, targetUserId, currentUserIdString });
+        console.error('요청 불가: token, targetUserId 또는 currentUserId가 존재하지 않음', 
+          { token, targetUserId, currentUserIdString });
         setLoading(false);
         return;
       }
@@ -101,6 +107,10 @@ const UserPerfumeListPage: React.FC = () => {
         profileImg: profileImageUrl 
       });
 
+      setAllPerfumes(mappedPerfumes);
+      setTotalPage(Math.ceil(mappedPerfumes.length / itemPerPage));
+
+
       setPerfumes(mappedPerfumes);
       if (typeof initialIsFollowing !== 'undefined') {
         setIsFollowing(initialIsFollowing);
@@ -118,6 +128,13 @@ const UserPerfumeListPage: React.FC = () => {
       fetchUserData();
     }
   }, [fetchUserData, targetUserId]);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemPerPage;
+    const endIndex = startIndex + itemPerPage;
+    setPerfumes(allPerfumes.slice(startIndex, endIndex));
+  }, [currentPage, allPerfumes]);
+
 
   const handleFollowToggle = useCallback(async (isCurrentlyFollowing: boolean) => {
     setIsFollowActionLoading(true);

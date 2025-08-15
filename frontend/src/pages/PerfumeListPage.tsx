@@ -10,7 +10,7 @@ const PerfumeListPage:React.FC=()=>{
   const [perfumes, setPerfumes] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const perfumesPerPage = 12;
+  const perfumesPerPage = 20;
 
   //상세 페이지로 이동
   const handlePerfumeClick = (id: string) => {

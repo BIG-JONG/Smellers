@@ -1,14 +1,14 @@
 import React from 'react';
-import ProductCard, { Product } from './ProductCard'; // Product 타입 임포트
-import Pagination from './Pagination'; // Pagination 컴포넌트 임포트
+import ProductCard, { Product } from './ProductCard'; 
+import Pagination from './Pagination'; 
 
 interface PerfumeListSectionProps {
   title?: string;
-  perfumes: Product[]; // Product 배열을 받습니다.
+  perfumes: Product[]; 
   currentPage: number;
   totalPage: number;
   onPageChange: (page: number) => void;
-  onPerfumeClick: (id: string) => void; // 향수 클릭 핸들러 prop 추가
+  onPerfumeClick: (id: string) => void;
 }
 
 const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
@@ -17,7 +17,7 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
   currentPage,
   totalPage,
   onPageChange,
-  onPerfumeClick, // prop 받기
+  onPerfumeClick, 
 }) => {
   return (
     <div className="p-4">
@@ -26,8 +26,8 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
         {perfumes.map((perfume) => (
           <ProductCard
             key={perfume.id}
-            product={perfume} // perfume 객체 전체를 product prop으로 전달
-            onClick={onPerfumeClick} // ProductCard에 클릭 핸들러 전달
+            product={perfume} 
+            onClick={onPerfumeClick} 
           />
         ))}
       </div>

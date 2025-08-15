@@ -27,10 +27,9 @@ function MainInfo({
           </p>
 
           <div className="mt-4 flex gap-4 sm:mt-6">
-            {/* <a> 태그를 <Link> 컴포넌트로 변경 */}
             <Link
               className="inline-block rounded  bg-black px-5 py-3 font-medium text-white shadow-sm transition-colors duration-200 border border-transparent hover:bg-white  hover:text-black  hover:border-black"
-              to="/signup" // 이동할 경로를 'to' 속성에 지정
+              to="/signup"
             >
               시작하기
             </Link>

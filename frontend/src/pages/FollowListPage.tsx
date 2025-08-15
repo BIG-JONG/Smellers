@@ -6,7 +6,6 @@ import Pagination from "@/components/Pagination";
 import axios from "axios";
 import Alert from '@/components/Alert';
 
-// API 응답 데이터 형식을 위한 인터페이스
 interface RawUserData {
     followerId: number;
     createdAt: string;
@@ -19,9 +18,7 @@ interface RawUserData {
         userStatus: "Y" | "N";
     };
 }
-    
 
-// 컴포넌트에서 사용할 사용자 데이터 형식
 interface User {
     userId: number;
     nickname: string;
@@ -30,14 +27,13 @@ interface User {
     isFollowing: boolean;
 }
 
-// API 응답 데이터를 `User` 타입으로 변환하는 헬퍼 함수
 const mapRawDataToUser = (rawData: RawUserData[]): User[] => {
     return rawData.map(item => ({
         userId: item.followed.userId,
         nickname: item.followed.nickname,
         email: item.followed.email,
         profileImageUrl: item.followed.profileImg || 'https://placehold.co/40x40',
-        isFollowing: true, // 초기 상태는 '팔로잉' 리스트이므로 항상 true
+        isFollowing: true, 
     }));
 };
 
@@ -46,14 +42,13 @@ const FollowListPage: React.FC = () => {
     const [followingUsers, setFollowingUsers] = useState<User[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [isFollowActionLoading, setIsFollowActionLoading] = useState(false);
-    const pageSize = 18;
+    const pageSize = 20;
     const navigate = useNavigate();
 
     const [showAlert, setShowAlert] = useState(false);
     const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
     const [alertMessage, setAlertMessage] = useState("");
 
-    // 팔로잉 유저 목록을 불러오는 비동기 함수
     const fetchFollowingUsers = useCallback(async () => {
         try {
             const token = sessionStorage.getItem('token');
@@ -70,7 +65,6 @@ const FollowListPage: React.FC = () => {
                 }
             });
 
-            // 프로필 이미지 URL을 완성하고 상태 업데이트
             const mappedUsers = mapRawDataToUser(res.data.data).map(user => ({
                 ...user,
                 profileImageUrl: user.profileImageUrl
@@ -87,7 +81,6 @@ const FollowListPage: React.FC = () => {
         fetchFollowingUsers();
     }, [fetchFollowingUsers]);
 
-    // 팔로우/언팔로우 API를 호출하는 함수
     const handleFollowToggle = useCallback(async (targetUserId: number, isCurrentlyFollowing: boolean) => {
         setIsFollowActionLoading(true);
 
@@ -112,7 +105,6 @@ const FollowListPage: React.FC = () => {
             }, );
 
             } else {
-                // 팔로우 API 호출
                 await axios.post(`http://localhost:4000/following/userRegister/${targetUserId}`, {}, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -138,17 +130,14 @@ const FollowListPage: React.FC = () => {
         }
     }, []);
 
-    // 유저 프로필 클릭 시 상세 페이지로 이동하는 함수
     const handleUserClick = useCallback((nickname: string, userId: number) => {
         navigate(`/user/${nickname}?userId=${userId}`);
     }, [navigate]);
 
-    // 검색어에 따라 유저 목록 필터링
     const filteredUsers = followingUsers.filter(user =>
         user.nickname.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // 페이지네이션 로직
     const startIndex = (currentPage - 1) * pageSize;
     const endIndex = startIndex + pageSize;
     const pagedUsers = filteredUsers.slice(startIndex, endIndex);
@@ -184,7 +173,7 @@ const FollowListPage: React.FC = () => {
             </div>
         ) : (
         <div className="text-center text-gray-500 py-10">
-            <p>검색 결과가 없습니다.</p>
+            <p>결과가 없습니다.</p>
         </div>
         )}
         {showAlert && (
