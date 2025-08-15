@@ -105,7 +105,7 @@ const MainPage: React.FC = () => {
               .filter(post => post.perfumeStatus !== 'N')
               .map((post) => (
           <div key={post.perfumeId} className="w-full sm:w-1/2 md:w-1/5">
-                <ProductCard // ⭐️ CurrentPost 대신 ProductCard를 사용합니다.
+                <ProductCard
                   product={{
                     id: String(post.perfumeId),
                     imageUrl: post.images?.[0]?.url_path

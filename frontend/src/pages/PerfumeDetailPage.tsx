@@ -3,6 +3,26 @@ import PerfumeDetailSection from "@/components/PerfumeDetailSection";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { PerfumeDetailData } from '@/components/PerfumeDetailSection';
+import UserProfile from '@/components/UserProfile';
+
+interface RawPerfumeData {
+    perfumeId: number;
+    perfumeName: string;
+    brandName: string;
+    price: number;
+    notes: { noteType: string; noteName: string }[];
+    emotionTag: string;
+    tag: string;
+    point: number;
+    content: string;
+    perfumeStatus: string;
+    images: { url_path: string }[];
+    user: {
+        userId: number;
+        nickname: string;
+        profileImg: string | null;
+    };
+}
 
 function mapPerfumeData(raw: any):PerfumeDetailData {
 
@@ -31,6 +51,8 @@ const PerfumeDetailPage: React.FC = () => {
     const navigate = useNavigate(); 
     const [perfume, setPerfume] = useState<PerfumeDetailData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [author, setAuthor] = useState<{ userId: number; nickname: string; profileImg: string | null } | null>(null);
+
 
     useEffect(() => {
         const fetchPerfume = async () => {
@@ -79,9 +101,17 @@ const PerfumeDetailPage: React.FC = () => {
                 }
 
                 const mappedData = mapPerfumeData(rawData);
-                console.log("매핑된 최종 데이터:", mappedData);
+                // console.log("매핑된 최종 데이터:", mappedData);
                 setPerfume(mappedData);
-                
+
+                 if (rawData.user) {
+                    setAuthor({
+                        userId: rawData.user.userId,
+                        nickname: rawData.user.nickname,
+                        profileImg: rawData.user.profileImg,
+                    });
+                }
+
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
                     console.error(`향수 상세 조회 실패. 상태 코드: ${error.response.status}, 메시지: ${error.response.statusText}`);
@@ -96,8 +126,13 @@ const PerfumeDetailPage: React.FC = () => {
 
         fetchPerfume();
     }, [id]);
+
+    const handleAuthorClick = (userId: number, nickname: string) => {
+        navigate(`/user/${nickname}?userId=${userId}`);
+    };
+    
     const handleDeleteSuccess = () => {
-        navigate('/'); // 메인 페이지로 이동
+        navigate('/'); 
     };
 
 
@@ -112,12 +147,15 @@ const PerfumeDetailPage: React.FC = () => {
     const isLoggedIn = !!sessionStorage.getItem("token");
 
     return (
-        <div>
-            <PerfumeDetailSection 
-                perfume={perfume} 
-                isLoggedIn={isLoggedIn} 
-                onDelete={handleDeleteSuccess}/>
-        </div>
+            <div>
+                <PerfumeDetailSection 
+                    perfume={perfume} 
+                    isLoggedIn={isLoggedIn} 
+                    onDelete={handleDeleteSuccess}
+                    author={author}
+                    handleAuthorClick={handleAuthorClick}/>
+                   
+            </div>
     );
 };
 

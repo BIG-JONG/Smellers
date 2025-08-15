@@ -24,6 +24,7 @@ interface RawPostData {
   createdAt: string; 
 }
 
+const itemPerPage = 20;
 
 const MyPerfumeListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ const MyPerfumeListPage: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [allPerfumes, setAllPerfumes] = useState<Product[]>([]);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -62,7 +64,7 @@ const MyPerfumeListPage: React.FC = () => {
             : 'https://placehold.co/300x300?text=No+Image',
           });
       } catch (err) {
-        console.error("사용자 정보를 불러오는 데 실패했습니다:", err);
+        // console.error("사용자 정보를 불러오는 데 실패했습니다:", err);
         setError("사용자 정보를 불러오는 데 실패했습니다.");
       }
     };
@@ -95,21 +97,25 @@ const MyPerfumeListPage: React.FC = () => {
           ingredients: perfume.notes?.map((note: any) => note.noteName) || []
         }));
 
-        setPerfumes(fetchedPerfumes);
-        setTotalPage(1);
+        setAllPerfumes(fetchedPerfumes);
+        setTotalPage(Math.ceil(fetchedPerfumes.length / itemPerPage));
       } catch (err: any) {
-        console.error("향수 리스트를 가져오는 데 실패했습니다:", err);
+        // console.error("향수 리스트를 가져오는 데 실패했습니다:", err);
         setError("향수 목록을 가져오는 데 실패했습니다.");
       } finally {
         setLoading(false);
       }
     };
-    
-    // 두 API를 모두 호출합니다.
     fetchUserInfo();
     fetchMyPerfumes();
-
   }, []);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * itemPerPage;
+    const endIndex = startIndex + itemPerPage;
+    setPerfumes(allPerfumes.slice(startIndex, endIndex));
+  }, [currentPage, allPerfumes]);
+
 
   const handlePerfumeClick = (id: string) => {
     navigate(`/perfumes/${id}`);
