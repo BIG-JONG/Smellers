@@ -57,6 +57,9 @@ const PerfumeListPage:React.FC=()=>{
 
   return(
     <div className="pt-[20px]">
+      {/* <div className="flex items-center justify-center mb-8">
+        <h2 className="text-xl md:text-base font-semibold text-gray-500">전체 게시물</h2>
+      </div> */}
       <PerfumeListSection
         // title="전체 게시물"
         perfumes={currentPerfumes}
