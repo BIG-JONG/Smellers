@@ -48,7 +48,7 @@ interface PerfumeDetailSectionProps {
     onDelete: () => void;
     author: { userId: number; nickname: string; profileImg: string | null } | null;
     handleAuthorClick: (userId: number, nickname: string) => void;
-
+    currentUserId: number | null;
 }
 const areNotesEqual = (notes1: string[], notes2: string[]): boolean => {
     if (notes1.length !== notes2.length) {
@@ -60,7 +60,7 @@ const areNotesEqual = (notes1: string[], notes2: string[]): boolean => {
 };
 
 
-const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn, onDelete, author, handleAuthorClick }) => {
+const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn, onDelete, author, handleAuthorClick, currentUserId }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [noteKanValues, setNoteKanValues] = useState<{ [noteName: string]: number }>({});
 
@@ -254,6 +254,8 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
         return <PostForm perfumeToEdit={perfume} onCancel={handleCancelEdit} />;
     }
 
+    const isAuthor = isLoggedIn && author && author.userId === currentUserId;
+
     return (
         <div className="flex flex-col items-center w-full">
             <div className="flex flex-col md:flex-row items-start gap-12 md:gap-24 p-6 md:p-12 max-w-4xl mx-auto bg-white rounded-lg">
@@ -334,7 +336,7 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                 </div>
             )}
             <div className='flex gap-2 mt-20'>
-                {isLoggedIn && (
+                {isAuthor  && (
                     <>
                         <Button actionType="edit" onClick={handleEditClick}>수정</Button>
                         <Button actionType='delete' onClick={handleDeleteClick}>삭제</Button>
