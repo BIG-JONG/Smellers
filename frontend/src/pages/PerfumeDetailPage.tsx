@@ -52,9 +52,22 @@ const PerfumeDetailPage: React.FC = () => {
     const [perfume, setPerfume] = useState<PerfumeDetailData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [author, setAuthor] = useState<{ userId: number; nickname: string; profileImg: string | null } | null>(null);
+    const [currentUserId, setCurrentUserId] = useState<number|null>(null);
 
 
     useEffect(() => {
+        const token = sessionStorage.getItem("token");
+        const isLoggedIn = !!token;
+        if(isLoggedIn){
+           try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                setCurrentUserId(payload.userId);
+            } catch (e) {
+                // console.error("토큰 디코딩 실패:", e);
+                setCurrentUserId(null);
+            }
+        }
+
         const fetchPerfume = async () => {
             try {
                 if (!id || isNaN(Number(id))) {
@@ -153,7 +166,8 @@ const PerfumeDetailPage: React.FC = () => {
                     isLoggedIn={isLoggedIn} 
                     onDelete={handleDeleteSuccess}
                     author={author}
-                    handleAuthorClick={handleAuthorClick}/>
+                    handleAuthorClick={handleAuthorClick}
+                    currentUserId={currentUserId}/>
                    
             </div>
     );
