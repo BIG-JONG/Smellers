@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'; 
+import Avatar from './Avatar';
 
 interface SidebarProps {
   isOpen: boolean; 
@@ -6,6 +7,7 @@ interface SidebarProps {
   className?: string; 
   isLoggedIn: boolean;
   user?:{
+    id:string;
     name: string;
     email: string;
     profileImg?: string;
@@ -74,10 +76,11 @@ function Sidebar({
         {isLoggedIn && user ? (
           <div className="flex flex-col">
             <Link to="/mypage/perfumes" className="flex w-full items-center gap-2 bg-white p-4 hover:bg-gray-50">
-              <img
-                alt="User Profile"
-                src={user.profileImg ? `http://localhost:4000/uploads/${user.profileImg}` : 'https://placehold.co/40x40/cccccc/333333?text=User'}
-                className="w-10 h-10 rounded-full object-cover"
+              <Avatar
+                userId={user.id}
+                imageUrl={user.profileImg ? `http://localhost:4000/uploads/${user.profileImg}` : undefined}
+                alt={user.name}
+                size="sm"
               />
               <div>
                 <p className="text-xs">

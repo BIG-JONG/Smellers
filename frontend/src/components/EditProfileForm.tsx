@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function EditProfileForm() {
-  const [imgUrl, setImgUrl] = useState<string>("");
+  const [imgUrl, setImgUrl] =  useState<string | undefined>(""); 
   const [uploadedImageFilename, setUploadedImageFilename] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,8 +38,7 @@ function EditProfileForm() {
           const data = res.data;
           setEmail(data.email);
           setNickname(data.nickname);
-          // 프로필 이미지 URL 세팅 (서버 업로드 경로 포함)
-          setImgUrl(data.profileImg ? `http://localhost:4000/uploads/${data.profileImg}` : "");
+          setImgUrl(data.profileImg ? `http://localhost:4000/uploads/${data.profileImg}` : undefined);
           setUploadedImageFilename(data.profileImg || null);
         } else {
           navigate("/login");
@@ -127,7 +126,11 @@ function EditProfileForm() {
   return (
     <div className="w-full flex justify-center">
       <form className="m-10 flex flex-col items-center justify-center w-full max-w-4xl gap-6" onSubmit={handleSubmit}>
-        <Avatar imageUrl={imgUrl} size="xl" />
+        <Avatar 
+        imageUrl={imgUrl}
+        size="xl" 
+        alt={nickname}
+         />
         <p className="text-center text-lg">
           <span className="font-bold text-xl">{nickname}</span>님, 변경할 정보를 입력해주세요.
         </p>
