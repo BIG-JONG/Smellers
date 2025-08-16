@@ -64,6 +64,8 @@ const areNotesEqual = (notes1: string[], notes2: string[]): boolean => {
 const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, isLoggedIn, onDelete, author, handleAuthorClick, currentUserId }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [noteKanValues, setNoteKanValues] = useState<{ [noteName: string]: number }>({});
+    
+
 
     const prevPerfumeNotesRef = useRef<{
         id: number | null,
@@ -75,7 +77,6 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
     if (!perfume || isNaN(Number(perfume.id))) {
         return null;
     }
-   
 
     useEffect(() => {
         const currentPerfumeId = perfume.id;
@@ -230,35 +231,33 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
             return;
         }
 
-        if (window.confirm(`${perfume.name} 향수를 정말 삭제하시겠습니까?`)) {
-            const token = sessionStorage.getItem("token");
-            if (!token) {
-                setAlertType("warning");
-                setAlertMessage("로그인이 필요합니다.");
-                setShowAlert(true);
-                return;
-            }
+        const token = sessionStorage.getItem("token");
+        if (!token) {
+            setAlertType("warning");
+            setAlertMessage("로그인이 필요합니다.");
+            setShowAlert(true);
+            return;
+        }
 
-            try {
-                await axios.delete(`http://localhost:4000/perfumes/${perfumeId}`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    }
-                });
-                setAlertType("success");
-                setAlertMessage("향수 삭제 완료!");
-                setShowAlert(true);
-                
-                setTimeout(() => {
-                    setShowAlert(false);
-                    onDelete();
-                }, 2000);
+        try {
+            await axios.delete(`http://localhost:4000/perfumes/${perfumeId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                }
+            });
+            setAlertType("success");
+            setAlertMessage("향수 삭제 완료!");
+            setShowAlert(true);
+            
+            setTimeout(() => {
+                setShowAlert(false);
+                onDelete();
+            }, 2000);
 
-            } catch (error) {
-                setAlertType("error");
-                setAlertMessage("향수 삭제에 실패했습니다.");
-                setShowAlert(true);
-            }
+        } catch (error) {
+            setAlertType("error");
+            setAlertMessage("향수 삭제에 실패했습니다.");
+            setShowAlert(true);
         }
     };
 
@@ -271,6 +270,10 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
     }
 
     const isAuthor = isLoggedIn && author && author.userId === currentUserId;
+    // console.log("isLoggedIn:", isLoggedIn);
+    // console.log("author:", author);
+    // console.log("currentUserId:", currentUserId);
+    // console.log("isAuthor:", isAuthor);
 
     return (
         <div className="flex flex-col items-center w-full">
@@ -353,19 +356,20 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                     />
                 </div>
             )}
-            <div className='flex gap-2 mt-20'>
-                {isAuthor  && (
-                    <>
+            <div className='mt-20'>
+                {isAuthor && (
+                    <div className='flex gap-2'>
                         <Button actionType="edit" onClick={handleEditClick}>수정</Button>
                         <Button actionType='delete' onClick={handleDeleteClick}>삭제</Button>
-                    </>
-                )}
-                {showAlert && (
-                    <div className="mt-4 w-full">
-                    <Alert type={alertType} message={alertMessage} />
                     </div>
                 )}
             </div>
+
+            {showAlert && ( 
+                <div className="mt-4 w-full">
+                    <Alert type={alertType} message={alertMessage} />
+                </div>
+            )}
             <div className='mt-17 mb-20'/>
         </div>
     );
