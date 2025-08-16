@@ -61,7 +61,8 @@ const PerfumeDetailPage: React.FC = () => {
         if(isLoggedIn){
            try {
                 const payload = JSON.parse(atob(token.split('.')[1]));
-                setCurrentUserId(payload.userId);
+                setCurrentUserId(payload.user_id);
+                // console.log("Decoded token payload:", payload);
             } catch (e) {
                 // console.error("토큰 디코딩 실패:", e);
                 setCurrentUserId(null);
@@ -145,7 +146,7 @@ const PerfumeDetailPage: React.FC = () => {
     };
     
     const handleDeleteSuccess = () => {
-        navigate('/'); 
+        navigate('/mypage/perfumes'); 
     };
 
 
