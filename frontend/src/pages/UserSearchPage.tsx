@@ -97,8 +97,10 @@ const UserSearchResultsPage: React.FC = () => {
             <UserProfile
               key={user.userId}
               nickName={user.nickname}
+              userId={user.userId}
               profileImageUrl={user.profileImg ? `http://localhost:4000/uploads/${user.profileImg}` : undefined}
               onClick={() => handleUserClick(user.userId, user.nickname)}
+              alt={user.nickname}
             />
           ))}
         </div>

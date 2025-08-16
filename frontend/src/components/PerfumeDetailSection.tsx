@@ -329,8 +329,10 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                         profileImageUrl={
                             author.profileImg
                                 ? `http://localhost:4000/uploads/${author.profileImg}`
-                                : 'https://placehold.co/40x40'
+                                : undefined 
                         }
+                        userId={author.userId.toString()}
+                        alt={author.nickname}
                         onClick={() => handleAuthorClick(author.userId, author.nickname)}
                     />
                 </div>

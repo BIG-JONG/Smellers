@@ -8,7 +8,7 @@ import axios from 'axios';
 interface UserProfile {
   nickname: string;
   email: string;
-  profileImg: string;
+  profileImg?: string;
 }
 
 interface RawPostData {
@@ -61,7 +61,7 @@ const MyPerfumeListPage: React.FC = () => {
           email: userData.email,
           profileImg: userData.profileImg
             ? `http://localhost:4000/uploads/${userData.profileImg}`
-            : 'https://placehold.co/300x300?text=No+Image',
+            :undefined,
           });
       } catch (err) {
         // console.error("사용자 정보를 불러오는 데 실패했습니다:", err);
@@ -136,6 +136,7 @@ const MyPerfumeListPage: React.FC = () => {
           profileImageUrl={user.profileImg}
           nickname={user.nickname}
           email={user.email}
+          alt={user.nickname}
           isCurrentUser={true}
           onEditProfile={handleEditProfileClick}
         />
