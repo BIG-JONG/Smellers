@@ -17,6 +17,7 @@ import Button from './Button';
 import PostForm from './PostForm';
 import axios from 'axios';
 import UserProfile from './UserProfile';
+import Alert from './Alert';
 
 ChartJS.register(
     CategoryScale,
@@ -216,18 +217,25 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
         setIsEditing(true);
     };
 
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
+    const [alertMessage, setAlertMessage] = useState("");
+
     const handleDeleteClick = async () => {
         const perfumeId = Number(perfume.id);
         if (isNaN(perfumeId) || perfumeId <= 0) {
-            alert("유효하지 않은 향수 ID입니다. 관리자에게 문의하세요.");
-            console.error("삭제하려는 향수의 ID가 유효하지 않습니다:", perfume.id);
+            setAlertType("error");
+            setAlertMessage("삭제에 실패했습니다.");
+            setShowAlert(true);
             return;
         }
 
         if (window.confirm(`${perfume.name} 향수를 정말 삭제하시겠습니까?`)) {
             const token = sessionStorage.getItem("token");
             if (!token) {
-                alert("로그인이 필요합니다.");
+                setAlertType("warning");
+                setAlertMessage("로그인이 필요합니다.");
+                setShowAlert(true);
                 return;
             }
 
@@ -237,11 +245,19 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                         'Authorization': `Bearer ${token}`,
                     }
                 });
-                alert("향수 삭제 완료!");
-                onDelete();
+                setAlertType("success");
+                setAlertMessage("향수 삭제 완료!");
+                setShowAlert(true);
+                
+                setTimeout(() => {
+                    setShowAlert(false);
+                    onDelete();
+                }, 2000);
+
             } catch (error) {
-                console.error("향수 삭제 실패", error);
-                alert("향수 삭제에 실패했습니다. 관리자에게 문의하세요.");
+                setAlertType("error");
+                setAlertMessage("향수 삭제에 실패했습니다.");
+                setShowAlert(true);
             }
         }
     };
@@ -343,6 +359,11 @@ const PerfumeDetailSection: React.FC<PerfumeDetailSectionProps> = ({ perfume, is
                         <Button actionType="edit" onClick={handleEditClick}>수정</Button>
                         <Button actionType='delete' onClick={handleDeleteClick}>삭제</Button>
                     </>
+                )}
+                {showAlert && (
+                    <div className="mt-4 w-full">
+                    <Alert type={alertType} message={alertMessage} />
+                    </div>
                 )}
             </div>
             <div className='mt-17 mb-20'/>

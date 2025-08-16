@@ -43,10 +43,10 @@ function Footer({
             {/* 로고 */}
             <div className="flex justify-center text-teal-600 lg:justify-start">
               <a
-                href="/"
+                href="#"
                 className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10"
                 onClick={(e) => {
-                  e.preventDefault();
+                  // e.preventDefault();
                   navigate('/');
                 }}
               >
