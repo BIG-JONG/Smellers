@@ -49,15 +49,15 @@ function Faq({}: FaqProps) {
   };
 
   return(
-    <div className="w-full max-w-[900px] mx-auto min-h-[300px] mt-10">
-      <h2 className="text-2xl font-medium flex justify-center font-bold font-black">FAQ</h2>
+    <div className="w-full max-w-3xl mx-auto px-2 sm:px-6 lg:px-8 py-6">
+      <h2 className="text-lg sm:text-xl xl:text-2xl font-bold flex justify-center mb-8">FAQ</h2>
       {faqData.map((faq, index) => (
         <div key={index} className="mt-4">
           <div
-            className="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-gray-50 p-4 text-gray-900 cursor-pointer"
+            className="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-gray-50 p-4 text-gray-900 cursor-pointer hover:bg-gray-100 transition-colors duration-200"
             onClick={() => toggleAccordion(index)} 
           >
-            <span className="text-lg font-medium">{faq.title}</span>
+            <span className="text-[12px] sm:text-sm font-medium">{faq.title}</span>
             <svg
               className={`size-5 shrink-0 transition-transform duration-300 ${
                 openIndex === index ? 'rotate-180' : ''
@@ -78,7 +78,7 @@ function Faq({}: FaqProps) {
               maxHeight: `${maxHeights[index] || 0}px`,
             }}
           >
-            <p className="px-4 pt-4 pb-4 text-gray-900 break-words whitespace-pre-line">
+            <p className="px-4 pt-4 pb-4 text-[10px] sm:text-xs text-gray-900 break-words whitespace-pre-line leading-snug">
               {faq.answer}
             </p>
           </div>

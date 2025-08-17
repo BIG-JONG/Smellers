@@ -15,7 +15,7 @@ function Footer({
 
   return (
     <footer className={`bg-gray-100 ${className}`}>
-      <div className="relative mx-auto max-w-screen-full px-10 sm:px-16 lg:px-24 py-8 lg:pt-24">
+      <div className="relative mx-auto max-w-screen-full px-4 sm:px-10 lg:px-24 py-8 lg:pt-24">
         {/* 맨 위로 이동하는 버튼 */}
         <div className="absolute end-4 top-4 sm:end-6 sm:top-6 lg:end-8 lg:top-8">
           <button
@@ -44,7 +44,7 @@ function Footer({
             <div className="flex justify-center text-teal-600 lg:justify-start">
               <a
                 href="#"
-                className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10"
+                className="flex items-center text-sm sm:text-base font-bold text-gray-900 px-2 pl-10"
                 onClick={(e) => {
                   // e.preventDefault();
                   navigate('/');
@@ -57,7 +57,7 @@ function Footer({
 
           {/* 소셜 미디어 링크 */}
           <ul
-            className="mt-12 flex flex-wrap justify-center gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12"
+            className="mt-8 sm:mt-12 flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 lg:mt-0 lg:justify-end lg:gap-12"
           >
             <li>
               <a className="flex items-center text-gray-700 transition hover:text-gray-700/75" href="#"> 
@@ -81,14 +81,14 @@ function Footer({
           </ul>
         </div>
 
-        <p className="mt-6 ml-9 leading-relaxed text-gray-500">
+        <p className="mt-4 sm:mt-6 ml-0 sm:ml-9 leading-snug text-[11px] sm:text-sm text-gray-500">
           향기로운 기억들이 모여 새로운 이야기가 시작되는 곳,<br/>
           나만의 향수를 기록하고 특별한 순간들을 함께 나누는 공간<br/>
           당신의 취향과 감성을 펼쳐 보세요.<br/>
         </p>
         
         {/* 저작권 표시 */}
-        <p className="mt-12 text-center text-sm text-gray-500 lg:text-right">
+        <p className="mt-8 sm:mt-12 text-center text-[10px] sm:text-sm text-gray-500 lg:text-right">
           {copyright ?? "Copyright © 2025. All rights reserved."}
         </p>
       </div>

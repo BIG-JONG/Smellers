@@ -10,16 +10,15 @@ type ButtonProps = {
     disabled?: boolean;
     className?: string;
 
-    // 수정 및 삭제 로직을 위한 prop들
     actionType?: 'edit' | 'delete';
-    perfume?: PerfumeDetailData; // 수정/삭제할 향수 데이터
-    onEdit?: (perfume: PerfumeDetailData) => void; // 수정 버튼 클릭 시 실행할 함수
-    onDelete?: (perfumeId: string) => void; // 삭제 버튼 클릭 시 실행할 함수
+    perfume?: PerfumeDetailData; 
+    onEdit?: (perfume: PerfumeDetailData) => void; 
+    onDelete?: (perfumeId: string) => void; 
 };
 
 function Button({
     variant = "filled",
-    children, // 버튼 내용
+    children, 
     href,
     onClick,
     type = "button",
@@ -40,7 +39,6 @@ function Button({
     const classes = `${baseClasses} ${variants[variant]} ${additionalClasses || ''}`;
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        // onClick prop이 있으면 먼저 실행
         if (onClick) {
             onClick(e);
             return;

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import 'flowbite'
 
 // 1. 필요한 공통 컴포넌트들 import
 import Header from './components/Header';
