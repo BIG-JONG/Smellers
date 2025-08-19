@@ -4,8 +4,8 @@ import SignupForm from '@/components/signupForm';
 
 const SignUpPage: React.FC = () => {
   return (
-    <Layout>
-      <div className="">
+    <Layout bottomPadding={80}>
+      <div className="flex flex-col items-center w-full pt-0">
         <SignupForm />
       </div>
     </Layout>

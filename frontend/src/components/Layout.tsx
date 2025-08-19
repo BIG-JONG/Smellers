@@ -5,6 +5,8 @@ import axios from 'axios';
 
 type LayoutProps = {
   children: React.ReactNode;
+  bottomPadding?: number;
+  shortPage?: boolean;
 };
 
 interface UserInfo {
@@ -13,12 +15,12 @@ interface UserInfo {
   profileImg?: string;
 }
 
-function Layout({ children }: LayoutProps) {
+function Layout({ children, bottomPadding = 0, shortPage}: LayoutProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const navigate = useNavigate();
 
-  const headerHeight = '64px';
+  const headerHeight = 64;
 
   useEffect(() => {
     const storedUserId = sessionStorage.getItem("user_id");
@@ -63,17 +65,21 @@ function Layout({ children }: LayoutProps) {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col">
+    <div className="relative flex flex-col">
       <Sidebar
         isOpen={isSidebarOpen}
         className={`fixed top-[${headerHeight}] left-0 z-40 w-64 bg-white shadow-lg transition-transform duration-300 ease-in-out
+                  ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
                     h-[calc(100vh-${headerHeight})]
-                    ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
                     lg:translate-x-0 lg:static lg:shadow-none lg:h-full lg:top-0`}
         isLoggedIn={!!userInfo}
         user={userInfo || undefined}
         onLogout={handleLogout}
         onMouseLeave={handleSidebarClose}
+        style={{
+          top: `${headerHeight}px`,
+          // height: `calc(100vh - ${headerHeight}px)`
+        }}
       />
 
       <button
@@ -97,8 +103,12 @@ function Layout({ children }: LayoutProps) {
         </svg>
       </button>
 
-      <main className={`flex flex-col justify-start items-center px-4 w-full transition-all duration-300
-                        flex-grow h-full  pt-4 sm:pt-16`}> 
+      <main className="flex-grow flex flex-col items-center px-4 w-full transition-all duration-300
+                    pt-4 sm:pt-16"
+            style={{
+              // minHeight: shortPage ? 'auto' : `calc(100vh - ${headerHeight}px)`,
+              paddingBottom:`${bottomPadding}px`,
+        }}> 
         {children}
       </main>
     </div>

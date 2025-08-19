@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import UserProfile from '@/components/UserProfile';
+import Layout from '@/components/Layout';
 
 interface User {
   userId: string;
@@ -88,29 +89,31 @@ const UserSearchResultsPage: React.FC = () => {
   }
   
   return (
-    <div className="pt-[20px] p-8 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">"{query}"에 대한 유저 검색 결과</h1>
-      
-      {users.length > 0 ? (
-        <div className="flex flex-col gap-4">
-          {users.map((user) => (
-            <UserProfile
-              key={user.userId}
-              nickName={user.nickname}
-              userId={user.userId}
-              profileImageUrl={user.profileImg ? `http://localhost:4000/uploads/${user.profileImg}` : undefined}
-              onClick={() => handleUserClick(user.userId, user.nickname)}
-              alt={user.nickname}
-              className='flex items-center gap-3 p-2 pl-8 border-b border-gray-200 hover:bg-gray-100 cursor-pointer'
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center text-gray-500 mt-10 text-lg font-medium">
-          유저 검색 결과가 없습니다.
-        </div>
-      )}
-    </div>
+    <Layout>
+      <div className="pt-[20px] p-8 max-w-7xl mx-auto">
+        <h1 className="text-2xl font-bold mb-6">"{query}"에 대한 유저 검색 결과</h1>
+        
+        {users.length > 0 ? (
+          <div className="flex flex-col gap-4">
+            {users.map((user) => (
+              <UserProfile
+                key={user.userId}
+                nickName={user.nickname}
+                userId={user.userId}
+                profileImageUrl={user.profileImg ? `http://localhost:4000/uploads/${user.profileImg}` : undefined}
+                onClick={() => handleUserClick(user.userId, user.nickname)}
+                alt={user.nickname}
+                className='flex items-center gap-3 p-2 pl-8 border-b border-gray-200 hover:bg-gray-100 cursor-pointer'
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center text-gray-500 mt-10 text-lg font-medium">
+            유저 검색 결과가 없습니다.
+          </div>
+        )}
+      </div>
+    </Layout>
   );
 };
 

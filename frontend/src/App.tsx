@@ -32,11 +32,10 @@ function AppContent() {
   }, [navigate]);
   
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col  min-h-screen">
       <Header
         navigate={handleNavigate}
       />
-      <Layout>
         <ScrollTop/>
         <Routes>
           <Route path="/" element={<MainPage />} />
@@ -60,7 +59,6 @@ function AppContent() {
           
           <Route path="/search/user" element={<UserSearchResultsPage />} />
         </Routes>
-      </Layout>
       <Footer className="mt-auto" />
     </div>
   );

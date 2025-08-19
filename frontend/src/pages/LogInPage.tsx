@@ -4,8 +4,8 @@ import LoginForm from '@/components/LoginForm';
 
 const LoginPage: React.FC = () => {
   return (
-    <Layout>
-      <div className="flex flex-col items-center w-full h-full pt-0">
+    <Layout shortPage bottomPadding={152} >
+      <div className="flex flex-col items-center w-full pt-0">
         <LoginForm />
       </div>
     </Layout>
