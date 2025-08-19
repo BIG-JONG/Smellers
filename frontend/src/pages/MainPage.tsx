@@ -5,6 +5,7 @@ import MainInfo from "@/components/MainInfo";
 import RecommendPerfume from "@/components/RecommendPerfume";
 import ProductCard from '@/components/ProductCard';
 import Carousel from '@/components/Carousel';
+import Layout from '@/components/Layout';
 
 interface Post {
   perfumeId: number;
@@ -68,14 +69,15 @@ const MainPage: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center mt-40 text-lg text-gray-600">로딩 중...</div>;
+    return <div className="flex-grow text-center mt-40 text-lg text-gray-600">로딩 중...</div>;
   }
 
   if (error) {
-    return <div className="text-center mt-40 text-lg text-red-500">{error}</div>;
+    return <div className="flex-grow text-center mt-40 text-lg text-red-500">{error}</div>;
   }
 
   return (
+    <Layout>
     <div className="mt-35">
       {/* <Carousel/> */}
       <MainInfo />
@@ -128,6 +130,7 @@ const MainPage: React.FC = () => {
       </div>
       <div className="mt-80"/>
     </div>
+    </Layout>
   );
 };
 

@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PerfumeListSection from '@/components/PerfumeListSection';
 import { Product } from '@/components/ProductCard';
+import Layout from '@/components/Layout';
 
 const SearchResultsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -83,6 +84,7 @@ const SearchResultsPage: React.FC = () => {
   }
   
   return (
+    <Layout>
     <div className="pt-[20px] p-8 max-w-7xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">"{query}"에 대한 검색 결과</h1>
       
@@ -103,6 +105,7 @@ const SearchResultsPage: React.FC = () => {
         </div>
       )}
     </div>
+    </Layout>
   );
 };
 

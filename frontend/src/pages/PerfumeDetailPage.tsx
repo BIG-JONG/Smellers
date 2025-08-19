@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { PerfumeDetailData } from '@/components/PerfumeDetailSection';
 import UserProfile from '@/components/UserProfile';
+import Layout from '@/components/Layout';
 
 interface RawPerfumeData {
     perfumeId: number;
@@ -161,6 +162,7 @@ const PerfumeDetailPage: React.FC = () => {
     const isLoggedIn = !!sessionStorage.getItem("token");
 
     return (
+        <Layout>
             <div>
                 <PerfumeDetailSection 
                     perfume={perfume} 
@@ -171,6 +173,7 @@ const PerfumeDetailPage: React.FC = () => {
                     currentUserId={currentUserId}/>
                    
             </div>
+        </Layout>
     );
 };
 

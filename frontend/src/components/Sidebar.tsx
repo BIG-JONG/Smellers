@@ -26,7 +26,7 @@ function Sidebar({
   return (
     <div
       className={`
-        fixed top-[74px] left-0 z-40 h-[calc(100%-64px)] w-64 bg-white border-r border-gray-200
+        fixed top-[74px] left-0 z-50 h-[calc(100%-64px)] w-64 bg-white border-r border-gray-200
         transform transition-transform duration-300
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
       `}

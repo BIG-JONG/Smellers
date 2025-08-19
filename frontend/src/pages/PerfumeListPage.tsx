@@ -4,6 +4,7 @@ import Pagination from "@/components/Pagination";
 import PerfumeListSection from "@/components/PerfumeListSection";
 import { Product } from "@/components/ProductCard";
 import axios from 'axios';
+import Layout from '@/components/Layout';
 
 const PerfumeListPage:React.FC=()=>{
   const navigate = useNavigate(); // useNavigate 훅
@@ -56,22 +57,24 @@ const PerfumeListPage:React.FC=()=>{
   
 
   return(
-    <div className="pt-[20px]">
-      {/* <div className="flex items-center justify-center mb-8">
-        <h2 className="text-xl md:text-base font-semibold text-gray-500">전체 게시물</h2>
-      </div> */}
-      <PerfumeListSection
-        // title="전체 게시물"
-        perfumes={currentPerfumes}
-        currentPage={currentPage}
-        totalPage={totalPage}
-        onPageChange={setCurrentPage}
-        onPerfumeClick={handlePerfumeClick} 
-      />
-      {/* <div className="mt-8 flex justify-center">
-        <Pagination currentPage={currentPage} totalPage={totalPage} onPageChange={onPageChange} />
-      </div> */}
-    </div>
+    <Layout>
+      <div className="pt-[20px]">
+        {/* <div className="flex items-center justify-center mb-8">
+          <h2 className="text-xl md:text-base font-semibold text-gray-500">전체 게시물</h2>
+        </div> */}
+        <PerfumeListSection
+          // title="전체 게시물"
+          perfumes={currentPerfumes}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          onPageChange={setCurrentPage}
+          onPerfumeClick={handlePerfumeClick} 
+        />
+        {/* <div className="mt-8 flex justify-center">
+          <Pagination currentPage={currentPage} totalPage={totalPage} onPageChange={onPageChange} />
+        </div> */}
+      </div>
+    </Layout>
   )
 }
 

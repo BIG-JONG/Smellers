@@ -1,10 +1,11 @@
 import EditProfileForm from "@/components/EditProfileForm"
+import Layout from "@/components/Layout";
 
 const UserInfoUpdatePage:React.FC=()=>{
   return (
-    <div>
+    <Layout>
       <EditProfileForm/>
-    </div>
+    </Layout>
   )
 }
 

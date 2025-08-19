@@ -64,7 +64,7 @@ function SignupForm() {
   };
 return (
     <form className="mt-2 sm:mt-0 flex flex-col items-center justify-center w-full max-w-full sm:max-w-screen-md bg-white p-4 sm:p-8">
-      <h1 className="text-2xl sm:text-4xl font-extrabold mb-6 sm:mb-8 text-center">회원가입</h1>
+      <h1 className="text-2xl sm:text-4xl font-extrabold gap-6 sm:gap-8 text-center">회원가입</h1>
 
       <InputField
         label="이메일"
