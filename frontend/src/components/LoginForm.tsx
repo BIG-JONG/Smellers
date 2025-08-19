@@ -58,8 +58,8 @@ function LoginForm() {
   return (
     <form
       onSubmit={onSubmitForm}
-      className="mt-0 flex flex-col items-center justify-center w-full max-w-screen-md bg-white p-8 rounded"> {/* max-w-3xl -> max-w-screen-md, mt-10 -> mt-4 */}
-      <h1 className="text-4xl font-extrabold mb-8 text-center">로그인</h1>
+      className="mt-2 sm:mt-0 flex flex-col items-center justify-center w-full max-w-full sm:max-w-screen-md bg-white p-4 sm:p-8"> {/* max-w-3xl -> max-w-screen-md, mt-10 -> mt-4 */}
+      <h1 className="text-2xl sm:text-4xl font-extrabold mb-6 sm:mb-8 text-center">로그인</h1>
       <InputField
         label="이메일"
         type="email"

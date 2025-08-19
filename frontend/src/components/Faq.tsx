@@ -78,7 +78,7 @@ function Faq({}: FaqProps) {
               maxHeight: `${maxHeights[index] || 0}px`,
             }}
           >
-            <p className="px-4 pt-4 pb-4 text-[10px] sm:text-xs text-gray-900 break-words whitespace-pre-line leading-snug">
+            <p className="px-4 pt-4 pb-4 text-[10px] sm:text-sm text-gray-900 break-words whitespace-pre-line leading-snug">
               {faq.answer}
             </p>
           </div>

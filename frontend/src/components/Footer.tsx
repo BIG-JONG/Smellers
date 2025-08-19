@@ -38,13 +38,13 @@ function Footer({
           </button>
         </div>
         
-        <div className="lg:flex lg:items-end lg:justify-between">
+        <div className="lg:flex lg:items-start lg:justify-between">
           <div>
             {/* 로고 */}
-            <div className="flex justify-center text-teal-600 lg:justify-start">
+            <div className="flex flex-col items-center lg:items-start">
               <a
                 href="#"
-                className="flex items-center text-sm sm:text-base font-bold text-gray-900 px-2 pl-10"
+                className="flex items-center text-sm sm:text-base font-bold text-gray-900"
                 onClick={(e) => {
                   // e.preventDefault();
                   navigate('/');
@@ -81,7 +81,7 @@ function Footer({
           </ul>
         </div>
 
-        <p className="mt-4 sm:mt-6 ml-0 sm:ml-9 leading-snug text-[11px] sm:text-sm text-gray-500">
+        <p className="mt-4 sm:mt-6 text-[11px] sm:text-sm leading-snug text-gray-500 text-center sm:text-left">
           향기로운 기억들이 모여 새로운 이야기가 시작되는 곳,<br/>
           나만의 향수를 기록하고 특별한 순간들을 함께 나누는 공간<br/>
           당신의 취향과 감성을 펼쳐 보세요.<br/>

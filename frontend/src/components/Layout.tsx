@@ -98,7 +98,7 @@ function Layout({ children }: LayoutProps) {
       </button>
 
       <main className={`flex flex-col justify-start items-center px-4 w-full transition-all duration-300
-                        flex-grow h-full pt-16`}> 
+                        flex-grow h-full  pt-4 sm:pt-16`}> 
         {children}
       </main>
     </div>
