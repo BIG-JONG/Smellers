@@ -51,10 +51,10 @@ function Faq({}: FaqProps) {
 
   return(
     <Layout>
-      <div className="w-full max-w-3xl mx-auto px-2 sm:px-6 lg:px-8 py-6 lg:pb-40">
-        <h2 className="text-lg sm:text-xl xl:text-2xl font-bold flex justify-center gap-8">FAQ</h2>
+      <div className="w-full max-w-3xl mx-auto px-2 sm:px-6 lg:px-8 py-6 lg:pb-40 mt-2">
+        <h2 className="text-lg sm:text-xl xl:text-2xl font-bold flex justify-center">FAQ</h2>
         {faqData.map((faq, index) => (
-          <div key={index} className="mt-4">
+          <div key={index} className="mt-10">
             <div
               className="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-gray-50 p-4 text-gray-900 cursor-pointer hover:bg-gray-100 transition-colors duration-200"
               onClick={() => toggleAccordion(index)} 
