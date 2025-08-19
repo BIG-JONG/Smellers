@@ -25,7 +25,6 @@ interface RawPostData {
   createdAt: string; 
 }
 
-const itemPerPage = 20;
 
 const MyPerfumeListPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,6 +36,28 @@ const MyPerfumeListPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [allPerfumes, setAllPerfumes] = useState<Product[]>([]);
+
+  const [itemPerPage, setItemPerPage] = useState(16);
+
+  useEffect(() => {
+    const updateItemPerPage = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        // 모바일
+        setItemPerPage(10);
+      } else {
+        // 웹
+        setItemPerPage(16);
+      }
+    };
+
+     updateItemPerPage();
+    window.addEventListener("resize", updateItemPerPage);
+
+    return () => {
+      window.removeEventListener("resize", updateItemPerPage);
+    };
+  }, []);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -109,7 +130,7 @@ const MyPerfumeListPage: React.FC = () => {
     };
     fetchUserInfo();
     fetchMyPerfumes();
-  }, []);
+  }, [itemPerPage]);
 
   useEffect(() => {
     const startIndex = (currentPage - 1) * itemPerPage;

@@ -22,7 +22,7 @@ const PerfumeListSection: React.FC<PerfumeListSectionProps> = ({
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">{title}</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {perfumes.map((perfume) => (
           <ProductCard
             key={perfume.id}

@@ -82,7 +82,7 @@ function LoginForm() {
       <Button type="submit">로그인</Button>
 
       {showAlert && (
-        <div className="w-full"> //mt-4 제거
+        <div className="w-full mt-4 "> 
           <Alert
             type={alertType}
             message={alertType === "error" ? errorMessage : "로그인 성공"}

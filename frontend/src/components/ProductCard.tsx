@@ -37,7 +37,7 @@ interface ProductCardProps {
         // className="group relative block w-100  border border-gray-100  overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-md"
         className="group relative block w-100 overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-md"
       >
-        <div className="relative h-[350px] sm:h-[450px]">
+        <div className="relative aspect-square sm:aspect-auto sm:h-[350px] md:h-[450px]">
           {/* 호버 투명도 */}
           <img
             alt={product.name}

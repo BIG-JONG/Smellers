@@ -10,13 +10,30 @@ const PerfumeListPage:React.FC=()=>{
   const navigate = useNavigate(); // useNavigate 훅
   const [perfumes, setPerfumes] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [perfumesPerPage, setPerfumesPerPage] = useState(16);
 
-  const perfumesPerPage = 20;
 
-  //상세 페이지로 이동
   const handlePerfumeClick = (id: string) => {
-    navigate(`/perfumes/${id}`); // /perfumes/:id 경로로 이동
+    navigate(`/perfumes/${id}`);
   };
+
+  useEffect(() => {
+    const updatePerfumesPerPage = () => {
+      if (window.innerWidth < 640) {
+        setPerfumesPerPage(10);
+      } else {
+        setPerfumesPerPage(20);
+      }
+    };
+
+    updatePerfumesPerPage();
+    window.addEventListener("resize", updatePerfumesPerPage);
+
+    return () => {
+      window.removeEventListener("resize", updatePerfumesPerPage);
+    };
+  }, []);
+
 
   useEffect(()=>{
     const fetchPerfumes = async()=>{
