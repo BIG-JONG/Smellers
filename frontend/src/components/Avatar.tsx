@@ -39,7 +39,6 @@ return (
           src={imageUrl}
           alt={alt}
           className="absolute inset-0 w-full h-full object-cover"
-          // 이미지 로드 실패 시 텍스트로 대체
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             const span = e.currentTarget.nextElementSibling as HTMLSpanElement;

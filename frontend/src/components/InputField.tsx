@@ -28,7 +28,7 @@ const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <div className={`mb-4 w-full ${className || ''}`}>
-      <label htmlFor={inputId} className="block text-gray-700 text-sm font-bold mb-2">
+      <label htmlFor={inputId} className="block sm:text-sm text-gray-700 text-xs font-bold mb-2">
         {label}
       </label>
 
@@ -42,14 +42,16 @@ const InputField: React.FC<InputFieldProps> = ({
         className={`
           mt-0.5
           rounded-lg leading-tight
-          py-5 px-4
+          py-2 px-2 
+          sm:py-5 sm:px-4
           h-auto min-h-0
           appearance-none border-none !ring-0 !shadow-none outline-none
           ${error ? 'ring-2 ring-red-500' : ''}
           focus:ring-2 focus:ring-blue-500
           placeholder-gray-400
-          w-[550px]
+          w-full sm:w-[550px]
           ${readOnlyClass}
+          placeholder:text-xs sm:placeholder:text-sm
         `}
       />
       {error && <p className="text-red-500 text-xs italic mt-1">{error}</p>}

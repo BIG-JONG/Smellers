@@ -1,8 +1,6 @@
-// Alert.tsx
 
 import React from 'react';
 
-// Alert 타입 정의
 interface AlertProps {
   message: string;
   type?: 'success' | 'error' | 'warning' | 'info'; 
@@ -40,12 +38,12 @@ const Alert: React.FC<AlertProps> = ({ message, type = 'info', className }) => {
 
   return (
     <div
-      className={`w-full p-4 mb-4 text-sm rounded-lg border-l-4 ${getTypeClasses(type)} ${className || ''}`}
+      className={`w-full p-3 sm:p-4 mb-4 text-xs sm:text-sm rounded-lg border-l-4  ${getTypeClasses(type)} ${className || ''}`}
       role="alert"
     >
-      <div className="flex items-center">
-        <span className="flex-shrink-0 w-5 h-5 mr-2">{getIcon(type)}</span>
-        <div>
+      <div className="flex items-center sm:items-center" >
+        <span className="flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 mr-2 mt-1 sm:mt-0">{getIcon(type)}</span>
+        <div className="break-words whitespace-pre-wrap text-[10px] sm:text-sm leading-snug">
           {message}
         </div>
       </div>

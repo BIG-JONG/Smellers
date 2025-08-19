@@ -3,6 +3,8 @@ module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}", // src 폴더 내의 모든 JS/TS/JSX/TSX 파일 스캔
+    "./node_modules/flowbite/**/*.js" 
+
   ],
   theme: {
     extend: {},
@@ -16,5 +18,7 @@ module.exports = {
         },
       });
     },
+    require('flowbite/plugin')
   ],
 }
+

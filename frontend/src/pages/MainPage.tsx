@@ -4,6 +4,7 @@ import CurrentPost from "@/components/CurrentPost";
 import MainInfo from "@/components/MainInfo";
 import RecommendPerfume from "@/components/RecommendPerfume";
 import ProductCard from '@/components/ProductCard';
+import Carousel from '@/components/Carousel';
 
 interface Post {
   perfumeId: number;
@@ -76,6 +77,7 @@ const MainPage: React.FC = () => {
 
   return (
     <div className="mt-35">
+      {/* <Carousel/> */}
       <MainInfo />
       {randomPost && (
         <a 
@@ -96,7 +98,6 @@ const MainPage: React.FC = () => {
         </a>
       )}
       
-      {/* 아래 5개: 가장 최신 게시글 5개를 깔끔하게 일렬 정렬 */}
       <div className="container mx-auto px-4 mt-20">
         {/* <h2 className="text-3xl font-bold mb-8 text-center text-gray-800">최신 게시글</h2> */}
         {latestPosts.length > 0 ? (
