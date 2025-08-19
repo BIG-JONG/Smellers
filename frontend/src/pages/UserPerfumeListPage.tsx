@@ -24,7 +24,6 @@ interface RawPostData {
   perfumeStatus: string;
   createdAt: string;
 }
-const itemPerPage = 20;
 
 const UserPerfumeListPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -45,6 +44,30 @@ const UserPerfumeListPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [allPerfumes, setAllPerfumes] = useState<Product[]>([]);
+
+  const [perfumesPerPage, setPerfumesPerPage] = useState(16);
+  
+  useEffect(() => {
+    const updatePerfumesPerPage = () => {
+      if (window.innerWidth < 640) {
+        setPerfumesPerPage(10);
+      } else {
+        setPerfumesPerPage(16);
+      }
+    };
+
+    updatePerfumesPerPage();
+    window.addEventListener("resize", updatePerfumesPerPage);
+
+    return () => {
+      window.removeEventListener("resize", updatePerfumesPerPage);
+    };
+  }, []);
+
+  useEffect(() => {
+      setTotalPage(Math.ceil(allPerfumes.length / perfumesPerPage));
+    }, [allPerfumes, perfumesPerPage]);
+
 
   const fetchUserData = useCallback(async () => {
     try {
@@ -109,10 +132,6 @@ const UserPerfumeListPage: React.FC = () => {
       });
 
       setAllPerfumes(mappedPerfumes);
-      setTotalPage(Math.ceil(mappedPerfumes.length / itemPerPage));
-
-
-      setPerfumes(mappedPerfumes);
       if (typeof initialIsFollowing !== 'undefined') {
         setIsFollowing(initialIsFollowing);
       }
@@ -131,10 +150,10 @@ const UserPerfumeListPage: React.FC = () => {
   }, [fetchUserData, targetUserId]);
 
   useEffect(() => {
-    const startIndex = (currentPage - 1) * itemPerPage;
-    const endIndex = startIndex + itemPerPage;
+    const startIndex = (currentPage - 1) * perfumesPerPage;
+    const endIndex = startIndex + perfumesPerPage;
     setPerfumes(allPerfumes.slice(startIndex, endIndex));
-  }, [currentPage, allPerfumes]);
+  }, [currentPage, allPerfumes, perfumesPerPage]);
 
 
   const handleFollowToggle = useCallback(async (isCurrentlyFollowing: boolean) => {
@@ -217,9 +236,9 @@ const UserPerfumeListPage: React.FC = () => {
         ) : (
           <PerfumeListSection
             perfumes={perfumes}
-            currentPage={1}
-            totalPage={1}
-            onPageChange={() => {}}
+            currentPage={currentPage}
+            totalPage={totalPage}
+            onPageChange={setCurrentPage}
             onPerfumeClick={handlePerfumeClick}
           />
         )}
