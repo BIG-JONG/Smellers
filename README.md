@@ -7,7 +7,7 @@
 ## 🚀 기술 스택
 
 - **Backend**: Node.js (Express), Prisma, MySQL  
-- **Frontend**: React, TailwindCSS (추후 연결)  
+- **Frontend**: React, TailwindCSS  
 - **Auth**: JWT, OAuth (Kakao)  
 - **Infra**: Docker, AWS  
 
@@ -29,7 +29,7 @@ Smellers/
 │ │ │ └─ middlewares
 │ ├─ package.json
 │ └─ tsconfig.json
-└─ frontend (예정)
+└─ frontend 
 ```
 ---
 
@@ -63,4 +63,3 @@ npm run dev
 🔄 (추가 예정) 리뷰/댓글 시스템
 
 ## 📸 스크린샷
-추후 프론트엔드 연결 후 추가 예정
