@@ -1,75 +1,65 @@
-# Smellers
+# 🌸 Smellers
 
-Smellers는 향수 검색과 사용자 간 소셜 기능을 제공하는 플랫폼입니다.  
-사용자는 향수를 검색하거나, 다른 사용자를 팔로우하고 게시글을 공유할 수 있습니다.
+> **Smellers**는 향수 기반의 소셜 플랫폼으로, 사용자들이 향수 정보를 검색하고, 서로 팔로우하며 소통할 수 있는 서비스입니다.  
 
-## Features
+---
 
-### User
-- 회원가입 및 로그인 (JWT 인증)
-- 사용자 프로필 조회 및 수정
+## 🚀 기술 스택
 
-### Perfume
-- 향수 검색 (이름, 브랜드, 노트, 가격 조건)
-- 노트(Top, Middle, Bottom) 기반 검색
+- **Backend**: Node.js (Express), Prisma, MySQL  
+- **Frontend**: React, TailwindCSS (추후 연결)  
+- **Auth**: JWT, OAuth (Kakao)  
+- **Infra**: Docker, AWS  
 
-### Social
-- 사용자 팔로우 / 언팔로우
-- 팔로우 여부 확인 API 제공
+---
 
-### Post
-- 게시글 작성 및 조회
-- 팔로잉한 사용자의 게시글 피드 확인
-
-## Tech Stack
-
-### Backend
-- Node.js
-- Express
-- Prisma ORM
-- MySQL
-- JWT 기반 인증
-
-### Frontend
-- React (Vite + TypeScript)
-- Tailwind CSS
-
-### Infra / Etc
-- Docker (개발/배포 환경)
-- AWS (선택적 배포 환경)
-
-## Project Structure
+## 📂 프로젝트 구조
 ```
+
 Smellers/
-├─ backend/
-│ ├─ prisma/ # Prisma schema 및 migration
-│ │ ├─ migrations/ # DB 마이그레이션 파일 (세부 파일 생략)
+├─ backend
+│ ├─ prisma
+│ │ ├─ migrations
 │ │ └─ schema.prisma
-│ └─ server/src/
-│ ├─ app.ts # Express 앱 엔트리 포인트
-│ ├─ routes/ # API 라우터
-│ │ ├─ user.routes.ts
-│ │ ├─ follow.routers.ts
-│ │ └─ perfume.routes.ts
-│ ├─ controllers/ # 컨트롤러 (요청 처리)
-│ │ ├─ user.controller.ts
-│ │ ├─ follow.controller.ts
-│ │ └─ perfume.controller.ts
-│ ├─ services/ # 서비스 계층 (비즈니스 로직)
-│ │ ├─ user.service.ts
-│ │ ├─ follow.service.ts
-│ │ └─ perfume.service.ts
-│ ├─ middlewares/ # 인증/공통 미들웨어
-│ ├─ utils/ # 유틸리티 함수
-│ └─ prisma/ # Prisma Client
-└─ frontend/
-├─ src/
-│ ├─ components/ # React 컴포넌트
-│ ├─ pages/ # 페이지 컴포넌트
-│ └─ assets/ # 이미지, 로고 등
+│ ├─ server
+│ │ ├─ src
+│ │ │ ├─ routes
+│ │ │ ├─ controllers
+│ │ │ ├─ services
+│ │ │ └─ middlewares
+│ ├─ package.json
+│ └─ tsconfig.json
+└─ frontend (예정)
 ```
-bash
-복사
-편집
+---
 
-## Getting Started
+## 🛠 실행 방법
+
+```bash
+# 저장소 클론
+git clone -b FINAL https://github.com/BIG-JONG/Smellers.git
+cd Smellers/backend
+
+# 패키지 설치
+npm install
+
+# DB 마이그레이션
+npx prisma migrate dev
+
+# 서버 실행
+npm run dev
+✨ 주요 기능
+✅ 사용자 회원가입 / 로그인 (JWT 인증)
+
+✅ Kakao OAuth 로그인
+
+✅ 향수 검색 및 상세 정보 조회
+
+✅ 팔로우 / 언팔로우 기능
+
+✅ 팔로워/팔로잉 리스트 조회
+
+🔄 (추가 예정) 리뷰/댓글 시스템
+
+📸 스크린샷
+추후 프론트엔드 연결 후 추가 예정
