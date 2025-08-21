@@ -48,7 +48,8 @@ npx prisma migrate dev
 
 # 서버 실행
 npm run dev
-✨ 주요 기능
+```
+## ✨ 주요 기능
 ✅ 사용자 회원가입 / 로그인 (JWT 인증)
 
 ✅ Kakao OAuth 로그인
@@ -61,5 +62,5 @@ npm run dev
 
 🔄 (추가 예정) 리뷰/댓글 시스템
 
-📸 스크린샷
+## 📸 스크린샷
 추후 프론트엔드 연결 후 추가 예정
