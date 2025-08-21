@@ -90,136 +90,96 @@ Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하
 
 ```bash
 Smellers
-├─ backend
-│  ├─ .rest.http
-│  ├─ package-lock.json
-│  ├─ package.json
-│  ├─ prisma
-│  │  ├─ migrations
-│  │  │  ├─ 20250721064208_init
-│  │  │  │  └─ migration.sql
-│  │  │  ├─ 20250721080907_init
-│  │  │  │  └─ migration.sql
-│  │  │  ├─ 20250811075900_y
-│  │  │  │  └─ migration.sql
-│  │  │  └─ migration_lock.toml
-│  │  └─ schema.prisma
-│  └─ server
-│     ├─ src
-│     │  ├─ app.ts
-│     │  ├─ controllers
-│     │  │  ├─ follow.controller.ts
-│     │  │  ├─ perfume.controller.ts
-│     │  │  └─ user.controller.ts
-│     │  ├─ middlewares
-│     │  │  ├─ auth.middleware.ts
-│     │  │  ├─ authorization.middleware.ts
-│     │  │  ├─ error-handing.middleware.ts
-│     │  │  ├─ rateLimit.middleware.ts
-│     │  │  ├─ upload.middleware.ts
-│     │  │  └─ validation-result-handle.ts
-│     │  ├─ prisma
-│     │  │  └─ client.ts
-│     │  ├─ routes
-│     │  │  ├─ follow.routers.ts
-│     │  │  ├─ perfume.routes.ts
-│     │  │  └─ user.routes.ts
-│     │  ├─ services
-│     │  │  ├─ follow.service.ts
-│     │  │  ├─ perfume.service.ts
-│     │  │  └─ user.service.ts
-│     │  ├─ types
-│     │  │  ├─ express
-│     │  │  │  └─ index.d.ts
-│     │  │  └─ PerfumeSearchParams.ts
-│     │  └─ utils
-│     │     ├─ changeNoteType.ts
-│     │     ├─ deleteFiles.ts
-│     │     └─ jwt.ts
-│     ├─ tsconfig.json
-│     └─ uploads
-│        └─ ... (이미지 자산 다수)
-├─ frontend
-│  ├─ eslint.config.js
-│  ├─ index.html
-│  ├─ package-lock.json
-│  ├─ package.json
-│  ├─ postcss.config.cjs
-│  ├─ public
-│  │  ├─ favicon.png
-│  │  ├─ github.png
-│  │  ├─ notion.png
-│  │  ├─ test.jpg
-│  │  └─ vite.svg
-│  ├─ src
-│  │  ├─ App.css
-│  │  ├─ App.tsx
-│  │  ├─ assets
-│  │  │  └─ aromabaselogo.png
-│  │  ├─ components
-│  │  │  ├─ AccountSettingsForm.tsx
-│  │  │  ├─ Alert.tsx
-│  │  │  ├─ Avatar.tsx
-│  │  │  ├─ Button.tsx
-│  │  │  ├─ Carousel.tsx
-│  │  │  ├─ Checkbox.tsx
-│  │  │  ├─ CurrentPost.tsx
-│  │  │  ├─ Dropdown.tsx
-│  │  │  ├─ EditProfileForm.tsx
-│  │  │  ├─ Faq.tsx
-│  │  │  ├─ FollowButton.tsx
-│  │  │  ├─ Footer.tsx
-│  │  │  ├─ Header.tsx
-│  │  │  ├─ ImageCard.tsx
-│  │  │  ├─ InputField.tsx
-│  │  │  ├─ Layout.tsx
-│  │  │  ├─ LoginForm.tsx
-│  │  │  ├─ MainInfo.tsx
-│  │  │  ├─ Modal.tsx
-│  │  │  ├─ MultiSelectDropdown.tsx
-│  │  │  ├─ Pagination.tsx
-│  │  │  ├─ PerfumeDetailSection.tsx
-│  │  │  ├─ PerfumeListSection.tsx
-│  │  │  ├─ PostForm.tsx
-│  │  │  ├─ ProductCard.tsx
-│  │  │  ├─ RandomPerfumeRecommendationSection.tsx
-│  │  │  ├─ RecommendPerfume.tsx
-│  │  │  ├─ ScrollTop.tsx
-│  │  │  ├─ SearchInput.tsx
-│  │  │  ├─ Select.tsx
-│  │  │  ├─ Sidebar.tsx
-│  │  │  ├─ signupForm.tsx
-│  │  │  ├─ StarRating.tsx
-│  │  │  ├─ Tag.tsx
-│  │  │  ├─ Textarea.tsx
-│  │  │  ├─ UserPerfumeListSection.tsx
-│  │  │  ├─ UserProfile.tsx
-│  │  │  └─ UserProfileSection.tsx
-│  │  ├─ index.css
-│  │  ├─ main.tsx
-│  │  ├─ pages
-│  │  │  ├─ FollowListPage.tsx
-│  │  │  ├─ LogInPage.tsx
-│  │  │  ├─ MainPage.tsx
-│  │  │  ├─ MyPerfumeListPage.tsx
-│  │  │  ├─ PerfumeDetailPage.tsx
-│  │  │  ├─ PerfumeListPage.tsx
-│  │  │  ├─ PostPerfumePage.tsx
-│  │  │  ├─ SearchResultsPage.tsx
-│  │  │  ├─ SignUpPage.tsx
-│  │  │  ├─ UserInfoUpdatePage.tsx
-│  │  │  ├─ UserPerfumeListPage.tsx
-│  │  │  └─ UserSearchPage.tsx
-│  │  └─ vite-env.d.ts
-│  ├─ tailwind.config.js
-│  ├─ tsconfig.app.json
-│  ├─ tsconfig.json
-│  ├─ tsconfig.node.json
-│  └─ vite.config.ts
-├─ package-lock.json
-├─ package.json
-└─ README.md
+├── README.md # 프로젝트 설명 파일
+├── package.json # 프로젝트 의존성 관리
+├── package-lock.json
+├── backend
+│ ├── package.json
+│ ├── prisma
+│ │ ├── migrations # DB 마이그레이션 파일
+│ │ └── schema.prisma # Prisma DB 스키마 정의
+│ ├── server
+│ ├── src
+│ │ ├── app.ts # 서버 진입점
+│ │ ├── controllers # 요청 처리 로직
+│ │ │ ├── follow.controller.ts
+│ │ │ ├── perfume.controller.ts
+│ │ │ └── user.controller.ts
+│ │ ├── services # 비즈니스 로직
+│ │ │ ├── follow.service.ts
+│ │ │ ├── perfume.service.ts
+│ │ │ └── user.service.ts
+│ │ ├── routes # 라우팅
+│ │ │ ├── follow.routers.ts
+│ │ │ ├── perfume.routes.ts
+│ │ │ └── user.routes.ts
+│ │ ├── middlewares # 요청/응답 처리 미들웨어
+│ │ │ ├── auth.middleware.ts
+│ │ │ ├── authorization.middleware.ts
+│ │ │ ├── error-handing.middleware.ts
+│ │ │ ├── rateLimit.middleware.ts
+│ │ │ ├── upload.middleware.ts
+│ │ │ └── validation-result-handle.ts
+│ │ ├── prisma
+│ │ │ └── client.ts # Prisma 클라이언트
+│ │ └── utils # 유틸 함수
+│ │ ├── changeNoteType.ts
+│ │ ├── deleteFiles.ts
+│ │ └── jwt.ts
+│ └── uploads # 이미지 등 업로드 자산
+└── frontend
+├── package.json
+├── public
+│ ├── index.html
+│ └── favicon.png
+└── src
+├── main.tsx # React 진입점
+├── App.tsx # 최상위 컴포넌트
+├── assets # 이미지, 로고 등
+│ └── aromabaselogo.png
+├── components # 재사용 가능한 UI 컴포넌트
+│ ├── Button.tsx
+│ ├── InputField.tsx
+│ ├── FollowButton.tsx
+│ ├── UserProfileSection.tsx
+│ └── ... 기타 컴포넌트
+├── pages # 화면 단위 컴포넌트
+│ ├── MainPage.tsx
+│ ├── LogInPage.tsx
+│ ├── SignUpPage.tsx
+│ ├── PerfumeListPage.tsx
+│ ├── PerfumeDetailPage.tsx
+│ ├── UserSearchPage.tsx
+│ ├── UserPerfumeListPage.tsx
+│ ├── FollowListPage.tsx
+│ └── ... 기타 페이지
+├── api # API 호출 모듈
+│ └── mandarinAPI.js
+├── routes # 라우팅 설정
+│ ├── privateRoutes.jsx
+│ └── privateRoutesRev.jsx
+├── styles # 전역 스타일
+│ └── Globalstyled.jsx
+└── vite-env.d.ts
 ```
+
+## 설명
+
+### Backend
+- **server/src/controllers**: 요청 처리 로직 (CRUD, 팔로우, 유저 조회 등)  
+- **server/src/services**: 비즈니스 로직 (데이터 처리, 유효성 체크)  
+- **server/src/routes**: API 라우팅  
+- **server/src/middlewares**: 인증, 권한, 업로드, 에러 처리 등  
+- **prisma/migrations**: DB 테이블 관리용 마이그레이션 파일  
+- **prisma/schema.prisma**: DB 스키마 정의  
+
+### Frontend
+- **src/components**: 재사용 가능한 UI 컴포넌트 (버튼, 입력창, 사용자 배너 등)  
+- **src/pages**: 주요 화면 단위 컴포넌트 (로그인, 회원가입, 리스트, 상세 페이지 등)  
+- **src/api**: 백엔드 API 호출 모듈  
+- **src/routes**: 라우팅 설정  
+- **src/styles**: 전역 스타일 관리  
+
 
 ---
 
