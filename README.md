@@ -20,7 +20,7 @@ Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하
 
 | FrontEnd | FrontEnd | BackEnd | BackEnd |
 | :------: | :------: | :------: | :------: |
-| <a href="https://github.com/BIG-JONG"><img src="https://github.com/BIG-JONG.png" width="100" height="100"></a> | <a href="https://github.com/simuneu"><img src="https://github.com/simuneu.png" width="100" height="100"></a> | <a href="https://github.com/sweetpotatotest"><img src="https://github.com/sweetpotatotest.png" width="100" height="100"></a> | <a href="https://github.com/HYEGYEONG"><img src="https://github.com/HYEGYEONG.png" width="100" height="100"></a> |
+| <a href="https://github.com/BIG-JONG"><img src="https://github.com/BIG-JONG.png" width="150" height="150"></a> | <a href="https://github.com/simuneu"><img src="https://github.com/simuneu.png" width="150" height="150"></a> | <a href="https://github.com/sweetpotatotest"><img src="https://github.com/sweetpotatotest.png" width="150" height="150"></a> | <a href="https://github.com/HYEGYEONG"><img src="https://github.com/HYEGYEONG.png" width="150" height="150"></a> |
 | 박종현 | 박시현 | 강기병 | 강혜경 |
 
 
