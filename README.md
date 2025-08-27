@@ -195,8 +195,9 @@ frontend
     ├── styles # 전역 스타일
     │   └── Globalstyled.jsx
     └── vite-env.d.ts
-</details>
 ```
+</details>
+
 
 
 ## 설명
