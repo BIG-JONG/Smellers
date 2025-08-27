@@ -18,7 +18,13 @@ Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하
 
 ## 팀원 구성
 
-**개인 프로젝트** (Owner: **@BIG-JONG**)
+| FrontEnd | FrontEnd | BackEnd | BackEnd |
+
+| :---: | :---: | :---: | :---: |
+
+| <img src="https://github.com/BIG-JONG.png" width="200" height="200"> | <img src="https://github.com/simuneu.png" width="200" height="200"> | <img src="https://github.com/sweetpotatotest.png" width="200" height="200"> | <img src="https://github.com/HYEGYEONG.png" width="200" height="200"> |
+
+| [박종현](https://github.com/BIG-JONG) | [박시현](https://github.com/simuneu) | [강기병](https://github.com/sweetpotatotest) | [강혜경](https://github.com/HYEGYEONG) | 
 
 
 ---
@@ -117,80 +123,84 @@ Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하
 
 ## 3. 프로젝트 구조
 
+<details>
+<summary>🖥️ Backend 구조</summary>
+
 ```bash
-Smellers
-├── README.md # 프로젝트 설명 파일
-├── package.json # 프로젝트 의존성 관리
-├── package-lock.json
-├── backend
-│ ├── package.json
-│ ├── prisma
-│ │ ├── migrations # DB 마이그레이션 파일
-│ │ └── schema.prisma # Prisma DB 스키마 정의
-│ ├── server
-│ ├── src
-│ │ ├── app.ts # 서버 진입점
-│ │ ├── controllers # 요청 처리 로직
-│ │ │ ├── follow.controller.ts
-│ │ │ ├── perfume.controller.ts
-│ │ │ └── user.controller.ts
-│ │ ├── services # 비즈니스 로직
-│ │ │ ├── follow.service.ts
-│ │ │ ├── perfume.service.ts
-│ │ │ └── user.service.ts
-│ │ ├── routes # 라우팅
-│ │ │ ├── follow.routers.ts
-│ │ │ ├── perfume.routes.ts
-│ │ │ └── user.routes.ts
-│ │ ├── middlewares # 요청/응답 처리 미들웨어
-│ │ │ ├── auth.middleware.ts
-│ │ │ ├── authorization.middleware.ts
-│ │ │ ├── error-handing.middleware.ts
-│ │ │ ├── rateLimit.middleware.ts
-│ │ │ ├── upload.middleware.ts
-│ │ │ └── validation-result-handle.ts
-│ │ ├── prisma
-│ │ │ └── client.ts # Prisma 클라이언트
-│ │ └── utils # 유틸 함수
-│ │ ├── changeNoteType.ts
-│ │ ├── deleteFiles.ts
-│ │ └── jwt.ts
-│ └── uploads # 이미지 등 업로드 자산
-└── frontend
+backend
+├── package.json
+├── prisma
+│   ├── migrations # DB 마이그레이션 파일
+│   └── schema.prisma # Prisma DB 스키마 정의
+├── server
+├── src
+│   ├── app.ts # 서버 진입점
+│   ├── controllers # 요청 처리 로직
+│   │   ├── follow.controller.ts
+│   │   ├── perfume.controller.ts
+│   │   └── user.controller.ts
+│   ├── services # 비즈니스 로직
+│   │   ├── follow.service.ts
+│   │   ├── perfume.service.ts
+│   │   └── user.service.ts
+│   ├── routes # 라우팅
+│   │   ├── follow.routers.ts
+│   │   ├── perfume.routes.ts
+│   │   └── user.routes.ts
+│   ├── middlewares # 요청/응답 처리 미들웨어
+│   │   ├── auth.middleware.ts
+│   │   ├── authorization.middleware.ts
+│   │   ├── error-handing.middleware.ts
+│   │   ├── rateLimit.middleware.ts
+│   │   ├── upload.middleware.ts
+│   │   └── validation-result-handle.ts
+│   ├── prisma
+│   │   └── client.ts # Prisma 클라이언트
+│   └── utils # 유틸 함수
+│       ├── changeNoteType.ts
+│       ├── deleteFiles.ts
+│       └── jwt.ts
+└── uploads # 이미지 등 업로드 자산
+</details>
+<details>
+<summary>💻 Frontend 구조</summary>
+frontend
 ├── package.json
 ├── public
-│ ├── index.html
-│ └── favicon.png
+│   ├── index.html
+│   └── favicon.png
 └── src
-├── main.tsx # React 진입점
-├── App.tsx # 최상위 컴포넌트
-├── assets # 이미지, 로고 등
-│ └── aromabaselogo.png
-├── components # 재사용 가능한 UI 컴포넌트
-│ ├── Button.tsx
-│ ├── InputField.tsx
-│ ├── FollowButton.tsx
-│ ├── UserProfileSection.tsx
-│ └── ... 기타 컴포넌트
-├── pages # 화면 단위 컴포넌트
-│ ├── MainPage.tsx
-│ ├── LogInPage.tsx
-│ ├── SignUpPage.tsx
-│ ├── PerfumeListPage.tsx
-│ ├── PerfumeDetailPage.tsx
-│ ├── UserSearchPage.tsx
-│ ├── UserPerfumeListPage.tsx
-│ ├── FollowListPage.tsx
-│ └── ... 기타 페이지
-├── api # API 호출 모듈
-│ └── mandarinAPI.js
-├── routes # 라우팅 설정
-│ ├── privateRoutes.jsx
-│ └── privateRoutesRev.jsx
-├── styles # 전역 스타일
-│ └── Globalstyled.jsx
-└── vite-env.d.ts
+    ├── main.tsx # React 진입점
+    ├── App.tsx # 최상위 컴포넌트
+    ├── assets # 이미지, 로고 등
+    │   └── aromabaselogo.png
+    ├── components # 재사용 가능한 UI 컴포넌트
+    │   ├── Button.tsx
+    │   ├── InputField.tsx
+    │   ├── FollowButton.tsx
+    │   ├── UserProfileSection.tsx
+    │   └── ... 기타 컴포넌트
+    ├── pages # 화면 단위 컴포넌트
+    │   ├── MainPage.tsx
+    │   ├── LogInPage.tsx
+    │   ├── SignUpPage.tsx
+    │   ├── PerfumeListPage.tsx
+    │   ├── PerfumeDetailPage.tsx
+    │   ├── UserSearchPage.tsx
+    │   ├── UserPerfumeListPage.tsx
+    │   ├── FollowListPage.tsx
+    │   └── ... 기타 페이지
+    ├── api # API 호출 모듈
+    │   └── mandarinAPI.js
+    ├── routes # 라우팅 설정
+    │   ├── privateRoutes.jsx
+    │   └── privateRoutesRev.jsx
+    ├── styles # 전역 스타일
+    │   └── Globalstyled.jsx
+    └── vite-env.d.ts
+</details>
 ```
+
 
 ## 설명
 
