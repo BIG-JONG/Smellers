@@ -20,9 +20,9 @@ Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하
 
 | FrontEnd | FrontEnd | BackEnd | BackEnd |
 
-| :---: | :---: | :---: | :---: |
+| :------: | :------: | :------: | :------: |
 
-| <img src="https://github.com/BIG-JONG.png" width="200" height="200"> | <img src="https://github.com/simuneu.png" width="200" height="200"> | <img src="https://github.com/sweetpotatotest.png" width="200" height="200"> | <img src="https://github.com/HYEGYEONG.png" width="200" height="200"> |
+| <img src="https://github.com/BIG-JONG.png" width="100" height="100"> | <img src="https://github.com/simuneu.png" width="100" height="100"> | <img src="https://github.com/sweetpotatotest.png" width="100" height="100"> | <img src="https://github.com/HYEGYEONG.png" width="100" height="100"> |
 
 | [박종현](https://github.com/BIG-JONG) | [박시현](https://github.com/simuneu) | [강기병](https://github.com/sweetpotatotest) | [강혜경](https://github.com/HYEGYEONG) | 
 
