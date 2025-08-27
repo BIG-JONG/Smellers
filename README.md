@@ -25,15 +25,15 @@ Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하
 
 ## 1. 개발 환경
 
-* **Front** : React (Vite, TypeScript), Tailwind CSS
-* **Back-end** : Node.js, Express, Prisma, MySQL
-* **버전 및 이슈관리** : GitHub, GitHub Issues, GitHub Projects
-* **협업/문서화** : GitHub Wiki *(선택)*, Notion *(선택)*
-* **서비스 배포 환경** : Docker, AWS *(예정)*
-* **디자인** : Figma *(와이어프레임 수준)*
-* **커밋 컨벤션** : Conventional Commits (예: `feat:`, `fix:`, `docs:` …)
-* **코드 컨벤션** : ESLint / Prettier (TS + React)
-* **스프라이트/에셋 관리** : 정적 리소스 최적화(Tailwind JIT, 이미지 용량 관리)
+[![Front-End](https://img.shields.io/badge/Front-React%2C%20Vite%2C%20TypeScript-61DAFB?logo=react&logoColor=white)](#)  
+[![Back-End](https://img.shields.io/badge/Back--end-Node.js%2C%20Express%2C%20Prisma%2C%20MySQL-339933?logo=node.js&logoColor=white)](#)  
+[![Version & Issues](https://img.shields.io/badge/%EB%B2%84%EC%A0%84%20%26%20%EC%9D%B4%EC%8A%88-GitHub%20Issues%20%7C%20Projects-black?logo=github)](#)  
+[![Docs](https://img.shields.io/badge/%ED%98%91%EC%97%85%20%2F%20%EB%AC%B8%EC%84%9C%ED%99%94-GitHub%20Wiki%20%7C%20Notion-lightgrey?logo=notion&logoColor=white)](#)  
+[![Deploy](https://img.shields.io/badge/%EB%B0%B0%ED%8F%AC-Docker%20%7C%20AWS-2496ED?logo=docker&logoColor=white)](#)  
+[![Design](https://img.shields.io/badge/%EB%94%94%EC%9E%90%EC%9D%B8-Figma-FF7262?logo=figma&logoColor=white)](#)  
+[![Commit](https://img.shields.io/badge/%EC%BB%A4%EB%B0%8B-Conventional%20Commits-yellow?logo=git&logoColor=white)](#)  
+[![Code Style](https://img.shields.io/badge/%EC%BD%94%EB%93%9C%20%EC%BB%A8%EB%B2%A4%EC%85%98-ESLint%20%7C%20Prettier-4B32C3?logo=eslint&logoColor=white)](#)  
+[![Assets](https://img.shields.io/badge/%EC%97%90%EC%85%8B%20%EA%B4%80%EB%A6%AC-Tailwind%20JIT%20%7C%20%EC%9D%B4%EB%AF%B8%EC%A7%80%20%EC%B5%9C%EC%A0%81%ED%99%94-38B2AC?logo=tailwindcss&logoColor=white)](#)  
 
 ---
 
