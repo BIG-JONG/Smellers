@@ -1,7 +1,7 @@
 # README
 
-📖 **향수 취향 공유 서비스앱 Smellers**
-smellers\_mockup
+📖 **향수 취향 공유 서비스앱 aromabase**
+aromabase\_mockup
 
 **배포 URL** : *(추가 예정)*
 **Test ID** : *(추가 예정)*
@@ -11,7 +11,7 @@ smellers\_mockup
 
 ## 프로젝트 소개
 
-Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하고, 향수 정보를 탐색하며, 서로 팔로우하고 소통할 수 있는 SNS형 서비스입니다.
+**aromabase**는 향수를 좋아하는 사용자들이 자신의 취향을 공유하고, 향수 정보를 탐색하며, 서로 팔로우하고 소통할 수 있는 SNS형 서비스입니다.
 개인 프로필 페이지에 보유/관심 향수, 선호 노트(Top/Middle/Base) 등의 정보를 기록하고, 다른 사용자의 피드를 팔로우하여 취향을 비교·발견할 수 있습니다.
 
 ---
@@ -26,7 +26,7 @@ Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하
 
 ---
 
-## 1. 개발 환경
+## 1. 핵심 기술 스택
 
 ### Front
 ![React](https://img.shields.io/badge/React-61DAFB?logo=react&logoColor=white)
@@ -48,18 +48,14 @@ Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하
 ### 협업/문서화
 ![GitHub Wiki](https://img.shields.io/badge/Wiki-181717?logo=github&logoColor=white)
 ![Notion](https://img.shields.io/badge/Notion-000000?logo=notion&logoColor=white)
+![Figma](https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=white)
 
 ### 서비스 배포 환경
 ![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
 ![AWS](https://img.shields.io/badge/AWS-FF9900?logo=amazonaws&logoColor=white)
 
-### 디자인
-![Figma](https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=white)
-
-### 커밋 컨벤션
+### 커밋/코드 컨벤션
 ![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-FE5196?logo=git&logoColor=white)
-
-### 코드 컨벤션
 ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?logo=eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/Prettier-F7B93E?logo=prettier&logoColor=white)
 
@@ -69,52 +65,72 @@ Smellers는 향수를 좋아하는 사용자들이 자신의 취향을 공유하
 
 ---
 
-## 2. 채택한 개발 기술과 브랜치 전략
+## 2. 주요 기술 스택 및 선택 이유
+<details>
+<summary>🖥️ Frontend</summary>
 
-### Frontend
+React + Vite (TypeScript)
 
-**React + Vite (TypeScript)**
+빠른 개발/빌드와 타입 안정성 확보로 유지보수성 향상.
 
-* 빠른 개발/빌드와 타입 안정성 확보로 유지보수성 향상.
-* 컴포넌트화로 재사용성 극대화(카드, 리스트, 모달 등 공통 컴포넌트 다수).
+컴포넌트화로 재사용성 극대화 (카드, 리스트, 모달 등 공통 컴포넌트 다수).
 
-**Tailwind CSS**
+Tailwind CSS
 
-* 유틸리티 클래스 기반으로 UI 구현 속도 향상.
-* 디자인 일관성 및 제거되지 않는 스타일 누수 방지.
+유틸리티 클래스 기반으로 UI 구현 속도 향상.
 
-### Backend
+디자인 일관성 및 제거되지 않는 스타일 누수 방지.
 
-**Node.js + Express**
+</details>
 
-* 라우팅/미들웨어 구성의 단순성과 생태계 성숙도.
+<details>
+<summary>💻 Backend</summary>
 
-**Prisma + MySQL**
+Node.js + Express
 
-* Prisma Schema 기반의 명시적 모델 관리 및 타입 세이프 쿼리.
-* 마이그레이션 이력 관리로 스키마 변경 추적 용이.
+라우팅/미들웨어 구성의 단순성과 생태계 성숙도.
 
-**JWT 인증**
+Prisma + MySQL
 
-* 서버 확장 시 stateless 인증으로 수평 확장 용이.
+Prisma Schema 기반의 명시적 모델 관리 및 타입 세이프 쿼리.
 
-**중요 미들웨어 선택 이유**
+마이그레이션 이력 관리로 스키마 변경 추적 용이.
 
-* `auth/authorization` : 엔드포인트 보호 및 역할 기반 접근 제어.
-* `rateLimit` : 인증/검색 API 남용 방지.
-* `error-handling` : 표준화된 에러 응답 규격 유지.
-* `upload` : 이미지 업로드 파이프라인(MIME 검증, 저장 경로 일원화).
+JWT 인증
 
-### 품질/생산성 도구
+서버 확장 시 stateless 인증으로 수평 확장 용이.
 
-* **ESLint/Prettier** : 일관된 코드 스타일 및 린트 룰 준수.
-* **tsconfig 분리** : 빌드/런타임 설정 명확화.
+중요 미들웨어 선택 이유
 
-### 브랜치 전략
+auth/authorization: 엔드포인트 보호 및 역할 기반 접근 제어.
 
-* **Git-flow 기반**: `main`, `develop`, `feature/*`
-* 배포 태그/스냅샷 분리를 위해 **`FINAL` 브랜치** 사용 (릴리즈 고정)
-* PR 머지 후 feature 브랜치 정리로 히스토리 가독성 확보
+rateLimit: 인증/검색 API 남용 방지.
+
+error-handling: 표준화된 에러 응답 규격 유지.
+
+upload: 이미지 업로드 파이프라인 (MIME 검증, 저장 경로 일원화).
+
+</details>
+
+<details>
+<summary>🚀 품질/생산성 도구</summary>
+
+ESLint/Prettier: 일관된 코드 스타일 및 린트 룰 준수.
+
+tsconfig 분리: 빌드/런타임 설정 명확화.
+
+</details>
+
+<details>
+<summary>🌳 브랜치 전략</summary>
+
+Git-flow 기반: main, develop, feature/*
+
+배포 태그/스냅샷 분리를 위해 FINAL 브랜치 사용 (릴리즈 고정).
+
+PR 머지 후 feature 브랜치 정리로 히스토리 가독성 확보.
+
+</details>
 
 ---
 
@@ -202,6 +218,13 @@ frontend
 
 ## 설명
 
+### Frontend
+- **src/components**: 재사용 가능한 UI 컴포넌트 (버튼, 입력창, 사용자 배너 등)  
+- **src/pages**: 주요 화면 단위 컴포넌트 (로그인, 회원가입, 리스트, 상세 페이지 등)  
+- **src/api**: 백엔드 API 호출 모듈  
+- **src/routes**: 라우팅 설정  
+- **src/styles**: 전역 스타일 관리
+
 ### Backend
 - **server/src/controllers**: 요청 처리 로직 (CRUD, 팔로우, 유저 조회 등)  
 - **server/src/services**: 비즈니스 로직 (데이터 처리, 유효성 체크)  
@@ -209,14 +232,31 @@ frontend
 - **server/src/middlewares**: 인증, 권한, 업로드, 에러 처리 등  
 - **prisma/migrations**: DB 테이블 관리용 마이그레이션 파일  
 - **prisma/schema.prisma**: DB 스키마 정의  
+ 
 
-### Frontend
-- **src/components**: 재사용 가능한 UI 컴포넌트 (버튼, 입력창, 사용자 배너 등)  
-- **src/pages**: 주요 화면 단위 컴포넌트 (로그인, 회원가입, 리스트, 상세 페이지 등)  
-- **src/api**: 백엔드 API 호출 모듈  
-- **src/routes**: 라우팅 설정  
-- **src/styles**: 전역 스타일 관리  
 
+---
+
+## 빠른 시작 (로컬 실행)
+
+```bash
+# 1) 저장소 클론
+$ git clone -b FINAL https://github.com/BIG-JONG/Smellers.git
+$ cd Smellers/backend
+
+# 2) 의존성 설치
+$ npm install
+
+# 3) 환경변수 (.env)
+DATABASE_URL="mysql://user:password@localhost:3306/smellers"
+JWT_SECRET="<your_jwt_secret>"
+
+# 4) DB 마이그레이션
+$ npx prisma migrate dev
+
+# 5) 개발 서버 실행
+$ npm run dev
+```
 
 ---
 
@@ -321,26 +361,5 @@ frontend
 
 ---
 
-## 빠른 시작 (로컬 실행)
 
-```bash
-# 1) 저장소 클론
-$ git clone -b FINAL https://github.com/BIG-JONG/Smellers.git
-$ cd Smellers/backend
-
-# 2) 의존성 설치
-$ npm install
-
-# 3) 환경변수 (.env)
-DATABASE_URL="mysql://user:password@localhost:3306/smellers"
-JWT_SECRET="<your_jwt_secret>"
-
-# 4) DB 마이그레이션
-$ npx prisma migrate dev
-
-# 5) 개발 서버 실행
-$ npm run dev
-```
-
----
 
