@@ -184,82 +184,22 @@ export const getMyPerfumesService = async (userId: number) => {
   });
 }
 
-
-
-
-// 1️⃣ 기본 필터 (항상 적용, AND)
-// perfumeStatus = 'Y' → 삭제되지 않은 향수만
-// isPublic = 'Y' → 공개된 향수만
-
-// 2️⃣ 검색 조건 (사용자가 입력하면 OR)
-// brandName LIKE '%입력값%' → 브랜드명에 포함된 경우
-// perfumeName LIKE '%입력값%' → 향수명에 포함된 경우
-// noteType = 입력값 OR noteName LIKE '%입력값%' → 노트 타입이 일치하거나 노트 이름에 포함된 경우
-// nickname LIKE '%입력값%' → 작성자 닉네임에 포함된 경우
-export const getSearchPerfumeService = async (data: PerfumeSearchParams) => {
-  const { brandName, perfumeName, noteType, noteName, nickname } = data;
-
-  // 🔎 OR 조건에 들어갈 배열
-  const orConditions: any[] = [];
-
-  // 브랜드명 검색 (부분 일치, 대소문자 구분 없음)
-  if (brandName) {
-    orConditions.push({
-      brandName: { contains: brandName, mode: 'insensitive' },
-    });
-  }
-
-  // 향수명 검색 (부분 일치, 대소문자 구분 없음)
-  if (perfumeName) {
-    orConditions.push({
-      perfumeName: { contains: perfumeName, mode: 'insensitive' },
-    });
-  }
-
-  // 노트 검색 (noteType / noteName 중 하나라도 매칭되면 포함)
-  if (noteType || noteName) {
-    orConditions.push({
-      notes: {
-        some: {
-          noteType: noteType ?? undefined,
-          noteName: noteName
-            ? { contains: noteName, mode: 'insensitive' }
-            : undefined,
-        },
-      },
-    });
-  }
-
-  // 작성자 닉네임 검색 (부분 일치, OR에 포함)
-  if (nickname) {
-    orConditions.push({
-      user: {
-        nickname: { contains: nickname, mode: 'insensitive' },
-      },
-    });
-  }
-
-  // ❗ 검색 조건이 아예 없으면 빈 배열 반환 (전체 공개 향수 노출 방지)
-  if (orConditions.length === 0) {
-    return [];
-  }
-
+export const getSearchPerfumeService = async (orConditions: any[]) => {
   return await prisma.perfumeInfo.findMany({
     where: {
       AND: [
-        { perfumeStatus: 'Y' },  // ✅ 항상 조건: 삭제되지 않은 향수
-        { isPublic: 'Y' },       // ✅ 항상 조건: 공개된 향수
-        { OR: orConditions },    // ✅ 하나라도 매칭되면 검색 결과 포함
+        { perfumeStatus: 'Y' }, // 항상 필터: 삭제되지 않은 향수
+        { isPublic: 'Y' },      // 항상 필터: 공개된 향수
+        { OR: orConditions },   // OR 조건: 브랜드/향수명/노트/닉네임
       ],
     },
     include: {
-      notes: true,   // 향수 노트 포함
-      images: true,  // 향수 이미지 포함
+      notes: true,   // PerfumeNote 포함
+      images: true,  // PerfumeImg 포함
       user: true,    // 작성자 정보 포함
     },
   });
-};
-
+}
 
 
 
