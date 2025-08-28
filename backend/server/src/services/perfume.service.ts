@@ -184,31 +184,89 @@ export const getMyPerfumesService = async (userId: number) => {
   });
 }
 
+
+// 항상 AND 조건
+
+// perfumeStatus = 'Y'
+
+// isPublic = 'Y'
+
+// 검색 조건
+
+// brandName OR perfumeName OR noteType/noteName OR nickname
+
+// 하나라도 걸리면 검색됨
+
+// 검색 조건 없음
+
+// 무조건 빈 배열 [] 반환
+
+
 export const getSearchPerfumeService = async (data: PerfumeSearchParams) => {
-    const { brandName, perfumeName, noteType, noteName, nickname } = data;
-  return await prisma.perfumeInfo.findMany({
-    where: {
-      //data가 타입이 PerfumeSearchParams이기때문에 undefined
-      brandName: brandName ?? undefined,
-      perfumeName: perfumeName ?? undefined,
-      notes:{
-        some:{
+  const { brandName, perfumeName, noteType, noteName, nickname } = data;
+
+  // 🔎 OR 조건에 들어갈 배열
+  const orConditions: any[] = [];
+
+  // 브랜드명 검색 (부분 일치, 대소문자 구분 없음)
+  if (brandName) {
+    orConditions.push({
+      brandName: { contains: brandName, mode: 'insensitive' },
+    });
+  }
+
+  // 향수명 검색 (부분 일치, 대소문자 구분 없음)
+  if (perfumeName) {
+    orConditions.push({
+      perfumeName: { contains: perfumeName, mode: 'insensitive' },
+    });
+  }
+
+  // 노트 검색 (noteType / noteName 중 하나라도 매칭되면 포함)
+  if (noteType || noteName) {
+    orConditions.push({
+      notes: {
+        some: {
           noteType: noteType ?? undefined,
-          noteName: noteName ?? undefined,
+          noteName: noteName
+            ? { contains: noteName, mode: 'insensitive' }
+            : undefined,
         },
       },
-      user:{
-        nickname: nickname ?? undefined
-      }
+    });
+  }
+
+  // 작성자 닉네임 검색 (부분 일치, OR에 포함)
+  if (nickname) {
+    orConditions.push({
+      user: {
+        nickname: { contains: nickname, mode: 'insensitive' },
+      },
+    });
+  }
+
+  // ❗ 검색 조건이 아예 없으면 빈 배열 반환 (전체 공개 향수 노출 방지)
+  if (orConditions.length === 0) {
+    return [];
+  }
+
+  return await prisma.perfumeInfo.findMany({
+    where: {
+      AND: [
+        { perfumeStatus: 'Y' },  // ✅ 항상 조건: 삭제되지 않은 향수
+        { isPublic: 'Y' },       // ✅ 항상 조건: 공개된 향수
+        { OR: orConditions },    // ✅ 하나라도 매칭되면 검색 결과 포함
+      ],
     },
-    //결과 - 모든 테이블 호출
     include: {
-      notes: true,
-      images: true,
-      user: true,
+      notes: true,   // 향수 노트 포함
+      images: true,  // 향수 이미지 포함
+      user: true,    // 작성자 정보 포함
     },
-  })
-}
+  });
+};
+
+
 
 
 
