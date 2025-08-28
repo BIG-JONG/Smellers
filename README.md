@@ -179,6 +179,7 @@ backend
 │       └── jwt.ts
 └── uploads # 이미지 등 업로드 자산
 </details>
+
 <details>
 <summary>💻 Frontend 구조</summary>
 frontend
@@ -215,7 +216,6 @@ frontend
     ├── styles # 전역 스타일
     │   └── Globalstyled.jsx
     └── vite-env.d.ts
-```
 </details>
 
 
