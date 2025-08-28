@@ -16,16 +16,6 @@ aromabase\_mockup
 
 ---
 
-## 팀원 구성
-
-| FrontEnd | FrontEnd | BackEnd | BackEnd |
-| :------: | :------: | :------: | :------: |
-| <a href="https://github.com/BIG-JONG"><img src="https://github.com/BIG-JONG.png" width="150" height="150"></a> | <a href="https://github.com/simuneu"><img src="https://github.com/simuneu.png" width="150" height="150"></a> | <a href="https://github.com/sweetpotatotest"><img src="https://github.com/sweetpotatotest.png" width="150" height="150"></a> | <a href="https://github.com/HYEGYEONG"><img src="https://github.com/HYEGYEONG.png" width="150" height="150"></a> |
-| 박종현 | 박시현 | 강기병 | 강혜경 |
-
-
----
-
 ## 1. 핵심 기술 스택
 
 ### Front
@@ -63,78 +53,92 @@ aromabase\_mockup
 ![Tailwind JIT](https://img.shields.io/badge/Tailwind%20JIT-38B2AC?logo=tailwindcss&logoColor=white)
 ![이미지 최적화](https://img.shields.io/badge/Image%20Optimization-999999?logo=googlephotos&logoColor=white)
 
----
-
-## 2. 주요 기술 스택 및 선택 이유
+### 주요 기술 스택 선택 이유
 <details>
 <summary>🖥️ Frontend</summary>
 
-React + Vite (TypeScript)
+### React + Vite (TypeScript)
+- 빠른 개발/빌드와 타입 안정성 확보로 유지보수성 향상.
+- 컴포넌트화로 재사용성 극대화 (카드, 리스트, 모달 등 공통 컴포넌트 다수).
 
-빠른 개발/빌드와 타입 안정성 확보로 유지보수성 향상.
-
-컴포넌트화로 재사용성 극대화 (카드, 리스트, 모달 등 공통 컴포넌트 다수).
-
-Tailwind CSS
-
-유틸리티 클래스 기반으로 UI 구현 속도 향상.
-
-디자인 일관성 및 제거되지 않는 스타일 누수 방지.
+### Tailwind CSS
+- 유틸리티 클래스 기반으로 UI 구현 속도 향상.
+- 디자인 일관성 및 제거되지 않는 스타일 누수 방지.
 
 </details>
 
 <details>
 <summary>💻 Backend</summary>
 
-Node.js + Express
+### Node.js + Express
+- 라우팅/미들웨어 구성의 단순성과 생태계 성숙도.
 
-라우팅/미들웨어 구성의 단순성과 생태계 성숙도.
+### Prisma + MySQL
+- Prisma Schema 기반의 명시적 모델 관리 및 타입 세이프 쿼리.
+- 마이그레이션 이력 관리로 스키마 변경 추적 용이.
 
-Prisma + MySQL
+### JWT 인증
+- 서버 확장 시 stateless 인증으로 수평 확장 용이.
 
-Prisma Schema 기반의 명시적 모델 관리 및 타입 세이프 쿼리.
-
-마이그레이션 이력 관리로 스키마 변경 추적 용이.
-
-JWT 인증
-
-서버 확장 시 stateless 인증으로 수평 확장 용이.
-
-중요 미들웨어 선택 이유
-
-auth/authorization: 엔드포인트 보호 및 역할 기반 접근 제어.
-
-rateLimit: 인증/검색 API 남용 방지.
-
-error-handling: 표준화된 에러 응답 규격 유지.
-
-upload: 이미지 업로드 파이프라인 (MIME 검증, 저장 경로 일원화).
+### 중요 미들웨어 선택 이유
+- **`auth/authorization`**: 엔드포인트 보호 및 역할 기반 접근 제어.
+- **`rateLimit`**: 인증/검색 API 남용 방지.
+- **`error-handling`**: 표준화된 에러 응답 규격 유지.
+- **`upload`**: 이미지 업로드 파이프라인 (MIME 검증, 저장 경로 일원화).
 
 </details>
 
 <details>
 <summary>🚀 품질/생산성 도구</summary>
 
-ESLint/Prettier: 일관된 코드 스타일 및 린트 룰 준수.
-
-tsconfig 분리: 빌드/런타임 설정 명확화.
+- **ESLint/Prettier**: 일관된 코드 스타일 및 린트 룰 준수.
+- **tsconfig 분리**: 빌드/런타임 설정 명확화.
 
 </details>
 
 <details>
 <summary>🌳 브랜치 전략</summary>
 
-Git-flow 기반: main, develop, feature/*
-
-배포 태그/스냅샷 분리를 위해 FINAL 브랜치 사용 (릴리즈 고정).
-
-PR 머지 후 feature 브랜치 정리로 히스토리 가독성 확보.
+- Git-flow 기반: `main`, `develop`, `feature/*`
+- 배포 태그/스냅샷 분리를 위해 **`FINAL` 브랜치** 사용 (릴리즈 고정).
+- PR 머지 후 feature 브랜치 정리로 히스토리 가독성 확보.
 
 </details>
 
 ---
 
-## 3. 프로젝트 구조
+## 2. 빠른 시작 (로컬 실행)
+
+```bash
+# 1) 저장소 클론
+$ git clone -b FINAL https://github.com/BIG-JONG/Smellers.git
+$ cd Smellers/backend
+
+# 2) 의존성 설치
+$ npm install
+
+# 3) 환경변수 (.env)
+DATABASE_URL="mysql://user:password@localhost:3306/smellers"
+JWT_SECRET="<your_jwt_secret>"
+
+# 4) DB 마이그레이션
+$ npx prisma migrate dev
+
+# 5) 개발 서버 실행
+$ npm run dev
+```
+---
+
+## 3. 팀원 구성
+
+| FrontEnd | FrontEnd | BackEnd | BackEnd |
+| :------: | :------: | :------: | :------: |
+| <a href="https://github.com/BIG-JONG"><img src="https://github.com/BIG-JONG.png" width="150" height="150"></a> | <a href="https://github.com/simuneu"><img src="https://github.com/simuneu.png" width="150" height="150"></a> | <a href="https://github.com/sweetpotatotest"><img src="https://github.com/sweetpotatotest.png" width="150" height="150"></a> | <a href="https://github.com/HYEGYEONG"><img src="https://github.com/HYEGYEONG.png" width="150" height="150"></a> |
+| 박종현 | 박시현 | 강기병 | 강혜경 |
+
+---
+
+## 4. 프로젝트 구조
 
 <details>
 <summary>🖥️ Backend 구조</summary>
@@ -235,28 +239,6 @@ frontend
  
 
 
----
-
-## 빠른 시작 (로컬 실행)
-
-```bash
-# 1) 저장소 클론
-$ git clone -b FINAL https://github.com/BIG-JONG/Smellers.git
-$ cd Smellers/backend
-
-# 2) 의존성 설치
-$ npm install
-
-# 3) 환경변수 (.env)
-DATABASE_URL="mysql://user:password@localhost:3306/smellers"
-JWT_SECRET="<your_jwt_secret>"
-
-# 4) DB 마이그레이션
-$ npx prisma migrate dev
-
-# 5) 개발 서버 실행
-$ npm run dev
-```
 
 ---
 
