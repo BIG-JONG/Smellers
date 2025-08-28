@@ -185,23 +185,17 @@ export const getMyPerfumesService = async (userId: number) => {
 }
 
 
-// 항상 AND 조건
-
-// perfumeStatus = 'Y'
-
-// isPublic = 'Y'
-
-// 검색 조건
-
-// brandName OR perfumeName OR noteType/noteName OR nickname
-
-// 하나라도 걸리면 검색됨
-
-// 검색 조건 없음
-
-// 무조건 빈 배열 [] 반환
 
 
+// 1️⃣ 기본 필터 (항상 적용, AND)
+// perfumeStatus = 'Y' → 삭제되지 않은 향수만
+// isPublic = 'Y' → 공개된 향수만
+
+// 2️⃣ 검색 조건 (사용자가 입력하면 OR)
+// brandName LIKE '%입력값%' → 브랜드명에 포함된 경우
+// perfumeName LIKE '%입력값%' → 향수명에 포함된 경우
+// noteType = 입력값 OR noteName LIKE '%입력값%' → 노트 타입이 일치하거나 노트 이름에 포함된 경우
+// nickname LIKE '%입력값%' → 작성자 닉네임에 포함된 경우
 export const getSearchPerfumeService = async (data: PerfumeSearchParams) => {
   const { brandName, perfumeName, noteType, noteName, nickname } = data;
 
