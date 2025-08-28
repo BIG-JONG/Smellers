@@ -39,7 +39,9 @@ const SearchResultsPage: React.FC = () => {
             id: item.perfumeId.toString(),
             name: item.perfumeName,
             brand: item.brand,
-            imageUrl: item.images?.[0]?.url_path || '',
+            imageUrl: item.images?.[0]?.url_path
+              ? `http://localhost:4000/uploads/${item.images[0].url_path}`
+              : '',
             price: item.price || 0,
             rating: Number(item.point),
             reviews: item.reviews?.length || 0,
@@ -89,7 +91,11 @@ const SearchResultsPage: React.FC = () => {
       <h1 className="text-2xl font-bold mb-6">"{query}"에 대한 검색 결과</h1>
       
       {currentPerfumes.length > 0 ? (
-        <>
+        <div className={`w-full ${
+          currentPerfumes.length < 4
+            ? "flex justify-center"
+            : ""
+        }`}>
           <PerfumeListSection
             title=""
             perfumes={currentPerfumes}
@@ -97,8 +103,9 @@ const SearchResultsPage: React.FC = () => {
             totalPage={totalPage}
             onPageChange={setCurrentPage}
             onPerfumeClick={handlePerfumeClick} 
+            centerWhenFew
           />
-        </>
+        </div>
       ) : (
         <div className="text-center text-gray-500 mt-10 text-lg font-medium">
           검색 결과가 없습니다.

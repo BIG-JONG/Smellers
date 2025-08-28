@@ -10,6 +10,7 @@ interface InputFieldProps {
   id?: string;
   className?: string;
   readOnly?: boolean;
+  autoFocus?: boolean;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -47,11 +48,13 @@ const InputField: React.FC<InputFieldProps> = ({
           h-auto min-h-0
           appearance-none border-none !ring-0 !shadow-none outline-none
           ${error ? 'ring-2 ring-red-500' : ''}
-          focus:ring-2 focus:ring-blue-500
           placeholder-gray-400
-          w-full sm:w-[550px]
+          focus:ring-2 focus:ring-blue-500 
+          w-full max:w-[550px]
           ${readOnlyClass}
           placeholder:text-xs sm:placeholder:text-sm
+          [-webkit-appearance:none]
+          [-webkit-tap-highlight-color:transparent]
         `}
       />
       {error && <p className="text-red-500 text-xs italic mt-1">{error}</p>}
