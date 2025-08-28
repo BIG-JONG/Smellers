@@ -67,7 +67,7 @@ const SearchResultsPage: React.FC = () => {
   }, [query]);
 
   const handlePerfumeClick = (id: string) => {
-    navigate(`/perfumes/${id}`);
+    navigate(`/perfumes/public/${id}`);
   };
 
   const totalPage = Math.ceil(perfumes.length / perfumesPerPage);
