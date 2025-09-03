@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import PerfumeListSection from '@/components/PerfumeListSection';
 import { Product } from '@/components/ProductCard';
+import Layout from '@/components/Layout';
 
 const SearchResultsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -38,7 +39,9 @@ const SearchResultsPage: React.FC = () => {
             id: item.perfumeId.toString(),
             name: item.perfumeName,
             brand: item.brand,
-            imageUrl: item.images?.[0]?.url_path || '',
+            imageUrl: item.images?.[0]?.url_path
+              ? `http://localhost:4000/uploads/${item.images[0].url_path}`
+              : '',
             price: item.price || 0,
             rating: Number(item.point),
             reviews: item.reviews?.length || 0,
@@ -64,7 +67,7 @@ const SearchResultsPage: React.FC = () => {
   }, [query]);
 
   const handlePerfumeClick = (id: string) => {
-    navigate(`/perfumes/${id}`);
+    navigate(`/perfumes/public/${id}`);
   };
 
   const totalPage = Math.ceil(perfumes.length / perfumesPerPage);
@@ -83,11 +86,16 @@ const SearchResultsPage: React.FC = () => {
   }
   
   return (
+    <Layout>
     <div className="pt-[20px] p-8 max-w-7xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">"{query}"에 대한 검색 결과</h1>
       
       {currentPerfumes.length > 0 ? (
-        <>
+        <div className={`w-full ${
+          currentPerfumes.length < 4
+            ? "flex justify-center"
+            : ""
+        }`}>
           <PerfumeListSection
             title=""
             perfumes={currentPerfumes}
@@ -95,14 +103,16 @@ const SearchResultsPage: React.FC = () => {
             totalPage={totalPage}
             onPageChange={setCurrentPage}
             onPerfumeClick={handlePerfumeClick} 
+            centerWhenFew
           />
-        </>
+        </div>
       ) : (
         <div className="text-center text-gray-500 mt-10 text-lg font-medium">
           검색 결과가 없습니다.
         </div>
       )}
     </div>
+    </Layout>
   );
 };
 

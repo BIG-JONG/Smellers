@@ -47,10 +47,10 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
     <header className="bg-white shadow-md py-4 px-6 flex items-center justify-between sticky top-0 z-50">
       <div className="flex items-center">
         <a
-          href="/"
+          href="#"
           className="flex items-center text-sm font-bold text-gray-900 px-2 pl-10"
           onClick={(e) => {
-            e.preventDefault();
+            // e.preventDefault();
             navigate('/');
           }}
         >
@@ -59,7 +59,6 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
       </div>
 
       <div className="flex-grow mx-8 max-w-md flex items-center">
-        {/* 검색 입력창과 드롭다운을 감싸는 컨테이너 */}
         <div className="flex items-center w-full relative bg-gray-100 rounded-full border border-gray-300">
           {/* 드롭다운 버튼 */}
           <div className="relative">
@@ -79,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
               </svg>
             </button>
             {isDropdownOpen && (
-              <div className="absolute top-full left-0 mt-2 w-28 bg-white border border-gray-300 rounded-md shadow-lg z-50">
+              <div className="absolute top-full left-0 mt-2 w-28 bg-white border border-gray-300 rounded-md shadow-lg z-40">
                 <button
                   onClick={() => handleTypeSelect('perfume')}
                   className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
@@ -96,7 +95,6 @@ const Header: React.FC<HeaderProps> = ({ navigate }) => {
             )}
           </div>
 
-          {/* 검색 입력창 */}
           <div className="relative flex-grow">
             <input
               type="text"

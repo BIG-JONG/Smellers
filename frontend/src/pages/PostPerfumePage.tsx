@@ -1,3 +1,4 @@
+import Layout from "@/components/Layout";
 import PostForm from "@/components/PostForm"
 import { useNavigate } from "react-router-dom";
 
@@ -5,13 +6,13 @@ import { useNavigate } from "react-router-dom";
 const PostPerfumePage:React.FC=()=>{
   const navigate = useNavigate();
   return (
-    <div>
+    <Layout>
       <PostForm
         onCancel={()=>{
           navigate(-1)
         }}
       />
-    </div>
+    </Layout>
   )
 }
 

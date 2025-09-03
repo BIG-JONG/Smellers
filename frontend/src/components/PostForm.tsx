@@ -7,6 +7,7 @@ import Button from "./Button";
 import Alert from "./Alert";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import StarRating from "./StarRating";
 
 interface PerfumeDetailData {
     id: number;
@@ -20,11 +21,13 @@ interface PerfumeDetailData {
     emotionTags: string[];
     customTags: string[];
     description: string;
+    point?:number;
 }
 
 interface PostFormProps {
     perfumeToEdit?: PerfumeDetailData;
     onCancel: () => void;
+    
 }
 
 function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
@@ -39,16 +42,48 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
     const [tag, setTag] = useState("");
     const [emotion, setEmotion] = useState("");
     const [description, setDescription] = useState("");
+    const [rating, setRating] = useState(0);
     
     const [showAlert, setShowAlert] = useState(false);
     const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
     const [alertMessage, setAlertMessage] = useState("");
     const [loading, setLoading] = useState(false);
 
+    const [topNoteOptions, setTopNoteOptions] = useState<string[]>([]);
+    const [middleNoteOptions, setMiddleNoteOptions] = useState<string[]>([]);
+    const [baseNoteOptions, setBaseNoteOptions] = useState<string[]>([]);
+
     const navigate = useNavigate();
+
+     useEffect(() => {
+        const fetchNotes = async () => {
+            try {
+                const token = sessionStorage.getItem("token");
+                const config = {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                };
+
+                const [topRes, middleRes, baseRes] = await Promise.all([
+                    axios.get('http://localhost:4000/perfumes/noteList/TOP', token ? config : {}),
+                    axios.get('http://localhost:4000/perfumes/noteList/MIDDLE', token ? config : {}),
+                    axios.get('http://localhost:4000/perfumes/noteList/BASE', token ? config : {}),
+                ]);
+
+                setTopNoteOptions(topRes.data.data.map((note: { noteName: string }) => note.noteName));
+                setMiddleNoteOptions(middleRes.data.data.map((note: { noteName: string }) => note.noteName));
+                setBaseNoteOptions(baseRes.data.data.map((note: { noteName: string }) => note.noteName));
+            } catch (err) {
+                console.error("노트 목록을 가져오는 데 실패했습니다:", err);
+            }
+        };
+        fetchNotes();
+    }, []);
 
     useEffect(() => {
         if (perfumeToEdit) {
+            console.log('수정할 향수 데이터:', perfumeToEdit);
+        console.log('불러온 별점:', perfumeToEdit.point);
+        
             setPreviewImgUrl(perfumeToEdit.imageUrl);
             setPerfumeName(perfumeToEdit.name);
             setPerfumeBrand(perfumeToEdit.brand);
@@ -59,6 +94,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
             setTag(perfumeToEdit.customTags.join(", "));
             setEmotion(perfumeToEdit.emotionTags.join(", "));
             setDescription(perfumeToEdit.description);
+            setRating(perfumeToEdit.point || 0);
         }
     }, [perfumeToEdit]);
 
@@ -110,7 +146,6 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
             return;
         }
 
-        // ⭐ 수정된 부분: id가 NaN인지 확인하고, 유효한 숫자인지 검증합니다.
         const perfumeId = perfumeToEdit?.id;
         const isEditingMode = perfumeToEdit !== undefined;
         
@@ -140,7 +175,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
         formData.append("isPublic", "Y");
         formData.append("perfumeStatus", "Y");
         formData.append("notes", JSON.stringify(notes));
-        formData.append("point", String(0)); 
+        formData.append("point", String(rating)); 
 
         if (img) {
             formData.append("images", img);
@@ -163,7 +198,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                 setAlertType("success");
                 setAlertMessage(isEditingMode ? "향수 정보가 성공적으로 수정되었습니다." : "향수 정보가 성공적으로 등록되었습니다.");
                 setShowAlert(true);
-                setTimeout(() => navigate('/perfumes'), 2000); 
+                setTimeout(() => navigate(`/mypage/perfumes`), 1000); 
             }
         } catch (err: any) {
             console.error("서버 응답 오류:", err.response?.data || err.message);
@@ -233,13 +268,20 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                             onChange={(e) => setPerfumePrice(e.target.value)}
                             placeholder="향수 가격 입력"
                         />
+                        <div className="flex items-center gap-4">
+                            <label className="block text-sm font-bold text-gray-700">별점</label>
+                            <StarRating 
+                                rating={rating} 
+                                onRatingChange={setRating}
+                            />
+                        </div>
                     </div>
                 </div>
                 <div className="flex w-full gap-4 flex-wrap justify-start mt-6">
                     <div className="flex-1 w-full">
                         <MultiSelectDropdown
                             label="탑 노트"
-                            options={["라벤더", "머스크", "샌달우드"]}
+                            options={topNoteOptions}
                             value={selectedTop}
                             onChange={setSelectedTop}
                             maxSelect={3}
@@ -247,7 +289,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                         />
                         <MultiSelectDropdown
                             label="미들 노트"
-                            options={["라벤더", "머스크", "샌달우드"]}
+                            options={middleNoteOptions}
                             value={selectedMiddle}
                             onChange={setSelectedMiddle}
                             maxSelect={3}
@@ -255,7 +297,7 @@ function PostForm({ perfumeToEdit, onCancel }: PostFormProps) {
                         />
                         <MultiSelectDropdown
                             label="베이스 노트"
-                            options={["라벤더", "머스크", "샌달우드"]}
+                            options={baseNoteOptions}
                             value={selectedBase}
                             onChange={setSelectedBase}
                             maxSelect={3}

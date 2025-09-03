@@ -108,10 +108,28 @@ export const updatePerfume = async (perfume_id: number, data: any, userId: numbe
 };
 
 // 향수 상세 조회
+// export const getPerfumeById = async (perfume_id: number) => {
+//   const perfume = await prisma.perfumeInfo.findUnique({
+//     where: { perfumeId: perfume_id },
+//     include: { notes: true, images: true },
+//   });
+//   if (!perfume) throw new Error ('PerfumeNotFound');
+//   return perfume;
+// };
 export const getPerfumeById = async (perfume_id: number) => {
   const perfume = await prisma.perfumeInfo.findUnique({
     where: { perfumeId: perfume_id },
-    include: { notes: true, images: true },
+    include: { 
+      notes: true, 
+      images: true, 
+      user: {
+        select: {
+          userId: true,
+          nickname: true,
+          profileImg: true,
+        }
+      }
+    },
   });
   if (!perfume) throw new Error ('PerfumeNotFound');
   return perfume;
@@ -166,31 +184,23 @@ export const getMyPerfumesService = async (userId: number) => {
   });
 }
 
-export const getSearchPerfumeService = async (data: PerfumeSearchParams) => {
-    const { brandName, perfumeName, noteType, noteName, nickname } = data;
+export const getSearchPerfumeService = async (orConditions: any[]) => {
   return await prisma.perfumeInfo.findMany({
     where: {
-      //data가 타입이 PerfumeSearchParams이기때문에 undefined
-      brandName: brandName ?? undefined,
-      perfumeName: perfumeName ?? undefined,
-      notes:{
-        some:{
-          noteType: noteType ?? undefined,
-          noteName: noteName ?? undefined,
-        },
-      },
-      user:{
-        nickname: nickname ?? undefined
-      }
+      AND: [
+        { perfumeStatus: 'Y' }, // 항상 필터: 삭제되지 않은 향수
+        { isPublic: 'Y' },      // 항상 필터: 공개된 향수
+        { OR: orConditions },   // OR 조건: 브랜드/향수명/노트/닉네임
+      ],
     },
-    //결과 - 모든 테이블 호출
     include: {
-      notes: true,
-      images: true,
-      user: true,
+      notes: true,   // PerfumeNote 포함
+      images: true,  // PerfumeImg 포함
+      user: true,    // 작성자 정보 포함
     },
-  })
+  });
 }
+
 
 
 

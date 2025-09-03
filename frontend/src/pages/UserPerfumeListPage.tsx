@@ -5,6 +5,7 @@ import PerfumeListSection from "@/components/PerfumeListSection";
 import { Product } from "@/components/ProductCard";
 import axios from 'axios';
 import Alert from '@/components/Alert';
+import Layout from '@/components/Layout';
 
 interface RawUserData {
   nickname: string;
@@ -21,6 +22,7 @@ interface RawPostData {
   notes: any[];
   images: { url_path: string }[];
   perfumeStatus: string;
+  createdAt: string;
 }
 
 const UserPerfumeListPage: React.FC = () => {
@@ -39,13 +41,42 @@ const UserPerfumeListPage: React.FC = () => {
   const [alertType, setAlertType] = useState<"info" | "success" | "error" | "warning">("info");
   const [alertMessage, setAlertMessage] = useState("");
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [allPerfumes, setAllPerfumes] = useState<Product[]>([]);
+
+  const [perfumesPerPage, setPerfumesPerPage] = useState(16);
+  
+  useEffect(() => {
+    const updatePerfumesPerPage = () => {
+      if (window.innerWidth < 640) {
+        setPerfumesPerPage(10);
+      } else {
+        setPerfumesPerPage(16);
+      }
+    };
+
+    updatePerfumesPerPage();
+    window.addEventListener("resize", updatePerfumesPerPage);
+
+    return () => {
+      window.removeEventListener("resize", updatePerfumesPerPage);
+    };
+  }, []);
+
+  useEffect(() => {
+      setTotalPage(Math.ceil(allPerfumes.length / perfumesPerPage));
+    }, [allPerfumes, perfumesPerPage]);
+
+
   const fetchUserData = useCallback(async () => {
     try {
       const token = sessionStorage.getItem('token');
       const currentUserIdString = sessionStorage.getItem('user_id');
 
       if (!token || !targetUserId || !currentUserIdString) {
-        console.error('요청 불가: token, targetUserId 또는 currentUserId가 존재하지 않음', { token, targetUserId, currentUserIdString });
+        console.error('요청 불가: token, targetUserId 또는 currentUserId가 존재하지 않음', 
+          { token, targetUserId, currentUserIdString });
         setLoading(false);
         return;
       }
@@ -74,8 +105,12 @@ const UserPerfumeListPage: React.FC = () => {
 
       const activePerfumes = serverPerfumes.filter((perfume: RawPostData) => perfume.perfumeStatus !== 'N');
       
-      const mappedPerfumes: Product[] = activePerfumes.map((perfume: RawPostData) => ({
-        id: perfume.perfumeId,
+       const sortedPerfumes = [...activePerfumes].sort(
+        (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      );
+
+      const mappedPerfumes: Product[] = sortedPerfumes.map((perfume: RawPostData) => ({
+        id:  String(perfume.perfumeId), 
         name: perfume.perfumeName,
         imageUrl: perfume.images?.[0]?.url_path
           ? `http://localhost:4000/uploads/${perfume.images[0].url_path}`
@@ -96,7 +131,7 @@ const UserPerfumeListPage: React.FC = () => {
         profileImg: profileImageUrl 
       });
 
-      setPerfumes(mappedPerfumes);
+      setAllPerfumes(mappedPerfumes);
       if (typeof initialIsFollowing !== 'undefined') {
         setIsFollowing(initialIsFollowing);
       }
@@ -113,6 +148,13 @@ const UserPerfumeListPage: React.FC = () => {
       fetchUserData();
     }
   }, [fetchUserData, targetUserId]);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * perfumesPerPage;
+    const endIndex = startIndex + perfumesPerPage;
+    setPerfumes(allPerfumes.slice(startIndex, endIndex));
+  }, [currentPage, allPerfumes, perfumesPerPage]);
+
 
   const handleFollowToggle = useCallback(async (isCurrentlyFollowing: boolean) => {
     setIsFollowActionLoading(true);
@@ -165,41 +207,43 @@ const UserPerfumeListPage: React.FC = () => {
   };
 
   return (
-    <div className="p-4 pt-[74px]">
-     
-      {user ? (
-        <UserProfileSection
-          profileImageUrl={user.profileImg || 'https://placehold.co/300x300?text=No+Image'}
-          nickname={user.nickname}
-          email={user.email}
-          isCurrentUser={isCurrentUser}
-          isFollowing={isFollowing}
-          isFollowActionLoading={isFollowActionLoading}
-          onFollow={() => handleFollowToggle(false)}
-          onUnfollow={() => handleFollowToggle(true)}
-        />
-      ) : (
-        <div className="text-center">유저 정보를 불러오는 중...</div>
-      )}
+    <Layout>
+      <div className="p-4 pt-[74px]">
+      
+        {user ? (
+          <UserProfileSection
+            profileImageUrl={user.profileImg || 'https://placehold.co/300x300?text=No+Image'}
+            nickname={user.nickname}
+            email={user.email}
+            isCurrentUser={isCurrentUser}
+            isFollowing={isFollowing}
+            isFollowActionLoading={isFollowActionLoading}
+            onFollow={() => handleFollowToggle(false)}
+            onUnfollow={() => handleFollowToggle(true)}
+          />
+        ) : (
+          <div className="text-center">유저 정보를 불러오는 중...</div>
+        )}
 
-       {showAlert && (
-        <div className="mt-4">
-            <Alert message={alertMessage} type={alertType} />
-        </div>
-      )}
+        {showAlert && (
+          <div className="mt-4">
+              <Alert message={alertMessage} type={alertType} />
+          </div>
+        )}
 
-      {loading ? (
-        <div className="text-center mt-10">로딩 중...</div>
-      ) : (
-        <PerfumeListSection
-          perfumes={perfumes}
-          currentPage={1}
-          totalPage={1}
-          onPageChange={() => {}}
-          onPerfumeClick={handlePerfumeClick}
-        />
-      )}
-    </div>
+        {loading ? (
+          <div className="text-center mt-10">로딩 중...</div>
+        ) : (
+          <PerfumeListSection
+            perfumes={perfumes}
+            currentPage={currentPage}
+            totalPage={totalPage}
+            onPageChange={setCurrentPage}
+            onPerfumeClick={handlePerfumeClick}
+          />
+        )}
+      </div>
+    </Layout>
   );
 };
 

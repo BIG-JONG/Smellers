@@ -4,9 +4,10 @@ import Button from '@/components/Button';
 import FollowButton from '@/components/FollowButton';
 
 interface UserProfileSectionProps {
-  profileImageUrl: string;
+  profileImageUrl?: string;
   nickname: string;
   email: string;
+  alt?:string
   isCurrentUser: boolean;
   onEditProfile?: () => void;
 
@@ -21,6 +22,7 @@ const UserProfileSection: React.FC<UserProfileSectionProps> = ({
   profileImageUrl,
   nickname = "test",
   email,
+  alt,
   isCurrentUser,
   onEditProfile,
   onFollow,
@@ -35,7 +37,7 @@ const UserProfileSection: React.FC<UserProfileSectionProps> = ({
       onClick={onProfileClick}
     >
       <div className="mb-4">
-        <Avatar imageUrl={profileImageUrl} alt={`${nickname} 프로필`} size="xl" />
+        <Avatar imageUrl={profileImageUrl} alt={alt} size="xl" />
       </div>
 
       <div className="text-center">

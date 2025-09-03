@@ -75,6 +75,8 @@ export const updatePerfume = async (req: Request, res: Response, next: NextFunct
 };
 
 
+
+
 // 향수 상세 조회
 export const getPerfumeById = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -120,31 +122,99 @@ export const getMyPerfumeController = async (req: Request, res: Response): Promi
   }
 }
 
+
+// export const getSearchPerfume = async (req: Request, res: Response) => {
+//   try {
+//     const data = req.body;
+
+//     // 🔹 입력값 검증 및 매핑
+//     const brandName = data.brand ?? null;
+//     const perfumeName = data.perfumeName ?? null;
+//     const noteType = parseNoteType(data.noteType); // enum 검증 함수
+//     const noteName = data.noteName ?? null;
+//     const nickname = data.nickname ?? null;
+
+//     // 🔹 OR 조건 배열 생성 (컨트롤러에서 안전하게 검증)
+//     const orConditions: any[] = [];
+
+//     if (brandName) {
+//       orConditions.push({ brandName: { contains: brandName } });
+//     }
+
+//     if (perfumeName) {
+//       orConditions.push({ perfumeName: { contains: perfumeName } });
+//     }
+
+//     if (noteType || noteName) {
+//       orConditions.push({
+//         notes: {
+//           some: {
+//             ...(noteType ? { noteType } : {}),
+//             ...(noteName ? { noteName: { contains: noteName } } : {}),
+//           },
+//         },
+//       });
+//     }
+
+//     if (nickname) {
+//       orConditions.push({ user: { nickname: { contains: nickname } } });
+//     }
+
+//     // 🔹 검색 조건이 하나도 없으면 빈 배열 반환 (전체 공개 향수 노출 방지)
+//     if (orConditions.length === 0) {
+//       return res.json({ data: [] });
+//     }
+
+//     console.log(orConditions);
+
+//     // 🔹 서비스 호출 (OR 조건 배열만 전달)
+//     const searchedPerfumes = await perfumeService.getSearchPerfumeService(orConditions);
+
+//     res.json({ data: searchedPerfumes });
+//   } catch (error: any) {
+//     console.error("getSearchPerfume Error:", error);
+//     res.status(400).json({ errorMessage: "getSearchPerfume 컨트롤러 오류" });
+//   }
+// };
+
 export const getSearchPerfume = async (req: Request, res: Response) => {
   try {
-    const data = req.body;
+    const { brand, perfumeName, NoteType, noteName, nickname } = req.body;
 
-    // 내가 정한 이름으로 매핑
-    const brandName = data.brand ?? null;
-    const perfumeName = data.perfumeName ?? null;
-    //enum 노트타입의 예외
-    const noteType = parseNoteType(data.NoteType);
-    const noteName = data.noteName ?? null;
-    const nickname = data.nickname ?? null;
+    // 🔎 OR 조건 배열 생성 (컨트롤러에서 검증 포함)
+    const orConditions: any[] = [];
 
-    const searchParams: PerfumeSearchParams = {
-      brandName,
-      perfumeName,
-      noteType,
-      noteName,
-      nickname,
-    };
+    if (brand) {
+      orConditions.push({ brandName: { contains: brand } });
+    }
+    if (perfumeName) {
+      orConditions.push({ perfumeName: { contains: perfumeName } });
+    }
+    if (NoteType || noteName) {
+      const parsedNoteType = parseNoteType(NoteType); // enum 처리
+      orConditions.push({
+        notes: {
+          some: {
+            noteType: parsedNoteType ?? undefined,
+            noteName: noteName ? { contains: noteName } : undefined,
+          },
+        },
+      });
+    }
+    if (nickname) {
+      orConditions.push({ user: { nickname: { contains: nickname } } });
+    }
 
+    // ❗ 검색 조건 없으면 전체 공개 방지
+    if (orConditions.length === 0) {
+      return res.json({ data: [] });
+    }
 
-    const searchedPerfumes = await perfumeService.getSearchPerfumeService(searchParams);
+    const searchedPerfumes = await perfumeService.getSearchPerfumeService(orConditions);
     res.json({ data: searchedPerfumes });
   } catch (error: any) {
-    res.status(401).json({ errorMessage: error.message });
+    console.error('getSearchPerfume Error:', error);
+    res.status(500).json({ errorMessage: 'getSearchPerfume 컨트롤러 오류' });
   }
 };
 
@@ -157,6 +227,7 @@ export const getPublicPerfumes = async (req: Request, res: Response) => {
     res.status(401).json({ errorMessage: error.message });
   }
 };
+
 
 export const getNoteList = async (req: Request, res: Response) => {
   const noteType = req.params.note_type;

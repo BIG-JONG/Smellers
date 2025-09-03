@@ -3,8 +3,29 @@ import PerfumeDetailSection from "@/components/PerfumeDetailSection";
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { PerfumeDetailData } from '@/components/PerfumeDetailSection';
+import UserProfile from '@/components/UserProfile';
+import Layout from '@/components/Layout';
 
-function mapPerfumeData(raw: any) {
+interface RawPerfumeData {
+    perfumeId: number;
+    perfumeName: string;
+    brandName: string;
+    price: number;
+    notes: { noteType: string; noteName: string }[];
+    emotionTag: string;
+    tag: string;
+    point: number;
+    content: string;
+    perfumeStatus: string;
+    images: { url_path: string }[];
+    user: {
+        userId: number;
+        nickname: string;
+        profileImg: string | null;
+    };
+}
+
+function mapPerfumeData(raw: any):PerfumeDetailData {
 
     const imageUrl = raw.images?.[0]?.url_path 
       ? `http://localhost:4000/uploads/${raw.images[0].url_path}` 
@@ -21,7 +42,7 @@ function mapPerfumeData(raw: any) {
         baseNotes: raw.notes?.filter((n: any) => n.noteType === 'BASE').map((n: any) => n.noteName) || [],
         emotionTags: raw.emotionTag ? raw.emotionTag.split(',').map((s: string) => s.trim()) : [],
         customTags: raw.tag ? raw.tag.split(',').map((s: string) => s.trim()) : [],
-        rating: raw.point,
+        point: raw.point,
         description: raw.content,
     };
 }
@@ -31,8 +52,24 @@ const PerfumeDetailPage: React.FC = () => {
     const navigate = useNavigate(); 
     const [perfume, setPerfume] = useState<PerfumeDetailData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [author, setAuthor] = useState<{ userId: number; nickname: string; profileImg: string | null } | null>(null);
+    const [currentUserId, setCurrentUserId] = useState<number|null>(null);
+
 
     useEffect(() => {
+        const token = sessionStorage.getItem("token");
+        const isLoggedIn = !!token;
+        if(isLoggedIn){
+           try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                setCurrentUserId(payload.user_id);
+                // console.log("Decoded token payload:", payload);
+            } catch (e) {
+                // console.error("토큰 디코딩 실패:", e);
+                setCurrentUserId(null);
+            }
+        }
+
         const fetchPerfume = async () => {
             try {
                 if (!id || isNaN(Number(id))) {
@@ -79,9 +116,17 @@ const PerfumeDetailPage: React.FC = () => {
                 }
 
                 const mappedData = mapPerfumeData(rawData);
-                console.log("매핑된 최종 데이터:", mappedData);
+                // console.log("매핑된 최종 데이터:", mappedData);
                 setPerfume(mappedData);
-                
+
+                 if (rawData.user) {
+                    setAuthor({
+                        userId: rawData.user.userId,
+                        nickname: rawData.user.nickname,
+                        profileImg: rawData.user.profileImg,
+                    });
+                }
+
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response) {
                     console.error(`향수 상세 조회 실패. 상태 코드: ${error.response.status}, 메시지: ${error.response.statusText}`);
@@ -96,8 +141,13 @@ const PerfumeDetailPage: React.FC = () => {
 
         fetchPerfume();
     }, [id]);
+
+    const handleAuthorClick = (userId: number, nickname: string) => {
+        navigate(`/user/${nickname}?userId=${userId}`);
+    };
+    
     const handleDeleteSuccess = () => {
-        navigate('/'); // 메인 페이지로 이동
+        navigate('/mypage/perfumes'); 
     };
 
 
@@ -112,12 +162,18 @@ const PerfumeDetailPage: React.FC = () => {
     const isLoggedIn = !!sessionStorage.getItem("token");
 
     return (
-        <div>
-            <PerfumeDetailSection 
-                perfume={perfume} 
-                isLoggedIn={isLoggedIn} 
-                onDelete={handleDeleteSuccess}/>
-        </div>
+        <Layout>
+            <div>
+                <PerfumeDetailSection 
+                    perfume={perfume} 
+                    isLoggedIn={isLoggedIn} 
+                    onDelete={handleDeleteSuccess}
+                    author={author}
+                    handleAuthorClick={handleAuthorClick}
+                    currentUserId={currentUserId}/>
+                   
+            </div>
+        </Layout>
     );
 };
 

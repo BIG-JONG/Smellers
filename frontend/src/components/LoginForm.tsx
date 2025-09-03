@@ -58,17 +58,21 @@ function LoginForm() {
   return (
     <form
       onSubmit={onSubmitForm}
-      className="mt-0 flex flex-col items-center justify-center w-full max-w-screen-md bg-white p-8 rounded"> {/* max-w-3xl -> max-w-screen-md, mt-10 -> mt-4 */}
-      <h1 className="text-4xl font-extrabold mb-8 text-center">로그인</h1>
+      className="mt-2 sm:mt-0 flex flex-col items-center justify-center w-full max-w-full sm:max-w-screen-md bg-white p-4 sm:p-8"> {/* max-w-3xl -> max-w-screen-md, mt-10 -> mt-4 */}
+      <h1 className="text-lg sm:text-xl xl:text-2xl font-bold flex justify-center gap-8  mt-3 sm:mt-0">로그인</h1>
+      <div className="mt-10" />
+      <div className="w-full flex justify-center ">
       <InputField
         label="이메일"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="이메일을 입력하세요."
+        autoFocus={false}
       />
+      </div>
       <div className="h-6" />
-
+      <div className="w-full flex justify-center ">
       <InputField
         label="비밀번호"
         type="password"
@@ -76,12 +80,13 @@ function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="비밀번호를 입력하세요."
       />
+      </div>
       <div className="h-8" />
 
       <Button type="submit">로그인</Button>
 
       {showAlert && (
-        <div className="mt-4 w-full">
+        <div className="w-full mt-4 "> 
           <Alert
             type={alertType}
             message={alertType === "error" ? errorMessage : "로그인 성공"}

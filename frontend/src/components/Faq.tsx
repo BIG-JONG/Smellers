@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import Layout from "./Layout";
 
 interface FaqProps{
   title?:string
@@ -49,42 +50,44 @@ function Faq({}: FaqProps) {
   };
 
   return(
-    <div className="w-full max-w-[900px] mx-auto min-h-[300px] mt-10">
-      <h2 className="text-2xl font-medium flex justify-center font-bold font-black">FAQ</h2>
-      {faqData.map((faq, index) => (
-        <div key={index} className="mt-4">
-          <div
-            className="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-gray-50 p-4 text-gray-900 cursor-pointer"
-            onClick={() => toggleAccordion(index)} 
-          >
-            <span className="text-lg font-medium">{faq.title}</span>
-            <svg
-              className={`size-5 shrink-0 transition-transform duration-300 ${
-                openIndex === index ? 'rotate-180' : ''
-              }`}
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+    <Layout>
+      <div className="w-full max-w-3xl mx-auto px-2 sm:px-6 lg:px-8 py-6 lg:pb-40 mt-2">
+        <h2 className="text-lg sm:text-xl xl:text-2xl font-bold flex justify-center">FAQ</h2>
+        {faqData.map((faq, index) => (
+          <div key={index} className="mt-10">
+            <div
+              className="flex items-center justify-between gap-1.5 rounded-md border border-gray-100 bg-gray-50 p-4 text-gray-900 cursor-pointer hover:bg-gray-100 transition-colors duration-200"
+              onClick={() => toggleAccordion(index)} 
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </div>
+              <span className="text-[12px] sm:text-sm font-medium">{faq.title}</span>
+              <svg
+                className={`size-5 shrink-0 transition-transform duration-300 ${
+                  openIndex === index ? 'rotate-180' : ''
+                }`}
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
 
-          <div
-            ref={(el) => (contentRefs.current[index] = el)}
-            className={`overflow-hidden transition-[max-height] duration-300 ease-in-out`}
-             style={{
-              maxHeight: `${maxHeights[index] || 0}px`,
-            }}
-          >
-            <p className="px-4 pt-4 pb-4 text-gray-900 break-words whitespace-pre-line">
-              {faq.answer}
-            </p>
+            <div
+              ref={(el) => (contentRefs.current[index] = el)}
+              className={`overflow-hidden transition-[max-height] duration-300 ease-in-out`}
+              style={{
+                maxHeight: `${maxHeights[index] || 0}px`,
+              }}
+            >
+              <p className="px-4 pt-4 pb-4 text-[10px] sm:text-sm text-gray-900 break-words whitespace-pre-line leading-snug">
+                {faq.answer}
+              </p>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </Layout>
   );
 }
 

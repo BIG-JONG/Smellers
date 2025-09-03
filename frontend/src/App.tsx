@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import 'flowbite'
 
 // 1. 필요한 공통 컴포넌트들 import
 import Header from './components/Header';
@@ -18,12 +19,11 @@ import PerfumeDetailPage from './pages/PerfumeDetailPage';
 import MainPage from './pages/MainPage';
 import PerfumeListPage from './pages/PerfumeListPage';
 
-// 3. 검색 결과 페이지들 import
 import SearchResultsPage from './pages/SearchResultsPage';
 import UserSearchResultsPage from './pages/UserSearchPage'; // 유저 검색 결과 페이지를 추가했습니다.
 import Faq from './components/Faq';
+import ScrollTop from './components/ScrollTop';
 
-// AppContent 컴포넌트를 Router로 감싸기 위해 별도로 정의
 function AppContent() {
   const navigate = useNavigate();
 
@@ -32,12 +32,11 @@ function AppContent() {
   }, [navigate]);
   
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Header에 navigate 함수만 전달하고, toggleSidebar는 제거했습니다. */}
+    <div className="flex flex-col  min-h-screen">
       <Header
         navigate={handleNavigate}
       />
-      <Layout>
+        <ScrollTop/>
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -56,13 +55,10 @@ function AppContent() {
           <Route path="/user/:nickname" element={<UserPerfumeListPage />} />
           <Route path="/faq" element={<Faq />} />
           
-          {/* 향수 검색 페이지 라우트 */}
           <Route path="/search" element={<SearchResultsPage />} />
           
-          {/* 유저 검색 페이지 라우트 - 이 부분을 추가했습니다. */}
           <Route path="/search/user" element={<UserSearchResultsPage />} />
         </Routes>
-      </Layout>
       <Footer className="mt-auto" />
     </div>
   );

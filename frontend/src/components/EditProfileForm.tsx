@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function EditProfileForm() {
-  const [imgUrl, setImgUrl] = useState<string>("");
+  const [imgUrl, setImgUrl] =  useState<string | undefined>(""); 
   const [uploadedImageFilename, setUploadedImageFilename] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -38,8 +38,7 @@ function EditProfileForm() {
           const data = res.data;
           setEmail(data.email);
           setNickname(data.nickname);
-          // 프로필 이미지 URL 세팅 (서버 업로드 경로 포함)
-          setImgUrl(data.profileImg ? `http://localhost:4000/uploads/${data.profileImg}` : "");
+          setImgUrl(data.profileImg ? `http://localhost:4000/uploads/${data.profileImg}` : undefined);
           setUploadedImageFilename(data.profileImg || null);
         } else {
           navigate("/login");
@@ -125,35 +124,41 @@ function EditProfileForm() {
   };
 
   return (
-    <div className="w-full flex justify-center">
-      <form className="m-10 flex flex-col items-center justify-center w-full max-w-4xl gap-6" onSubmit={handleSubmit}>
-        <Avatar imageUrl={imgUrl} size="xl" />
-        <p className="text-center text-lg">
-          <span className="font-bold text-xl">{nickname}</span>님, 변경할 정보를 입력해주세요.
+    <div className="flex justify-center w-full px-2 sm:px-4">
+      <form className="flex flex-col items-center w-full max-w-md sm:max-w-lg md:max-w-2xl gap-4 sm:gap-6 my-6 sm:my-10" onSubmit={handleSubmit}>
+        <Avatar 
+        imageUrl={imgUrl}
+        size="xl" 
+        alt={nickname}
+        className="sm:size-xl"
+         />
+        <p className="text-center text-sm sm:text-base">
+          <span className="font-bold text-base sm:text-lg">{nickname}</span>님, 변경할 정보를 입력해주세요.
         </p>
-        <label className="block w-full text-center cursor-pointer bg-gray-100 rounded py-2 hover:bg-gray-200">
+        <label className="block w-full text-center cursor-pointer bg-gray-100 rounded py-2 text-sm sm:text-base hover:bg-gray-200">
           이미지 업로드
           <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" />
         </label>
 
-        <InputField className="w-full" label="이메일" type="email" value={email} onChange={() => { }}
+        <InputField className="w-full text-xs sm:text-sm" label="이메일" type="email" value={email} onChange={() => { }}
           readOnly
         />
-        <InputField className="w-full text-gray-600" label="닉네임" type="text" value={nickname} onChange={(e) => setNickname(e.target.value)}
+        <InputField className="w-full text-gray-600 text-xs sm:text-sm" label="닉네임" type="text" value={nickname} onChange={(e) => setNickname(e.target.value)}
           placeholder="변경할 닉네임을 입력해주세요."
         />
-        <InputField className="w-full" label="비밀번호" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+        <InputField className="w-full text-xs sm:text-sm" label="비밀번호" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
           placeholder="변경할 비밀번호를 입력해주세요."
         />
-        <InputField className="w-full" label="비밀번호 확인" type="password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)}
+        <InputField className="w-full text-xs sm:text-sm" label="비밀번호 확인" type="password" value={passwordConfirm} onChange={(e) => setPasswordConfirm(e.target.value)}
           placeholder="변경할 비밀번호를 한번 더 입력해주세요."
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full text-sm sm:text-sm">
           정보 수정
         </Button>
 
-        <div className={`mt-4 w-full h-12 transition-opacity duration-300 ${showAlert ? "opacity-100" : "opacity-0"}`}>
-          <Alert type={alertType} message={alertMessage} />
+        <div className={`w-full transition-opacity duration-300 ${showAlert ? "opacity-100" : "opacity-0"}`}>
+          <Alert type={alertType} message={alertMessage} 
+          className="break-words whitespace-pre-wrap text-[10px] sm:text-sm leading-snug"/>
         </div>
       </form>
     </div>

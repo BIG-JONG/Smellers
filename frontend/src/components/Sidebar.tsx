@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'; 
+import Avatar from './Avatar';
 
 interface SidebarProps {
   isOpen: boolean; 
@@ -6,6 +7,7 @@ interface SidebarProps {
   className?: string; 
   isLoggedIn: boolean;
   user?:{
+    id:string;
     name: string;
     email: string;
     profileImg?: string;
@@ -24,7 +26,7 @@ function Sidebar({
   return (
     <div
       className={`
-        fixed top-[74px] left-0 z-40 h-[calc(100%-64px)] w-64 bg-white border-r border-gray-200
+        fixed top-[74px] left-0 z-50 h-[calc(100%-64px)] w-64 bg-white border-r border-gray-200
         transform transition-transform duration-300
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
       `}
@@ -42,7 +44,7 @@ function Sidebar({
               </li>
               <li>
                 <Link to="/mypage/perfumes" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700" >
-                  마이페이지
+                  나의 향수 목록
                 </Link>
               </li>
               <li>
@@ -59,7 +61,7 @@ function Sidebar({
           ) : null}
           <li>
             <Link to="/perfumes" className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-              게시판
+              전체 게시판
             </Link>
           </li>
           <li>
@@ -74,10 +76,11 @@ function Sidebar({
         {isLoggedIn && user ? (
           <div className="flex flex-col">
             <Link to="/mypage/perfumes" className="flex w-full items-center gap-2 bg-white p-4 hover:bg-gray-50">
-              <img
-                alt="User Profile"
-                src={user.profileImg ? `http://localhost:4000/uploads/${user.profileImg}` : 'https://placehold.co/40x40/cccccc/333333?text=User'}
-                className="w-10 h-10 rounded-full object-cover"
+              <Avatar
+                userId={user.id}
+                imageUrl={user.profileImg ? `http://localhost:4000/uploads/${user.profileImg}` : undefined}
+                alt={user.name}
+                size="sm"
               />
               <div>
                 <p className="text-xs">

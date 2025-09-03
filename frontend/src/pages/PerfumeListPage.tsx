@@ -4,18 +4,36 @@ import Pagination from "@/components/Pagination";
 import PerfumeListSection from "@/components/PerfumeListSection";
 import { Product } from "@/components/ProductCard";
 import axios from 'axios';
+import Layout from '@/components/Layout';
 
 const PerfumeListPage:React.FC=()=>{
   const navigate = useNavigate(); // useNavigate 훅
   const [perfumes, setPerfumes] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [perfumesPerPage, setPerfumesPerPage] = useState(16);
 
-  const perfumesPerPage = 12;
 
-  //상세 페이지로 이동
   const handlePerfumeClick = (id: string) => {
-    navigate(`/perfumes/${id}`); // /perfumes/:id 경로로 이동
+    navigate(`/perfumes/${id}`);
   };
+
+  useEffect(() => {
+    const updatePerfumesPerPage = () => {
+      if (window.innerWidth < 640) {
+        setPerfumesPerPage(10);
+      } else {
+        setPerfumesPerPage(20);
+      }
+    };
+
+    updatePerfumesPerPage();
+    window.addEventListener("resize", updatePerfumesPerPage);
+
+    return () => {
+      window.removeEventListener("resize", updatePerfumesPerPage);
+    };
+  }, []);
+
 
   useEffect(()=>{
     const fetchPerfumes = async()=>{
@@ -23,7 +41,11 @@ const PerfumeListPage:React.FC=()=>{
         const res = await axios.get('http://localhost:4000/perfumes/public')
         const activePerfumes = res.data.data.filter((item: any) => item.perfumeStatus !== 'N');
 
-        const mappedPerfumes = activePerfumes.map((item:any)=>({
+        const sortedPerfumes = [...activePerfumes].sort(
+          (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+
+        const mappedPerfumes = sortedPerfumes.map((item:any)=>({
           id:item.perfumeId.toString(),
           name:item.perfumeName,
           imageUrl: item.images?.[0]?.url_path
@@ -52,19 +74,24 @@ const PerfumeListPage:React.FC=()=>{
   
 
   return(
-    <div className="pt-[20px]">
-      <PerfumeListSection
-        // title="전체 게시물"
-        perfumes={currentPerfumes}
-        currentPage={currentPage}
-        totalPage={totalPage}
-        onPageChange={setCurrentPage}
-        onPerfumeClick={handlePerfumeClick} 
-      />
-      {/* <div className="mt-8 flex justify-center">
-        <Pagination currentPage={currentPage} totalPage={totalPage} onPageChange={onPageChange} />
-      </div> */}
-    </div>
+    <Layout>
+      <div className="pt-[20px]">
+        {/* <div className="flex items-center justify-center mb-8">
+          <h2 className="text-xl md:text-base font-semibold text-gray-500">전체 게시물</h2>
+        </div> */}
+        <PerfumeListSection
+          // title="전체 게시물"
+          perfumes={currentPerfumes}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          onPageChange={setCurrentPage}
+          onPerfumeClick={handlePerfumeClick} 
+        />
+        {/* <div className="mt-8 flex justify-center">
+          <Pagination currentPage={currentPage} totalPage={totalPage} onPageChange={onPageChange} />
+        </div> */}
+      </div>
+    </Layout>
   )
 }
 
